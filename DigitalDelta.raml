@@ -1,0 +1,741 @@
+#%RAML 1.0
+title: AquaDesk API
+version: 1.0
+securitySchemes:
+  basic:
+      description: This API supports Basic Authentication.
+      type: Basic Authentication
+baseUri: http://digitaldelta.aquadesk.nl
+mediaType: [ application/json ]
+description: Digital Delta API
+
+protocols:
+  - HTTP
+  - HTTPS
+
+# Base types
+types:
+  Uuid:
+    description: Unique Identifier, Version 4
+    type: string
+    pattern: "[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}"
+
+  Location:
+    description: Location that may have measurements.
+    type: object
+    properties:
+      url:
+        type: string
+        description: Url of the location.
+      code:
+        type: string
+        description: Code of the location.
+      name:
+        type: string
+        description: Name of the location.
+      geometry:
+        type: string
+        description: GeoJSON formatted geometry of the location.
+
+  Node:
+    description: Node objects contain the properties of the data node. A node is an operational implementation of the Digital Delta specification.
+    type: object
+    properties:
+      uuid:
+        type: Uuid
+        required: true
+      name:
+        type: string
+        required: true
+      description:
+        type: string
+        required: true
+      baseUrl:
+        type: string
+        required: true
+
+  Datasource:
+    description: DataSource (“bronhouder” in Dutch) objects describe the source of the data. A node can have multiple data sources.
+    type: object
+    properties:
+      uuid:
+        type: Uuid
+        required: true
+      name:
+        type: string
+        required: true
+      node:
+        type: Node
+        required: true
+
+  Event:
+    description: |
+      Event objects contain the actual value of each observation. |
+      Each observation contains a timestamp and a value. There is an optional quality parameter.
+    properties:
+      value:
+        type: number
+        required: true
+        example: 37.0
+      timeStamp:
+        type: datetime
+        required: false
+        example: 2016-12-31T12:45:00Z
+      quality:
+        type: string
+        required: false
+        example: "99"
+      limitSymbol:
+        type: string
+        required: false
+        examples: ["<", ">", "="]
+
+  TimeseriesType:
+    description: |
+      TimeSeriesType objects describe the type of measurement the timeseries contains. |
+      These can be for example raw measurements, but also aggregations or simulations. |
+      This information could be needed to correctly interpret the measurement values
+    type: object
+    properties:
+      code:
+        type: string
+        required: true
+        example: MEAS
+      name:
+        type: string
+        required: true
+        example: Measurement
+
+  Timeseries:
+    description: |
+      Timeseries objects contain all information needed to interpret timeseries. |
+      There are references to other objects, such as Node, Location, DataSource, ObservationType and TimeseriesType. |
+      The TimeseriesType should be added as a reference because it can indicate if a timeseries containts a RAW dataset or makes use of the current measurements. |
+      The Digital Delta specification of timeseries makes no assumptions on the nature of the series, timeseries may describe any series of data points of |
+      the same observation type and datasource in time on one location. |
+      This includes both equidistant series (fixed time interval between data points) and non-equidistant series (with varying time interval).
+    type: object
+    properties:
+      node:
+        type: Node
+        required: true
+      uuid:
+        type: Uuid
+        required: true
+      code:
+        type: string
+        required: true
+      location:
+        type: Location
+        required: true
+      observationType:
+        type: ObservationType
+        required: true
+      timeseriesType:
+        type: TimeseriesType
+        required: true
+      interval:
+        type: number
+        required: false
+      valueType:
+        type: string
+        required: false
+      start:
+        type: datetime
+        required: true
+        example: 2016-01-01T12:45:00Z
+      end:
+        type: datetime
+        required: true
+        example: 2016-01-01T12:45:00Z
+      events:
+        type: Event[]
+
+  ObservationType:
+    description: Typing of a measurement.
+    type: object
+    properties:
+      uuid:
+        type: Uuid
+        required: true
+      quantity:
+        type: string
+        description: The quantity measured.
+        examples: [ "ZICHT", "MONSTER", "CONCTTE", "AANTL" ]
+        required: true
+      unit:
+        type: string
+        description: Unit of measurement.
+        examples: [ "cm2", "n", "n/m3" ]
+        required: true
+      parameter:
+        type: string
+        description: Parameter measured.
+        required: false
+        examples: [ "Pediastrum", "Tetraedron hastatum" ]
+      compartment:
+        type: string
+        required: false
+        description: Compartment in which the measurement was performed.
+        examples: [ "OW" ]
+      qualifier:
+        type: string
+        required: false
+        description: 'Hoedanigheid'
+        examples: [ "AD", "JU", "T20C", "KO" ]
+
+# List responses
+  NodeListResponse:
+    description: Response for a node list request.
+    type: object
+    properties:
+      count:
+        description: Number of records satisfying the query parameters.
+        type: number
+        example: 1123
+      previous:
+        description: Link to the previous page
+        type: string
+      next:
+        description: Link to the next page
+        type: string
+      maxpagesize:
+        description: Maximum page size
+        type: number
+      results:
+        type: Node[]
+        description: List of Nodes.
+
+  DatasourceListResponse:
+    description: Response for a data source list request.
+    type: object
+    properties:
+      count:
+        description: Number of records satisfying the query parameters.
+        type: number
+        example: 1123
+      previous:
+        description: Link to the previous page
+        type: string
+      next:
+        description: Link to the next page
+        type: string
+      maxpagesize:
+        description: Maximum page size
+        type: number
+      results:
+        type: Datasource[]
+        description: List of Datasource.
+
+  LocationListResponse:
+    description: Response for a location list request.
+    type: object
+    properties:
+      count:
+        description: Number of records satisfying the query parameters.
+        type: number
+        example: 1123
+      previous:
+        description: Link to the previous page
+        type: string
+      next:
+        description: Link to the next page
+        type: string
+      maxpagesize:
+        description: Maximum page size
+        type: number
+      results:
+        type: Location[]
+        description: List of Locations.
+
+  ObservationTypeListResponse:
+    description: Response for a observation type list request.
+    type: object
+    properties:
+      count:
+        description: Number of records satisfying the query parameters.
+        type: number
+        example: 1123
+      previous:
+        description: Link to the previous page
+        type: string
+      next:
+        description: Link to the next page
+        type: string
+      maxpagesize:
+        description: Maximum page size
+        type: number
+      results:
+        type: ObservationType[]
+        description: List of observation types.
+
+  TimeseriesListResponse:
+    description: Response for a time series list request.
+    type: object
+    properties:
+      count:
+        description: Number of records satisfying the query parameters.
+        type: number
+        example: 1123
+      previous:
+        description: Link to the previous page
+        type: string
+      next:
+        description: Link to the next page
+        type: string
+      maxpagesize:
+        description: Maximum page size
+        type: number
+      results:
+        type: Timeseries[]
+        description: List of timeseries types.
+
+# Methods
+/datasources:
+  get:
+    queryParameters:
+      page:
+        description: Page number to retrieve. Starts at 1.
+        required: false
+        type: integer
+      pagesize:
+        description: Page size, minimum 1, maximum 10000.
+        required: false
+        type: integer
+        minimum: 1
+        maximum: 10000
+      uuid:
+        required: false
+        type: Uuid
+      name:
+        required: false
+        type: string
+    responses:
+      200:
+        body:
+          application/json:
+            type: DatasourceListResponse
+  post: # post bodies define filters
+    body:
+      application/json:
+        properties:
+          page:
+            description: Page number to retrieve. Starts at 1.
+            required: false
+            type: integer
+          pagesize:
+            description: Page size, minimum 1, maximum 10000.
+            required: false
+            type: integer
+            minimum: 1
+            maximum: 10000
+          uuid:
+            required: false
+            type: Uuid
+          name:
+            required: false
+            type: string
+    responses:
+      200:
+        body:
+          application/json:
+            type: DatasourceListResponse
+  /{uuid}:
+    description: Request a specific datasource by its Uuid.
+    uriParameters:
+      uuid:
+        type: Uuid
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: Datasource
+        404:
+          body:
+            application/json:
+              type: object
+              example: |
+                {"message": "Invalid data source"}
+/nodes:
+  get:
+    queryParameters:
+      page:
+        description: Page number to retrieve. Starts at 1.
+        required: false
+        type: integer
+      pagesize:
+        description: Page size, minimum 1, maximum 10000.
+        required: false
+        type: integer
+        minimum: 1
+        maximum: 10000
+      uuid:
+        required: false
+        type: Uuid
+      name:
+        required: false
+        type: string
+    responses:
+      200:
+        body:
+          application/json:
+            type: NodeListResponse
+  post: # post bodies define filters
+    body:
+      application/json:
+        properties:
+          page:
+            description: Page number to retrieve. Starts at 1.
+            required: false
+            type: integer
+          pagesize:
+            description: Page size, minimum 1, maximum 10000.
+            required: false
+            type: integer
+            minimum: 1
+            maximum: 10000
+          uuid:
+            required: false
+            type: Uuid
+          name:
+            required: false
+            type: string
+    responses:
+      200:
+        body:
+          application/json:
+            type: NodeListResponse
+  /{uuid}:
+    description: Request a specific node by its Uuid.
+    uriParameters:
+      uuid:
+        type: Uuid
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: Node
+        404:
+          body:
+            application/json:
+              type: object
+              example:
+                {"message": "Invalid node source"}
+
+/observationtypes:
+  description: Request a list of observation types.
+  get:
+    queryParameters:
+      page:
+        description: Page number to retrieve. Starts at 1.
+        required: false
+        type: integer
+      pagesize:
+        description: Page size, minimum 1, maximum 10000.
+        required: false
+        type: integer
+        minimum: 1
+        maximum: 10000
+      parameter:
+        description: Parameters
+        required: false
+        type: string[]
+    responses:
+      200:
+        body:
+          application/json:
+            type: ObservationTypeListResponse
+  post: # post bodies define filters
+    body:
+      application/json:
+        properties:
+          page:
+            description: Page number to retrieve. Starts at 1.
+            required: false
+            type: integer
+          pagesize:
+            description: Page size, minimum 1, maximum 10000.
+            required: false
+            type: integer
+            minimum: 1
+            maximum: 10000
+          parameter:
+            description: Parameters
+            required: false
+            type: string[]
+    responses:
+      200:
+        body:
+          application/json:
+            type: ObservationTypeListResponse
+  /{uuid}:
+    description: Request a specific observation type by its Uuid.
+    uriParameters:
+      uuid:
+        type: Uuid
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: ObservationType
+        404:
+          body:
+            application/json:
+              type: object
+              example: |
+                {"message": "Invalid observation type source"}
+
+
+/locations:
+  description: Request a list of locations, with optional filter parameters.
+  get:
+    queryParameters:
+      in_bbox:
+        description: Bounding box representing a rectangle in which the locations must lie.
+        required: false
+        type: string
+      page:
+        description: Page number to retrieve. Starts at 1.
+        required: false
+        type: integer
+        minimum: 1
+      pagesize:
+        description: Page size, minimum 1, maximum 10000.
+        required: false
+        type: integer
+        minimum: 1
+        maximum: 10000
+      name:
+        required: false
+        type: string
+        description: (Partial) location name.
+      node:
+        required: false
+        type: string
+        description: Node.
+      uuid:
+        type: Uuid
+        required: false
+        description: Node.
+      code:
+        required: false
+        type: string
+        description: (Partial) location code.
+    responses:
+      200:
+        body:
+          application/json:
+            type: LocationListResponse
+  post: # post bodies define filters
+    body:
+      application/json:
+        properties:
+          in_bbox:
+            description: Bounding box representing a rectangle in which the locations must lie.
+            required: false
+            type: string
+          page:
+            description: Page number to retrieve. Starts at 1.
+            required: false
+            type: integer
+            minimum: 1
+          pagesize:
+            description: Page size, minimum 1, maximum 10000.
+            required: false
+            type: integer
+            minimum: 1
+            maximum: 10000
+          name:
+            required: false
+            type: string
+            description: (Partial) location name.
+          node:
+            required: false
+            type: string
+            description: Node.
+          uuid:
+            type: Uuid
+            required: false
+            description: Node.
+          code:
+            required: false
+            type: string
+            description: (Partial) location code.
+    responses:
+      200:
+        body:
+          application/json:
+            type: LocationListResponse
+  /{uuid}:
+    description: Request a specific location by its Uuid.
+    uriParameters:
+      uuid:
+        type: Uuid
+        description: Location code
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: Location
+        404:
+          body:
+            application/json:
+              type: object
+              example: |
+                {"message": "Invalid location code"}
+/timeseries:
+  description: Retrieve timeseries.
+  get:
+    queryParameters:
+      page:
+        required: false
+        type: integer
+        minimum: 1
+        description: Page number to retrieve. Starts at 1.
+      pagesize:
+        required: false
+        type: integer
+        minimum: 1
+        maximum: 10000
+        description: Page size of the page to retrieve. Minimum is 1, maximum is 10000.
+      start:
+        type: datetime
+        required: false
+        description: Retrieve measurements that are measured on or after this date.
+      end:
+        type: datetime
+        required: false
+        description: Retrieve measurements that are measured before or on this date.
+      locationscodes:
+        type: string[]
+        required: false
+        description: Retrieve measurements that were measured at one of these locations (by code).
+      locationfilter:
+        type: string
+        required: false
+        description: Retrieve measurements that were measured at a location with a name like the locationfilter.
+      observationType:
+        type: Uuid
+        required: false
+        description: Uuid of the observation type.
+      timeseriesType:
+        type: string
+        required: false
+        description: Code of the time series. AquaDesk only supports MEAS.
+      node:
+        required: false
+        type: string
+        description: Node.
+      code:
+        required: false
+        type: string
+        description: Code.
+      uuid:
+        type: Uuid
+        required: false
+        description: Node.
+      valueType:
+        type: string
+        required: false
+        description: Value type.
+        example: "float"
+    responses:
+      200:
+        body:
+          application/json:
+            type: TimeseriesListResponse
+      404:
+        body:
+          application/json:
+            type: object
+            example: |
+              {"message": "Invalid filters"}
+  post: # post bodies define filters
+    body:
+      application/json:
+        properties:
+          page:
+            required: false
+            type: integer
+            minimum: 1
+            description: Page number to retrieve. Starts at 1.
+          pagesize:
+            required: false
+            type: integer
+            minimum: 1
+            maximum: 10000
+            description: Page size of the page to retrieve. Minimum is 1, maximum is 10000.
+          start:
+            type: datetime
+            required: false
+            description: Retrieve measurements that are measured on or after this date.
+          end:
+            type: datetime
+            required: false
+            description: Retrieve measurements that are measured before or on this date.
+          locationscodes:
+            type: string[]
+            required: false
+            description: Retrieve measurements that were measured at one of these locations (by code).
+          locationfilter:
+            type: string
+            required: false
+            description: Retrieve measurements that were measured at a location with a name like the locationfilter.
+          observationType:
+            type: Uuid
+            required: false
+            description: Uuid of the observation type.
+          timeseriesType:
+            type: string
+            required: false
+            description: Code of the time series. AquaDesk only supports MEAS.
+          node:
+            required: false
+            type: string
+            description: Node.
+          code:
+            required: false
+            type: string
+            description: Code.
+          uuid:
+            type: Uuid
+            required: false
+            description: Node.
+          valueType:
+            type: string
+            required: false
+            description: Value type.
+            example: "float"
+    responses:
+      200:
+        body:
+          application/json:
+            type: TimeseriesListResponse
+      404:
+        body:
+          application/json:
+            type: object
+            example: |
+              {"message": "Invalid filters"}
+  /{uuid}:
+    description: Request a specific timeseries by its Uuid.
+    uriParameters:
+      uuid:
+        type: Uuid
+        description: Time series uuid
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: Timeseries
+        404:
+          body:
+            application/json:
+              type: object
+              example: |
+                {"message": "Invalid time series"}
