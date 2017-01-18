@@ -1,5 +1,5 @@
 #%RAML 1.0
-title: Digital Delta API
+title: AquaDesk API
 version: 1.0
 securitySchemes:
   basic:
@@ -19,29 +19,19 @@ types:
     type: number
     format: double
   
+  KeyValuePair:
+    properties:
+      key:
+        type: string
+      value:
+        type: string
+  
   Geometry:
     properties:
       type: 
         type: string
       coordinates:
         type: Double[]
-  
-  Location:
-    description: Location that may have measurements.
-    type: object
-    properties:
-      url:
-        type: string
-        description: Url of the location.
-      code:
-        type: string
-        description: Code of the location.
-      name:
-        type: string
-        description: Name of the location.
-      geometry:
-        type: Geometry
-        description: GeoJSON formatted geometry of the location.
 
   Node:
     description: Node objects contain the properties of the data node. A node is an operational implementation of the Digital Delta specification.
@@ -60,6 +50,23 @@ types:
       baseUrl:
         type: string
         required: true
+  
+  Location:
+    description: Location that may have measurements.
+    type: object
+    properties:
+      url:
+        type: string
+        description: Url of the location.
+      code:
+        type: string
+        description: Code of the location.
+      name:
+        type: string
+        description: Name of the location.
+      geometry:
+        type: Geometry
+        description: GeoJSON formatted geometry of the location.
 
   LocationWithNode:
     description: Location that may have measurements including node.
@@ -131,7 +138,10 @@ types:
         required: false
         description: 'Hoedanigheid'
         examples: [ "AD", "JU", "T20C", "KO" ]
-        
+      extra:
+        type: KeyValuePair[] 
+            
+  
   Event:
     description: |
       Event objects contain the actual value of each observation. |
@@ -297,7 +307,7 @@ types:
         description: Maximum page size
         type: number
       results:
-        type: Location[]
+        type: LocationWithNode[]
         description: List of Locations.
 
   ObservationTypeListResponse:
@@ -357,10 +367,8 @@ types:
         type: string[]
       start:
         type: date-only
-        required: false
       end:
         type: date-only
-        required: false
         
 # Methods
 /datasources:
@@ -463,6 +471,10 @@ types:
         type: integer
         minimum: 1
         maximum: 10000
+      parameter:
+        description: Parameters
+        required: false
+        type: string[]
     responses:
       200:
         body:
