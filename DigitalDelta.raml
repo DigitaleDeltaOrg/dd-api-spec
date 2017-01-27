@@ -55,6 +55,9 @@ types:
     description: Location that may have measurements.
     type: object
     properties:
+      uuid: 
+        type: string
+        pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
       url:
         type: string
         description: Url of the location.
