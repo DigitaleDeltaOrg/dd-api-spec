@@ -1,37 +1,114 @@
 #%RAML 1.0
-title: AquaDesk API
+title: Digital Delta API
 version: 1.0
 securitySchemes:
   basic:
-      description: This API supports Basic Authentication.
-      type: Basic Authentication
-baseUri: http://digitaldelta.aquadesk.nl
+    type: Basic Authentication
+baseUri: http://digitaldeltatest.aquadesk.nl
 mediaType: [ application/json ]
 description: Digital Delta API
-
+documentation:
+ - title: Introduction
+   content: The Digital Delta is a distributed network in which various datasources exchange information using a standard interface. 
+     This specification outlines the mechanics of the Digital Delta as a distributed network of nodes and masternodes and describes the technical specification of the Digital Delta web API. <br/>
+     This document uses the <a href="http://raml.org">RAML standard</a> as the definition language.<br/>
+ - title: The API specification
+   content:  
+     The API specification consists of two parts. 
+     <ol>
+       <li>The Types section describes the data types that are available for the resources.
+       <br/><i>Note&colon; Currently, the generated HTML documentation does not contain tables that describe the data types. However, their content can be seen in the response tabs of the requests. If you want to have a detailed look at the type definitions, open the RAML file and go to the “# Base types.” section.</i>
+       </li>
+       <li>The Resources section describes the available end-points.</li>
+     </ol>
+ 
+     <p>The Digital Delta uses uuids (universally unique identifier, version 4) for identification of resource objects.<br/> 
+     The use of uuids guarantees a unique identifier for an instance over all nodes in the Digital Delta without the need for individual nodes to have a knowledge about data in other nodes.<br/> 
+     There is a code attribute as well that can be used by suppliers for their internal identifiers.<br/> 
+     The Digital Delta supports timeseries data, defined as a measurement series with a begin and end time, a fixed location and a parameter. <br/> 
+     The list of objects is setup to be extendable to other data types, such as raster or vector data.<br/>  
+     The protocols provides by the services are HTTP and HTTPS. Currently authentication is Anonymous.<br/>  
+     The Digital Delta only supports JSON as the output format and for POST request bodies.</p>
+ - title: The RAML standard and Universal unique identifiers    
+   content:
+     The <a href="http://raml.org">RAML specification</a> currently doesn't know the type uuid (Universal unique identifiers). To have a structure in the definition to allow working with uuids, the Digital Delta specification uses a strong with a specific regular expression pattern.   
+     The base pattern is&colon; [0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}.</i>
+ - title: About the examples in this document     
+   content:
+    The examples in the requests are based on based on the AquaDesk implementation of the Digital Delta specifications. The structure, however, for all gets, posts and responses will be the same for all providers.
+ - title: Future enhancements
+   content:
+     The following future enhancements are under consideration. 
+     <ul>
+      <li>Search endpoint (full-text search)</li>
+      <li>Authentication/Authorisation</li>
+      <li>Error and warning codes</li>
+      <li>OPTION request, explaining how the service works</li>
+    </ul>
+ - title: Future research
+   content:
+     The following topics are considered Future research
+     <ul>
+       <li>Attributes for different standards</li>
+       <li>Support for multiple data types</li>
+       <li>Additional output formats</li>
+       <li>Basic calculations on timeseries data</li>
+     </ul>
+ - title: Document history
+   content:
+     <table>
+      <tr>
+        <th width=100>Date</th>
+        <th width=100>Author</th>
+        <th>Changes<th>
+      </tr>
+      <tr>
+         <td>2017-05-06</td>
+        <td>Geri Wolters</td>
+        <td>
+          <ul>
+            <li>Texts from the original document added. Texts corrected and updated.</li>
+            <li>Introduction of samples.</li>
+            <li>Changed properties previous and next to return string? instead of string.</li>
+            <li>Changed properties events from timeseries to return an array or nil, as the values can be null.</li>
+          </ul
+        <td>
+      </tr>
+     </table>
+  
 protocols:
   - HTTP
   - HTTPS
-
-# Base types
+    
+# Base types. 
 types:
   Double:
+    description: A value of type Double (float).
     type: number
     format: double
-  
+
   KeyValuePair:
+    description: A combination of key and value.
     properties:
       key:
         type: string
+        description: The key of the key/value pair.
+        example: taxontype
       value:
         type: string
-  
+        description: The value of the key/value pair.
+        
   Geometry:
+    description: A geometry in GeoJSON format. Digital Delta currently only supports the Point type.
     properties:
       type: 
+        description: The geometry type. Must have the value "Point".
         type: string
+        example: "Point"
       coordinates:
         type: Double[]
+        description: An array of doubles, representing a coordinate.
+        example: [ 4.234, 52.3423 ]
 
   Node:
     description: Node objects contain the properties of the data node. A node is an operational implementation of the Digital Delta specification.
@@ -41,59 +118,56 @@ types:
         type: string
         required: true
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
+        description: The unique identifier of the node. UUID Version 4.<br/>          
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+        example: 978fdf5c-95c8-43a5-82ff-d27d9e6d685f
       name:
         type: string
         required: true
+        description: The name of the node.<br/> 
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
       description:
         type: string
         required: true
+        description: The description of the node.<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
       baseUrl:
         type: string
         required: true
-  
+        description: The base URL of the node.
+        
   Location:
-    description: Location that may have measurements.
+    displayName: Location
+    description: A location object contains all information required to describe a location. This version contains a node.
     type: object
     properties:
       uuid: 
         type: string
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
+        description: The unique identifier for the location. UUID Version 4.<br/>
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
       url:
         type: string
-        description: Url of the location.
+        description: The URL of the location.
       code:
         type: string
-        description: Code of the location.
+        description: The code of the location.<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>. 
       name:
         type: string
-        description: Name of the location.
+        description: The name of the location..<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=green>Searchable</font>.
       geometry:
         type: Geometry
-        description: GeoJSON formatted geometry of the location.
-
-  LocationWithNode:
-    description: Location that may have measurements including node.
-    type: object
-    properties:
-      uuid: 
-        type: string
-        pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
-      url:
-        type: string
-        description: Url of the location.
-      code:
-        type: string
-        description: Code of the location.
-      name:
-        type: string
-        description: Name of the location.
-      geometry:
-        type: Geometry
-        description: GeoJSON formatted geometry of the location.
+        description: The GeoJSON geometry definition of the location..<br/>
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
       node:
         type: Node
+        description: The node of the location..<br/>
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
 
   Datasource:
+    displayName: DataSource
     description: DataSource (“bronhouder” in Dutch) objects describe the source of the data. A node can have multiple data sources.
     type: object
     properties:
@@ -101,110 +175,136 @@ types:
         type: string
         required: true
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
+        description: The unique identifier for the datasource. UUID Version 4<br/>
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
       name:
         type: string
         required: true
+        description: The name of the datasource..<br/>
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=green>Searchable</font>. 
       node:
         type: Node
         required: true
+        description: The node of the datasource.
         
   ObservationType:
-    description: Typing of a measurement.
+    description: The ObservationType objects describe all attributes to correctly interpret what has been measured, and in what way. It is essential to have the quantity field.
     type: object
     properties:
       uuid:
         type: string
         required: true
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
+        description: The unique identifier for the observationtype. UUID Version 4.
       quantity:
         type: string
-        description: The quantity measured.
         examples: [ "ZICHT", "MONSTER", "CONCTTE", "AANTL" ]
         required: true
+        description: Defines what was measured. 
       unit:
         type: string
-        description: Unit of measurement.
-        examples: [ "cm2", "n", "n/m3" ]
+        examples: [ "cm2", "n", "n/m3", "%", "DIMSLS", "C" ]
         required: true
+        description: Unit of measurement. Follows the Aquo standards.
       parameter:
         type: string
-        description: Parameter measured.
         required: false
-        examples: [ "Pediastrum", "Tetraedron hastatum" ]
+        examples: [ "Pediastrum", "Ca", "1112T4ClC2a", "HYBDVS" ]
+        description: Parameter specifying the observationtype. Non-biological observation types follow the Aquo standards.<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
       compartment:
         type: string
         required: false
-        description: Compartment in which the measurement was performed.
-        examples: [ "OW" ]
+        examples: [ "OW", "DL", "GW", "LW" ]
+        description: The compartment in which the measurement took place. Standardised Aquo compartments.<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
       qualifier:
         type: string
         required: false
-        description: 'Hoedanigheid'
-        examples: [ "AD", "JU", "T20C", "KO" ]
+        examples: [ "AD", "JU", "T20C", "KO", "BraunBS", "WATSGL", "WATKLM" ]
+        description: Dutch&colon; 'Hoedanigheid'. Additional qualities of the measurement. <br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
       extra:
-        type: KeyValuePair[] 
-            
-  
-  Event:
-    description: |
-      Event objects contain the actual value of each observation. |
-      Each observation contains a timestamp and a value. There is an optional quality parameter.
+        type: KeyValuePair[]
+        example: [ 
+          { 
+            "key": "taxongroup", 
+            "value": "DIATM" 
+          }, 
+          { 
+            "key": "type", 
+            "value": "Biotaxon" 
+          } 
+        ] 
+        description: Extra information about the measurement. Can be used to provide specific details concerning the circumstances or the object measured, etc. 
+
+  MinimalEvent:
+    displayName: Event (minimal)
+    description: Event objects contain the actual value of each observation. 
+      Each observation contains a timestamp and a value. 
     properties:
       value:
         type: number
         required: true
         example: 37.0
+        description: The value of the measured data.<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
       timeStamp:
         type: datetime
         required: false
         example: 2016-12-31T12:45:00Z
+        description: The date/time when the measurement took place. Uses the Zulu notation.
+            
+  Event:
+    type: MinimalEvent
+    displayName: Event (detailed)
+    description: Event objects contain the actual value of each observation. 
+      Each observation contains a timestamp and a value. There is an optional quality parameter and limit symbol.
+    properties:
       quality:
         type: string
         required: false
         example: "99"
+        description: As specified in Aquo Domain Table 'Kwaliteitsoordeel'. Specifies whether the value is considered normal, abberent, interpolated, etc. and for what reason. .<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
       limitSymbol:
         type: string
         required: false
         examples: ["<", ">", "="]
-
-  TimeseriesEvent:
-    description: |
-      Event objects contain the actual value of each observation. |
-      Each observation contains a timestamp and a value. There is an optional quality parameter.
-    properties:
-      value:
-        type: number
-        required: true
-        example: 37.0
-      timeStamp:
-        type: datetime
-        required: false
-        example: 2016-12-31T12:45:00Z
+        description: The limit symbol supplements the measured value.<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
 
   TimeseriesType:
-    description: |
-      TimeSeriesType objects describe the type of measurement the timeseries contains. |
-      These can be for example raw measurements, but also aggregations or simulations. |
-      This information could be needed to correctly interpret the measurement values
+    description: TimeSeriesType objects describe the type of measurement the timeseries contains. 
+      These can be for example raw measurements, but also aggregations or simulations. 
+      This information could be needed to correctly interpret the measurement values.
     type: object
     properties:
       code:
         type: string
         required: true
         example: MEAS
+        description: The code of the timeseries type.
       name:
         type: string
         required: true
         example: Measurement
+        description: The name of the timeseries type.
 
   Timeseries:
-    description: |
-      Timeseries objects contain all information needed to interpret timeseries. |
-      There are references to other objects, such as Node, Location, DataSource, ObservationType and TimeseriesType. |
-      The TimeseriesType should be added as a reference because it can indicate if a timeseries containts a RAW dataset or makes use of the current measurements. |
-      The Digital Delta specification of timeseries makes no assumptions on the nature of the series, timeseries may describe any series of data points of |
-      the same observation type and datasource in time on one location. |
+    description: Timeseries objects contain all information needed to interpret timeseries.<br/> 
+      There are references to other objects, such as Node, Location, DataSource, ObservationType and TimeseriesType.<br/> 
+      The TimeseriesType should be added as a reference because it can indicate if a timeseries containts a RAW dataset or makes use of the current measurements. 
+      The Digital Delta specification of timeseries makes no assumptions on the nature of the series, timeseries may describe any series of data points of the same observation type and datasource in time on one location.<br/>
       This includes both equidistant series (fixed time interval between data points) and non-equidistant series (with varying time interval).
+      <h3>Use case&colon;</h3>
+      <p>Imagine a data-source is providing several timeseries for a specific location and observation. For example&colon;<br/> 
+      Waterlevel is measured every 5 minutes for the location Lobith. 
+      This is the original timeseries from the datasource and we can call it the RAW timeseries or the original timeseries.<br/> 
+      Within the same data-souce, again, waterlevel is measured every 5 minutes for the same location, but this timeseries is a manually or automatically validated timeseries. So in this case we have an original timeseries which is providing the raw data and another timeseries which has been validated. Both timeseries can be required for different purposes.<br/>
+      Now imagine that someone requires the validated timeseries instead of the original. <br/>
+      The users should be able to filter them based on this information and retrieve data only for this type of timeseries. There are several more uses cases where more than two types are used. Think of timeseries that are recalculated based on validation, interval, aggregation, etc.<br/><br/>
+      Using TimeSeriesType is providing more flexibility in providing multiple timeseries for the same location and observation type provided by a single data-source.</p>
     type: object
     properties:
       url:
@@ -214,146 +314,171 @@ types:
         type: string
         required: true
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
+        description: The unique identifier for the timeseries. UUID Version 4.<br/>
+          Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+        example: f4af47f5-f087-494c-9b2d-ba129bddd545
       code:
         type: string
         required: true
+        description: The code of the timeseries. AquaDesk uses the uuid for this.<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=green>Searchable</font>.
+        example: H. Metingen
       location:
-        type: LocationWithNode
+        type: Location
         required: true
+        description: The location that the timeseries uses.<br/>
+          Qualifiers&colon; <font color=gray><strike>Nullable</font>, <font color=green>Filterable</font>, <font color=green>Searchable</font>. 
       observationType:
         type: ObservationType
         required: true
+        description: The observationtype that the timeseries uses.<br/>
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
       node:
         type: Node
         required: true
+        description: The node responsible for hosting the data for the timeseries.<br/>
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
       datasource:
         type: Datasource
         required: true
+        description: The datasource providing the data for the timeseries..<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
       timeseriesType:
         type: TimeseriesType
         required: true
+        description: The type of the timeseries..<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
       interval:
         type: number
         required: false
+        description: Specifies the interval between measurements for the timeseries.<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
       valueType:
         type: string
         required: false
+        description:  The data type of the measured data.<br/>
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
       start:
         type: datetime
         required: true
         example: 2016-01-01T12:45:00Z
+        description:  Start date/time of the measurement. Uses the Zulu notation<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
       end:
         type: datetime
         required: true
         example: 2016-01-01T12:45:00Z
-      events:
-        type: TimeseriesEvent[]
+        description:  End date/time of the measurement. Uses the Zulu notation<br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+      events?:
+        type: MinimalEvent[]
+        description: Defines a minimal event. 
 
 # List responses
   NodeListResponse:
-    description: Response for a node list request.
+    description: Contains zero or more responses to a Node list request.
     type: object
     properties:
-      count:
-        description: Number of records satisfying the query parameters.
-        type: integer
-        example: 1123
-      previous:
-        description: Link to the previous page
-        type: string
-      next:
-        description: Link to the next page
-        type: string
-      maxpagesize:
-        description: Maximum page size
-        type: integer
       results:
         type: Node[]
         description: List of Nodes.
-
-  DatasourceListResponse:
-    description: Response for a data source list request.
-    type: object
-    properties:
       count:
         description: Number of records satisfying the query parameters.
         type: integer
         example: 1123
       previous:
-        description: Link to the previous page
-        type: string
+        description: Url to the API holding the previous page. null if the requested page is the first page.
+        type: string?
       next:
-        description: Link to the next page
-        type: string
+        description: Url to the API holding the next page. null if the requested page is the last page.
+        type: string?
       maxpagesize:
-        description: Maximum page size
+        description: Maximum page size, as allowed by the service.
         type: integer
+
+  DatasourceListResponse:
+    description: Contains zero or more responses to a DataSource list request.
+    type: object
+    properties:
       results:
         type: Datasource[]
         description: List of Datasource.
-
-  LocationListResponse:
-    description: Response for a location list request.
-    type: object
-    properties:
       count:
         description: Number of records satisfying the query parameters.
         type: integer
         example: 1123
       previous:
-        description: Link to the previous page
-        type: string
+        description: Url to the API holding the previous page. null if the requested page is the first page.
+        type: string?
       next:
-        description: Link to the next page
-        type: string
+        description: Url to the API holding the next page. null if the requested page is the last page.
+        type: string?
       maxpagesize:
-        description: Maximum page size
+        description: Maximum page size, as allowed by the service.
         type: integer
+
+  LocationListResponse:
+    description: Contains zero or more responses to a Node list request.
+    type: object
+    properties:
       results:
-        type: LocationWithNode[]
+        type: Location[]
         description: List of Locations.
+      count:
+        description: Number of records satisfying the query parameters.
+        type: integer
+        example: 1123
+      previous:
+        description: Url to the API holding the previous page. null if the requested page is the first page.
+        type: string?
+      next:
+        description: Url to the API holding the next page. null if the requested page is the last page.
+        type: string?
+      maxpagesize:
+        description: Maximum page size, as allowed by the service.
+        type: integer
 
   ObservationTypeListResponse:
     description: Response for a observation type list request.
     type: object
     properties:
+      results:
+        type: ObservationType[]
+        description: List of observation types.
       count:
         description: Number of records satisfying the query parameters.
         type: integer
         example: 1123
       previous:
-        description: Link to the previous page
-        type: string
+        description: Url to the API holding the previous page. null if the requested page is the first page.
+        type: string?
       next:
-        description: Link to the next page
-        type: string
+        description: Url to the API holding the next page. null if the requested page is the last page.
+        type: string?
       maxpagesize:
-        description: Maximum page size
+        description: Maximum page size, as allowed by the service.
         type: integer
-      results:
-        type: ObservationType[]
-        description: List of observation types.
 
   TimeseriesListResponse:
     description: Response for a time series list request.
     type: object
     properties:
+      results:
+        type: Timeseries[]
+        description: List of timeseries types.
       count:
         description: Number of records satisfying the query parameters.
         type: integer
         example: 1123
       previous:
-        description: Link to the previous page
-        type: string
+        description: Url to the API holding the previous page. null if the requested page is the first page.
+        type: string?
       next:
-        description: Link to the next page
-        type: string
+        description: Url to the API holding the next page. null if the requested page is the last page.
+        type: string?
       maxpagesize:
-        description: Maximum page size
+        description: Maximum page size, as allowed by the service.
         type: integer
-      results:
-        type: Timeseries[]
-        description: List of timeseries types.
         
   LocationPostRequest:
     description: Location filter request
@@ -368,91 +493,165 @@ types:
     properties:
       code:
         type: string[]
+        description: Array of codes or uuids of timeseries to return. AquaDesk uses uuids.
       start:
         type: date-only
+        description: First date of the requested measurements. Format&colon; yyyy-MM-dd. 
       end:
         type: date-only
+        description: Last date of the requested measurements. Format&colon; yyyy-MM-dd.
         
-# Methods
+# APIs
 /datasources:
+  description: The Datasources endpoint can return the datasources that the provider offers. Filtering&colon; uuid and name. 
+    <h3>About Datasource</h3>
+    <p>DataSource (“bronhouder” in Dutch) objects describe the source of the data. A node can have multiple data sources.</p>
   get:
     queryParameters:
+      uuid:
+        required: false
+        type: string
+        description: Unique identifier for the datasource. Version 4. 
+        example: 978fdf5c-95c8-43a5-82ff-d27d9e6d685f
+      name:
+        required: false
+        type: string
+        example: AquaDesk DD Primary
       page:
-        description: Page number to retrieve. Starts at 1.
+        description: Page number.
         required: false
         type: integer
+        minimum: 1
+        example: 1
       pagesize:
-        description: Page size, minimum 1, maximum 10000.
+        description: Page size.
         required: false
         type: integer
         minimum: 1
         maximum: 10000
-      uuid:
-        required: false
-        type: string
-        pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
-      name:
-        required: false
-        type: string
+        example: 10
     responses:
       200:
         body:
           application/json:
             type: DatasourceListResponse
+            example: {
+              "count": 1,
+              "previous": null,
+              "next": null,
+              "maxpagesize": 100000,
+              "results": [
+                {
+                  "uuid": "978fdf5c-95c8-43a5-82ff-d27d9e6d685f",
+                  "name": "AquaDesk DD Primary",
+                  "node": {
+                    "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                    "name": "AquaDesk Primary",
+                    "description": "AquaDesk Primary Node",
+                    "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                  }
+                }
+              ]
+            }
+            
   /{uuid}:
     description: Request a specific datasource by its Uuid.
     uriParameters:
       uuid:
         type: string
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
+        description: Unique identifier for the datasource. Version 4.
+        example: 978fdf5c-95c8-43a5-82ff-d27d9e6d685f
     get:
       responses:
         200:
           body:
             application/json:
               type: Datasource
+              example: {
+                "uuid": "978fdf5c-95c8-43a5-82ff-d27d9e6d685f",
+                "name": "AquaDesk DD Primary",
+                "node": {
+                  "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                  "name": "AquaDesk Primary",
+                  "description": "AquaDesk Primary Node",
+                  "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                }
+              }
         404:
           body:
             application/json:
               type: object
-              example: |
-                {"message": "Invalid data source"}
+              example: {"message": "Invalid data source"}
+                
 /nodes:
+  description: The Nodes endpoint can return the nodes that the provider offers. Filtering&colon; uuid and name.
+    <h3>About Node</h3>
+    <p>Node objects contain the properties of the data node. A node is an operational implementation of the Digital Delta specification.</p>
   get:
     queryParameters:
+      uuid:
+        required: false
+        type: string
+        description: Unique identifier for the node. Version 4.
+        example: f4af47f5-f087-494c-9b2d-ba129bddd545
+      name:
+        required: false
+        type: string
+        description: The (partial) name of the node.
+        example: AquaDeskPrimaryNode
       page:
-        description: Page number to retrieve. Starts at 1.
+        description: Page number.
         required: false
         type: integer
+        minimum: 1
+        example: 1
       pagesize:
-        description: Page size, minimum 1, maximum 10000.
+        description: Page size.
         required: false
         type: integer
         minimum: 1
         maximum: 10000
-      uuid:
-        required: false
-        type: string
-        pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
-      name:
-        required: false
-        type: string
+        example: 10
     responses:
       200:
         body:
           application/json:
             type: NodeListResponse
+            example: {
+              "count": 1,
+              "previous": null,
+              "next": null,
+              "maxpagesize": 100000,
+              "results": [
+                {
+                  "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                  "name": "AquaDeskPrimaryNode",
+                  "description": "Primary node for the AquaDesk RWS service.",
+                  "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                }
+              ]
+            }
+            
   /{uuid}:
     description: Request a specific node by its Uuid.
     uriParameters:
       uuid:
         type: string
+        description: Unique identifier for the node. Version 4.
+        example: f4af47f5-f087-494c-9b2d-ba129bddd545
     get:
       responses:
         200:
           body:
             application/json:
               type: Node
+              example: {
+                "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                "name": "AquaDeskPrimaryNode",
+                "description": "Primary node for the AquaDesk RWS service.",
+                "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+              }
         404:
           body:
             application/json:
@@ -461,101 +660,254 @@ types:
                 {"message": "Invalid node source"}
 
 /observationtypes:
-  description: Request a list of observation types.
+  description: The ObservationTypes endpoint can return the observationtypes that the provider offers. Filtering&colon; list of parameters.
+    <h3>About ObvervationType</h3>
+    <p>The ObservationType objects describe all attributes to correctly interpret what has been measured, and in what way. It is essential to have the quantity field.</p>
   get:
     queryParameters:
+      parameter:
+        description: List of parameters that need to satisfy the search criteria.
+        required: false
+        type: string[]
       page:
-        description: Page number to retrieve. Starts at 1.
+        description: Page number.
         required: false
         type: integer
+        minimum: 1
+        example: 1
       pagesize:
-        description: Page size, minimum 1, maximum 10000.
+        description: Page size.
         required: false
         type: integer
         minimum: 1
         maximum: 10000
-      parameter:
-        description: Parameters
-        required: false
-        type: string[]
+        example: 10
     responses:
       200:
         body:
           application/json:
             type: ObservationTypeListResponse
-  /{uuid}:
-    description: Request a specific observation type by its Uuid.
+            example: {
+              "count": 674,
+              "previous": null,
+              "next": "https://digitaldeltatest.aquadesk.nl/observationtypes?page=2&pagesize=2",
+              "maxpagesize": 100000,
+              "results": [
+                {
+                  "uuid": "1f9f13c0-d45a-4031-9231-09235d81481e",
+                  "quantity": "AANTL",
+                  "unit": "n/ml",
+                  "parameter": "Acanthoceras zachariasii",
+                  "compartment": "OW",
+                  "qualifier": "CE",
+                  "extra": [
+                    {
+                      "key": "taxongroup",
+                      "value": "DIATM"
+                    },
+                    {
+                      "key": "type",
+                      "value": "Biotaxon"
+                    }
+                  ]
+                },
+                {
+                  "uuid": "75c234ef-8182-4948-a593-3c0b4c1a8308",
+                  "quantity": "AANTL",
+                  "unit": "n/ml",
+                  "parameter": "Achnanthales",
+                  "compartment": "OW",
+                  "qualifier": "CE",
+                  "extra": [
+                    {
+                      "key": "taxongroup",
+                      "value": "DIATM"
+                    },
+                    {
+                      "key": "type",
+                      "value": "Biotaxon"
+                    }
+                  ]
+                }
+              ]
+            }
+            
+  /{code}:
+    description: Request a specific observation type by its code.<br/> 
+      <b><i>Since almost no specific ObservationTypes for biological entities exist in Aquo, AquaDesk is using uuids instead of the code. The type 'String' is used in both circumstances.</i></b>
     uriParameters:
-      uuid:
+      code:
         type: string
-        pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
+        description: The code (or uuid for AquaDesk) identifying the observation type. 
+        example: "1f9f13c0-d45a-4031-9231-09235d81481e" 
     get:
       responses:
         200:
           body:
             application/json:
               type: ObservationType
+              example: {
+                "uuid": "1f9f13c0-d45a-4031-9231-09235d81481e",
+                "quantity": "AANTL",
+                "unit": "n/ml",
+                "parameter": "Acanthoceras zachariasii",
+                "compartment": "OW",
+                "qualifier": "CE",
+                "extra": [
+                  {
+                    "key": "taxongroup",
+                    "value": "DIATM"
+                  },
+                  {
+                    "key": "type",
+                    "value": "Biotaxon"
+                  }
+                ]
+              }
         404:
           body:
             application/json:
               type: object
-              example: |
-                {"message": "Invalid observation type source"}
-
+              example: {"message": "Invalid observation type source"}
+                
 /locations:
-  description: Request a list of locations, with optional filter parameters.
+  description: The Locations endpoint can return the locations that the provider offers. Filtering&colon; bounding box, uuid, code, name and node.
+    <h3>About Locations</h3>
+    <p>A location object contains all information required to describe a location. This version contains a node.</p>
   get:
     queryParameters:
       in_bbox:
-        description: Bounding box representing a rectangle in which the locations must lie.
+        description: Bounding box representing a rectangle in which the locations must lie. This is represented by 4 doubles, separated by commas.<br/>    
+         Example&colon; in_bbox=minLon,minLat,maxLon,maxLat<br/>  
+          Where&colon; <br/>  
+           <b>minLon&colon;</b> minimum longitude in decimal degrees (WGS84)<br/>   
+           <b>minLat&colon;</b> minimum lattitude in decimal degrees (WGS84)<br/>    
+           <b>maxLon&colon;</b> maximum longitude in decimal degrees (WGS84)<br/>    
+           <b>maxLat&colon;</b> maximum lattitude in decimal degrees (WGS84)<br/>    
         required: false
         type: string
-      page:
-        description: Page number to retrieve. Starts at 1.
-        required: false
-        type: integer
-        minimum: 1
-      pagesize:
-        description: Page size, minimum 1, maximum 10000.
-        required: false
-        type: integer
-        minimum: 1
-        maximum: 10000
+        example: 4.8,52.0,5.8,54.0
       name:
         required: false
         type: string
         description: (Partial) location name.
+        example: NEDHMT
       node:
         required: false
         type: string
-        description: Node.
+        description: Uuid of the node.
+        example: f4af47f5-f087-494c-9b2d-ba129bddd545
       uuid:
         type: string
         required: false
-        pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
-        description: Node.
+        description: Uuid of the location.
+        example: ed0655e7-ced5-42ad-ac42-b9b96639307c
       code:
         required: false
         type: string
-        description: (Partial) location code.
+        description: Location code.
+        example: NLWATB-RWTS_AFGDM_0001
+      page:
+        description: Page number.
+        required: false
+        type: integer
+        minimum: 1
+        example: 1
+      pagesize:
+        description: Page size.
+        required: false
+        type: integer
+        minimum: 1
+        maximum: 10000
+        example: 10
     responses:
       200:
         body:
           application/json:
             type: LocationListResponse
+            example: {
+              "count": 795,
+              "previous": null,
+              "next": "https://digitaldeltatest.aquadesk.nl/locations?page=2&pagesize=10",
+              "maxpagesize": 100000,
+              "results": [
+                {
+                  "uuid": "ed0655e7-ced5-42ad-ac42-b9b96639307c",
+                  "url": "https://digitaldeltatest.aquadesk.nl/locations/ed0655e7-ced5-42ad-ac42-b9b96639307c",
+                  "code": "NLWATB-RWTS_AFGDM_0001",
+                  "name": "NEDHMT",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                      5.15835627200311,
+                      51.7581204207227,
+                      0
+                    ]
+                  },
+                  "node": {
+                    "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                    "name": "AquaDesk Primary",
+                    "description": "AquaDesk Primary Node",
+                    "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                  }
+                },
+                {
+                  "uuid": "4d58d630-ac4e-4eb3-bff4-1b17c7b77630",
+                  "url": "https://digitaldeltatest.aquadesk.nl/locations/4d58d630-ac4e-4eb3-bff4-1b17c7b77630",
+                  "code": "NLWATB-RWTS_AFGDM_0002",
+                  "name": "VEEN",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                      5.11187400090377,
+                      51.7800422641779,
+                      0
+                    ]
+                  },
+                  "node": {
+                    "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                    "name": "AquaDesk Primary",
+                    "description": "AquaDesk Primary Node",
+                    "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                  }
+                }
+              ]
+            }
+            
   /{uuid}:
     description: Request a specific location by its Uuid.
     uriParameters:
       uuid:
         type: string
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
-        description: Location code
+        description: Unique identifier for the location. Version 4.
+        example: ed0655e7-ced5-42ad-ac42-b9b96639307c
     get:
       responses:
         200:
           body:
             application/json:
               type: Location
+              example: {
+                "uuid": "ed0655e7-ced5-42ad-ac42-b9b96639307c",
+                "url": "https://digitaldeltatest.aquadesk.nl/locations/ed0655e7-ced5-42ad-ac42-b9b96639307c",
+                "code": "NLWATB-RWTS_AFGDM_0001",
+                "name": "NEDHMT",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    5.15835627200311,
+                    51.7581204207227,
+                    0
+                  ]
+                },
+                "node": {
+                  "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                  "name": "AquaDesk Primary",
+                  "description": "AquaDesk Primary Node",
+                  "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                }
+              }
         404:
           body:
             application/json:
@@ -567,74 +919,295 @@ types:
     body:
       application/json:
         type: LocationPostRequest
+        example: { code: [ "NLWATB-RWTS_AFGDM_0001", "NLWATB-RWTS_AFGDM_0002"] }
     responses:
       200:
         body:
           application/json:
             type: LocationListResponse
+            example: {
+              "count": 795,
+              "previous": null,
+              "next": "https://digitaldeltatest.aquadesk.nl/locations?page=2&pagesize=10",
+              "maxpagesize": 100000,
+              "results": [
+                {
+                  "uuid": "ed0655e7-ced5-42ad-ac42-b9b96639307c",
+                  "url": "https://digitaldeltatest.aquadesk.nl/locations/ed0655e7-ced5-42ad-ac42-b9b96639307c",
+                  "code": "NLWATB-RWTS_AFGDM_0001",
+                  "name": "NEDHMT",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                      5.15835627200311,
+                      51.7581204207227,
+                      0
+                    ]
+                  },
+                  "node": {
+                    "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                    "name": "AquaDesk Primary",
+                    "description": "AquaDesk Primary Node",
+                    "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                  }
+                },
+                {
+                  "uuid": "4d58d630-ac4e-4eb3-bff4-1b17c7b77630",
+                  "url": "https://digitaldeltatest.aquadesk.nl/locations/4d58d630-ac4e-4eb3-bff4-1b17c7b77630",
+                  "code": "NLWATB-RWTS_AFGDM_0002",
+                  "name": "VEEN",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                      5.11187400090377,
+                      51.7800422641779,
+                      0
+                    ]
+                  },
+                  "node": {
+                    "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                    "name": "AquaDesk Primary",
+                    "description": "AquaDesk Primary Node",
+                    "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                  }
+                }
+              ]
+            }
+
       404:
         body:
           application/json:
             type: object
             example: |
-              {"message": "Invalid filters"}    
+              {"message": "Invalid filters"}   
+               
 /timeseries:
-  description: Retrieve timeseries.
+  description:
+    The timeseries endpoint can return both the metadata and the data itself. If a start&dash; and endtime is given in the request, the data is added to the response, for both the List and the Detail requests. Furthermore, it is possible to only retrieve the data (without the metadata) by querying the data endpoint&colon; /timeseries/{uuid}/data/.<br/>    
+    <i><b>Optional&colon; add start and end filter, returns metadata and data (values)</b></i><br/>
+    Filtering&colon; value type, uuid, code, node, timeseries type, observation type, location name, start- and enddate.<br/>
+    <h3>About Timeseries</h3>
+    <p>Timeseries objects contain all information needed to interpret timeseries.<br/> 
+    There are references to other objects, such as Node, Location, DataSource, ObservationType and TimeseriesType.<br/> 
+    The TimeseriesType should be added as a reference because it can indicate if a timeseries containts a RAW dataset or makes use of the current measurements. 
+    The Digital Delta specification of timeseries makes no assumptions on the nature of the series, timeseries may describe any series of data points of the same observation type and datasource in time on one location. <br/>
+    This includes both equidistant series (fixed time interval between data points) and non-equidistant series (with varying time interval).</p>
+    <h3>Use case&colon;</h3>
+    <p>Imagine a data-source is providing several timeseries for a specific location and observation. For example&colon;<br/> 
+    Waterlevel is measured every 5 minutes for the location Lobith. 
+    This is the original timeseries from the datasource and we can call it the RAW timeseries or the original timeseries.<br/> 
+    Within the same data-souce, again, waterlevel is measured every 5 minutes for the same location, but this timeseries is a manually or automatically validated timeseries. So in this case we have an original timeseries which is providing the raw data and another timeseries which has been validated. Both timeseries can be required for different purposes.<br/>
+    Now imagine that someone requires the validated timeseries instead of the original. <br/>
+    The users should be able to filter them based on this information and retreve data only for this type of timeseries. There are several more uses cases where more than two types are used. Think of timeseries that are recalculated based on validation, interval, aggregation, etc.<br/><br/>
+    Using TimeSeriesType is providing more flexibility in providing multiple timeseries for the same location and observation type provided by a single data-source.</p>
   get:
     queryParameters:
-      page:
-        required: false
-        type: integer
-        minimum: 1
-        description: Page number to retrieve. Starts at 1.
-      pagesize:
-        required: false
-        type: integer
-        minimum: 1
-        maximum: 10000
-        description: Page size of the page to retrieve. Minimum is 1, maximum is 10000.
       start:
         type: datetime
         required: false
-        description: Retrieve measurements that are measured on or after this date.
+        description: Retrieve measurements that are measured on or after this date and time.
+        example: 2015-01-01T00:00:00Z
       end:
         type: datetime
         required: false
-        description: Retrieve measurements that are measured before or on this date.
+        description: Retrieve measurements that are measured before or on this date and time. Uses the Zulu notation.
+        example: 2016-12-31T23:59:59Z
       locationfilter:
         type: string
         required: false
         description: Retrieve measurements that were measured at a location with a name like the locationfilter.
+        example: VEEN
       observationType:
         type: string
         required: false
-        description: Uuid of the observation type.
+        description: Unique identifier of the observation type.
+        example: 1f9f13c0-d45a-4031-9231-09235d81481e
       timeseriesType:
         type: string
         required: false
         description: Code of the time series. AquaDesk only supports MEAS.
+        example: MEAS
       node:
         required: false
         type: string
-        description: Node.
+        description: Unique identifier of the node.
+        example: f4af47f5-f087-494c-9b2d-ba129bddd545
       code:
         required: false
         type: string
-        description: Code.
+        description: Code of the timeseries.
       uuid:
         type: string
         required: false
-        description: Node.
+        description: Unique identifier of the timeseries.
+        example: e9ede034-f254-4855-b1ea-fe715c382935
       valueType:
         type: string
         required: false
         description: Value type.
-        example: "float"
+        example: float
+      page:
+        description: Page number.
+        required: false
+        type: integer
+        minimum: 1
+        example: 1
+      pagesize:
+        description: Page size.
+        required: false
+        type: integer
+        minimum: 1
+        maximum: 10000
+        example: 10
     responses:
       200:
         body:
           application/json:
             type: TimeseriesListResponse
+            example: {
+              "count": 48751,
+              "previous": null,
+              "next": "https://digitaldeltatest.aquadesk.nl/timeseries?page=2&pagesize=2",
+              "maxpagesize": 100000,
+              "results": [
+                {
+                  "url": "https://digitaldeltatest.aquadesk.nl/timeseries/e9ede034-f254-4855-b1ea-fe715c382935",
+                  "uuid": "e9ede034-f254-4855-b1ea-fe715c382935",
+                  "code": "",
+                  "location": {
+                    "uuid": "6fba498f-0b59-462b-8c34-bd456d8e7d31",
+                    "url": "https://digitaldeltatest.aquadesk.nl/locations/6fba498f-0b59-462b-8c34-bd456d8e7d31",
+                    "code": "NLWATB-RWTS_BERMS_0002",
+                    "name": "KEIZVR",
+                    "geometry": {
+                      "type": "Point",
+                      "coordinates": [
+                        4.89443671141974,
+                        51.7201856231622,
+                        0
+                      ]
+                    },
+                    "node": {
+                      "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                      "name": "AquaDesk Primary",
+                      "description": "AquaDesk Primary Node",
+                      "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                    }
+                  },
+                  "observationType": {
+                    "uuid": "297d7ba6-d5e0-4683-849a-5246a3aa83c4",
+                    "quantity": "AANTL",
+                    "unit": "n/ml",
+                    "parameter": "Achnanthidium",
+                    "compartment": "OW",
+                    "qualifier": "CE",
+                    "extra": [
+                      {
+                        "key": "taxongroup",
+                        "value": "DIATM"
+                      },
+                      {
+                        "key": "type",
+                        "value": "Biotaxon"
+                      }
+                    ]
+                  },
+                  "node": {
+                    "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                    "name": "AquaDesk Primary",
+                    "description": "AquaDesk Primary Node",
+                    "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                  },
+                  "datasource": {
+                    "uuid": "978fdf5c-95c8-43a5-82ff-d27d9e6d685f",
+                    "name": "AquaDesk Primary",
+                    "node": {
+                      "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                      "name": "AquaDesk Primary",
+                      "description": "AquaDesk Primary Node",
+                      "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                    }
+                  },
+                  "timeseriesType": {
+                    "code": "MEAS",
+                    "name": "Measurements"
+                  },
+                  "interval": null,
+                  "valueType": "float",
+                  "start": "2005-02-14T23:00:00Z",
+                  "end": "2005-02-14T23:00:00Z",
+                  "events": null
+                },
+                {
+                  "url": "https://digitaldeltatest.aquadesk.nl/timeseries/db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
+                  "uuid": "db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
+                  "code": "",
+                  "location": {
+                    "uuid": "6fba498f-0b59-462b-8c34-bd456d8e7d31",
+                    "url": \null\,
+                    "code": "NLWATB-RWTS_BERMS_0002",
+                    "name": "KEIZVR",
+                    "geometry": {
+                      "type": "Point",
+                      "coordinates": [
+                        4.89443671141974,
+                        51.7201856231622,
+                        0
+                      ]
+                    },
+                    "node": {
+                      "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                      "name": "AquaDesk Primary",
+                      "description": "AquaDesk Primary Node",
+                      "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                    }
+                  },
+                  "observationType": {
+                    "uuid": "5cd9726e-7985-4789-9674-22bec8bef325",
+                    "quantity": "AANTL",
+                    "unit": "n/ml",
+                    "parameter": "Actinocyclus normanii",
+                    "compartment": "OW",
+                    "qualifier": "CE",
+                    "extra": [
+                      {
+                        "key": "taxongroup",
+                        "value": "DIATM"
+                      },
+                      {
+                        "key": "type",
+                        "value": "Biotaxon"
+                      }
+                    ]
+                  },
+                  "node": {
+                    "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                    "name": "AquaDesk Primary",
+                    "description": "AquaDesk Primary Node",
+                    "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                  },
+                  "datasource": {
+                    "uuid": "978fdf5c-95c8-43a5-82ff-d27d9e6d685f",
+                    "name": "AquaDesk Primary",
+                    "node": {
+                      "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                      "name": "AquaDesk Primary",
+                      "description": "AquaDesk Primary Node",
+                      "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                    }
+                  },
+                  "timeseriesType": {
+                    "code": "MEAS",
+                    "name": "Measurements"
+                  },
+                  "interval": null,
+                  "valueType": "float",
+                  "start": "2004-08-30T22:00:00Z",
+                  "end": "2004-08-30T22:00:00Z",
+                  "events": null
+                }
+              ]
+            }
       404:
         body:
           application/json:
@@ -645,49 +1218,284 @@ types:
     body:
       application/json:
         type: TimeseriesPostRequest
+        example: { code: [ "H. Metingen" ], start: "2012-01-01", end: "2013-01-01"}
     responses:
       200:
         body:
           application/json:
             type: TimeseriesListResponse
+            example: {
+              "count": 48751,
+              "previous": null,
+              "next": "https://digitaldeltatest.aquadesk.nl/timeseries?page=2&pagesize=2",
+              "maxpagesize": 100000,
+              "results": [
+                {
+                  "url": "https://digitaldeltatest.aquadesk.nl/timeseries/e9ede034-f254-4855-b1ea-fe715c382935",
+                  "uuid": "e9ede034-f254-4855-b1ea-fe715c382935",
+                  "code": "",
+                  "location": {
+                    "uuid": "6fba498f-0b59-462b-8c34-bd456d8e7d31",
+                    "url": "https://digitaldeltatest.aquadesk.nl/locations/6fba498f-0b59-462b-8c34-bd456d8e7d31",
+                    "code": "NLWATB-RWTS_BERMS_0002",
+                    "name": "KEIZVR",
+                    "geometry": {
+                      "type": "Point",
+                      "coordinates": [
+                        4.89443671141974,
+                        51.7201856231622,
+                        0
+                      ]
+                    },
+                    "node": {
+                      "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                      "name": "AquaDesk Primary",
+                      "description": "AquaDesk Primary Node",
+                      "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                    }
+                  },
+                  "observationType": {
+                    "uuid": "297d7ba6-d5e0-4683-849a-5246a3aa83c4",
+                    "quantity": "AANTL",
+                    "unit": "n/ml",
+                    "parameter": "Achnanthidium",
+                    "compartment": "OW",
+                    "qualifier": "CE",
+                    "extra": [
+                      {
+                        "key": "taxongroup",
+                        "value": "DIATM"
+                      },
+                      {
+                        "key": "type",
+                        "value": "Biotaxon"
+                      }
+                    ]
+                  },
+                  "node": {
+                    "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                    "name": "AquaDesk Primary",
+                    "description": "AquaDesk Primary Node",
+                    "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                  },
+                  "datasource": {
+                    "uuid": "978fdf5c-95c8-43a5-82ff-d27d9e6d685f",
+                    "name": "AquaDesk Primary",
+                    "node": {
+                      "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                      "name": "AquaDesk Primary",
+                      "description": "AquaDesk Primary Node",
+                      "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                    }
+                  },
+                  "timeseriesType": {
+                    "code": "MEAS",
+                    "name": "Measurements"
+                  },
+                  "interval": null,
+                  "valueType": "float",
+                  "start": "2005-02-14T23:00:00Z",
+                  "end": "2005-02-14T23:00:00Z",
+                  "events": null
+                },
+                {
+                  "url": "https://digitaldeltatest.aquadesk.nl/timeseries/db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
+                  "uuid": "db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
+                  "code": "",
+                  "location": {
+                    "uuid": "6fba498f-0b59-462b-8c34-bd456d8e7d31",
+                    "url": \null\,
+                    "code": "NLWATB-RWTS_BERMS_0002",
+                    "name": "KEIZVR",
+                    "geometry": {
+                      "type": "Point",
+                      "coordinates": [
+                        4.89443671141974,
+                        51.7201856231622,
+                        0
+                      ]
+                    },
+                    "node": {
+                      "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                      "name": "AquaDesk Primary",
+                      "description": "AquaDesk Primary Node",
+                      "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                    }
+                  },
+                  "observationType": {
+                    "uuid": "5cd9726e-7985-4789-9674-22bec8bef325",
+                    "quantity": "AANTL",
+                    "unit": "n/ml",
+                    "parameter": "Actinocyclus normanii",
+                    "compartment": "OW",
+                    "qualifier": "CE",
+                    "extra": [
+                      {
+                        "key": "taxongroup",
+                        "value": "DIATM"
+                      },
+                      {
+                        "key": "type",
+                        "value": "Biotaxon"
+                      }
+                    ]
+                  },
+                  "node": {
+                    "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                    "name": "AquaDesk Primary",
+                    "description": "AquaDesk Primary Node",
+                    "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                  },
+                  "datasource": {
+                    "uuid": "978fdf5c-95c8-43a5-82ff-d27d9e6d685f",
+                    "name": "AquaDesk Primary",
+                    "node": {
+                      "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                      "name": "AquaDesk Primary",
+                      "description": "AquaDesk Primary Node",
+                      "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                    }
+                  },
+                  "timeseriesType": {
+                    "code": "MEAS",
+                    "name": "Measurements"
+                  },
+                  "interval": null,
+                  "valueType": "float",
+                  "start": "2004-08-30T22:00:00Z",
+                  "end": "2004-08-30T22:00:00Z",
+                  "events": null
+                }
+              ]
+            }
+            
       404:
         body:
           application/json:
             type: object
             example: |
               {"message": "Invalid filters"}
+
   /{uuid}:
-    description: Request a specific timeseries by its Uuid.
+    description: Get the data of one timeseries, including metadata.
     uriParameters:
       uuid:
         type: string
-        description: Time series uuid
+        description: Unique identifier for the timeseries. Version 4.
+        example: db9544e4-1eb3-4f99-ac6e-b9c02a7cca88
     get:
       responses:
         200:
           body:
             application/json:
               type: Timeseries
+              example: {
+                "url": "https://digitaldeltatest.aquadesk.nl/timeseries/db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
+                "uuid": "db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
+                "code": "",
+                "location": {
+                  "uuid": "6fba498f-0b59-462b-8c34-bd456d8e7d31",
+                  "url": "https://digitaldeltatest.aquadesk.nl/locations/6fba498f-0b59-462b-8c34-bd456d8e7d31",
+                  "code": "NLWATB-RWTS_BERMS_0002",
+                  "name": "KEIZVR",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                      4.89443671141974,
+                      51.7201856231622,
+                      0
+                    ]
+                  },
+                  "node": {
+                    "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                    "name": "AquaDesk Primary",
+                    "description": "AquaDesk Primary Node",
+                    "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                  }
+                },
+                "observationType": {
+                  "uuid": "5cd9726e-7985-4789-9674-22bec8bef325",
+                  "quantity": "AANTL",
+                  "unit": "n/ml",
+                  "parameter": "Actinocyclus normanii",
+                  "compartment": "OW",
+                  "qualifier": "CE",
+                  "extra": [
+                    {
+                      "key": "taxongroup",
+                      "value": "DIATM"
+                    },
+                    {
+                      "key": "type",
+                      "value": "Biotaxon"
+                    }
+                  ]
+                },
+                "node": {
+                  "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                  "name": "AquaDesk Primary",
+                  "description": "AquaDesk Primary Node",
+                  "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                },
+                "datasource": {
+                  "uuid": "978fdf5c-95c8-43a5-82ff-d27d9e6d685f",
+                  "name": "AquaDesk Primary",
+                  "node": {
+                    "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
+                    "name": "AquaDesk Primary",
+                    "description": "AquaDesk Primary Node",
+                    "baseUrl": "https://digitaldeltatest.aquadesk.nl"
+                  }
+                },
+                "timeseriesType": {
+                  "code": "MEAS",
+                  "name": "Measurements"
+                },
+                "interval": null,
+                "valueType": "float",
+                "start": "2004-08-30T22:00:00Z",
+                "end": "2004-08-30T22:00:00Z",
+                "events": [
+                  {
+                    "value": 13.81,
+                    "timeStamp": "2004-08-30T22:00:00Z"
+                  }
+                ]
+              }
         404:
           body:
             application/json:
               type: object
               example: |
                 {"message": "Invalid time series"}
+                
     /data:
+      description: Get the detail data for the specified timeseries, excluding metadata.
       get:
         queryParameters:
           start:
             type: date-only
             required: false
+            example: 2016-01-01
+            description: Format&colon; yyyy-MM-dd.
           end:
             type: date-only
             required: false
+            example: 2016-12-31
+            description: Format&colon; yyyy-MM-dd.
         responses:
           200:
             body:
               application/json:
                 type: Event[]
+                example: [
+                  {
+                    "value": 13.81,
+                    "timeStamp": "2004-08-30T22:00:00Z",
+                    "quality": "",
+                    "limitSymbol": null
+                  }
+                ]
           404:
             body:
               application/json:
