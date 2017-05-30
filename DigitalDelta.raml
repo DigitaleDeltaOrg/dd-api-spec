@@ -16,12 +16,14 @@ documentation:
    content:  
      The API specification consists of two parts. 
      <ol>
-       <li>The Types section describes the data types that are available for the resources.
+       <li>The Types section describes the data types that are available for the resources. Please refer to figure 1 below for the resource object diagram.
        <br/><i>Note&colon; Currently, the generated HTML documentation does not contain tables that describe the data types. However, their content can be seen in the response tabs of the requests. If you want to have a detailed look at the type definitions, open the RAML file and go to the “# Base types.” section.</i>
        </li>
        <li>The Resources section describes the available end-points.</li>
      </ol>
- 
+
+     <p><i>Figure 1</i></p> 
+    <img src="https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/master/DD-API-ResourceObjects.jpg?raw=true"/>
      <p>The Digital Delta uses uuids (universally unique identifier, version 4) for identification of resource objects.<br/> 
      The use of uuids guarantees a unique identifier for an instance over all nodes in the Digital Delta without the need for individual nodes to have a knowledge about data in other nodes.<br/> 
      There is a code attribute as well that can be used by suppliers for their internal identifiers.<br/> 
@@ -71,6 +73,15 @@ documentation:
             <li>Introduction of samples.</li>
             <li>Changed properties previous and next to return string? instead of string.</li>
             <li>Changed properties events from timeseries to return an array or nil, as the values can be null.</li>
+          </ul
+        <td>
+      </tr>
+      <tr>
+         <td>2017-05-30</td>
+        <td>Geri Wolters</td>
+        <td>
+          <ul>
+            <li>Added resource object diagram.</li>
           </ul
         <td>
       </tr>
