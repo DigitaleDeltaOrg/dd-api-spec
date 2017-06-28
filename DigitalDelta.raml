@@ -85,6 +85,26 @@ documentation:
           </ul
         <td>
       </tr>
+      <tr>
+         <td>2017-06-13</td>
+        <td>Geri Wolters</td>
+        <td>
+          <ul>
+            <li>Unified naming of fields and parameters.</li>
+            <li>TimeSeries field 'code' is replaced by 'qualifier'. 'qualifier' is optional and filterable.</li>
+            <li>HTTP Status code 204 (NoContent) is introduced for list-requests. This value should be returned instead of an empty list.</li>
+          </ul
+        <td>
+      </tr>
+      <tr>
+         <td>2017-06-26</td>
+        <td>Geri Wolters</td>
+        <td>
+          <ul>
+            <li>Changed error responses from 404 to 400.</li>
+          </ul
+        <td>
+      </tr>
      </table>
   
 protocols:
@@ -217,11 +237,11 @@ types:
         examples: [ "cm2", "n", "n/m3", "%", "DIMSLS", "C" ]
         required: true
         description: Unit of measurement. Follows the Aquo standards.
-      parameter:
+      parameterCode:
         type: string
         required: false
         examples: [ "Pediastrum", "Ca", "1112T4ClC2a", "HYBDVS" ]
-        description: Parameter specifying the observationtype. Non-biological observation types follow the Aquo standards.<br/>
+        description: Parameter code specifying the observationtype. Non-biological observation types follow the Aquo standards.<br/>
           Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
       compartment:
         type: string
@@ -328,11 +348,11 @@ types:
         description: The unique identifier for the timeseries. UUID Version 4.<br/>
           Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
         example: f4af47f5-f087-494c-9b2d-ba129bddd545
-      code:
+      qualifier:
         type: string
-        required: true
+        required: false
         description: The code of the timeseries. AquaDesk uses the uuid for this.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=green>Searchable</font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=green>Filterable</font>, <font color=green>Searchable</font>.
         example: H. Metingen
       location:
         type: Location
@@ -403,7 +423,7 @@ types:
       next:
         description: Url to the API holding the next page. null if the requested page is the last page.
         type: string?
-      maxpagesize:
+      maxPageSize:
         description: Maximum page size, as allowed by the service.
         type: integer
 
@@ -424,7 +444,7 @@ types:
       next:
         description: Url to the API holding the next page. null if the requested page is the last page.
         type: string?
-      maxpagesize:
+      maxPageSize:
         description: Maximum page size, as allowed by the service.
         type: integer
 
@@ -445,7 +465,7 @@ types:
       next:
         description: Url to the API holding the next page. null if the requested page is the last page.
         type: string?
-      maxpagesize:
+      maxPageSize:
         description: Maximum page size, as allowed by the service.
         type: integer
 
@@ -466,7 +486,7 @@ types:
       next:
         description: Url to the API holding the next page. null if the requested page is the last page.
         type: string?
-      maxpagesize:
+      maxPageSize:
         description: Maximum page size, as allowed by the service.
         type: integer
 
@@ -487,7 +507,7 @@ types:
       next:
         description: Url to the API holding the next page. null if the requested page is the last page.
         type: string?
-      maxpagesize:
+      maxPageSize:
         description: Maximum page size, as allowed by the service.
         type: integer
         
@@ -534,7 +554,7 @@ types:
         type: integer
         minimum: 1
         example: 1
-      pagesize:
+      pageSize:
         description: Page size.
         required: false
         type: integer
@@ -550,7 +570,7 @@ types:
               "count": 1,
               "previous": null,
               "next": null,
-              "maxpagesize": 100000,
+              "maxPageSize": 100000,
               "results": [
                 {
                   "uuid": "978fdf5c-95c8-43a5-82ff-d27d9e6d685f",
@@ -564,6 +584,10 @@ types:
                 }
               ]
             }
+      204:
+        body:
+          application/json:
+            type: object
             
   /{uuid}:
     description: Request a specific datasource by its Uuid.
@@ -617,7 +641,7 @@ types:
         type: integer
         minimum: 1
         example: 1
-      pagesize:
+      pageSize:
         description: Page size.
         required: false
         type: integer
@@ -633,7 +657,7 @@ types:
               "count": 1,
               "previous": null,
               "next": null,
-              "maxpagesize": 100000,
+              "maxPageSize": 100000,
               "results": [
                 {
                   "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
@@ -643,6 +667,10 @@ types:
                 }
               ]
             }
+      204:
+        body:
+          application/json:
+            type: object
             
   /{uuid}:
     description: Request a specific node by its Uuid.
@@ -677,16 +705,16 @@ types:
   get:
     queryParameters:
       parameter:
-        description: List of parameters that need to satisfy the search criteria.
+        description: Parameter specification of the parameter that need to satisfy the search criteria. 
         required: false
-        type: string[]
+        type: string
       page:
         description: Page number.
         required: false
         type: integer
         minimum: 1
         example: 1
-      pagesize:
+      pageSize:
         description: Page size.
         required: false
         type: integer
@@ -702,13 +730,13 @@ types:
               "count": 674,
               "previous": null,
               "next": "https://digitaldeltatest.aquadesk.nl/observationtypes?page=2&pagesize=2",
-              "maxpagesize": 100000,
+              "maxPageSize": 100000,
               "results": [
                 {
                   "uuid": "1f9f13c0-d45a-4031-9231-09235d81481e",
                   "quantity": "AANTL",
                   "unit": "n/ml",
-                  "parameter": "Acanthoceras zachariasii",
+                  "parameterCode": "Acanthoceras zachariasii",
                   "compartment": "OW",
                   "qualifier": "CE",
                   "extra": [
@@ -726,7 +754,7 @@ types:
                   "uuid": "75c234ef-8182-4948-a593-3c0b4c1a8308",
                   "quantity": "AANTL",
                   "unit": "n/ml",
-                  "parameter": "Achnanthales",
+                  "parameterCode": "Achnanthales",
                   "compartment": "OW",
                   "qualifier": "CE",
                   "extra": [
@@ -742,6 +770,10 @@ types:
                 }
               ]
             }
+      204:
+        body:
+          application/json:
+            type: object
             
   /{code}:
     description: Request a specific observation type by its code.<br/> 
@@ -761,7 +793,7 @@ types:
                 "uuid": "1f9f13c0-d45a-4031-9231-09235d81481e",
                 "quantity": "AANTL",
                 "unit": "n/ml",
-                "parameter": "Acanthoceras zachariasii",
+                "parameterCode": "Acanthoceras zachariasii",
                 "compartment": "OW",
                 "qualifier": "CE",
                 "extra": [
@@ -787,7 +819,7 @@ types:
     <p>A location object contains all information required to describe a location. This version contains a node.</p>
   get:
     queryParameters:
-      in_bbox:
+      boundingBox:
         description: Bounding box representing a rectangle in which the locations must lie. This is represented by 4 doubles, separated by commas.<br/>    
          Example&colon; in_bbox=minLon,minLat,maxLon,maxLat<br/>  
           Where&colon; <br/>  
@@ -824,7 +856,7 @@ types:
         type: integer
         minimum: 1
         example: 1
-      pagesize:
+      pageSize:
         description: Page size.
         required: false
         type: integer
@@ -840,7 +872,7 @@ types:
               "count": 795,
               "previous": null,
               "next": "https://digitaldeltatest.aquadesk.nl/locations?page=2&pagesize=10",
-              "maxpagesize": 100000,
+              "maxPageSize": 100000,
               "results": [
                 {
                   "uuid": "ed0655e7-ced5-42ad-ac42-b9b96639307c",
@@ -884,6 +916,10 @@ types:
                 }
               ]
             }
+      204:
+        body:
+          application/json:
+            type: object
             
   /{uuid}:
     description: Request a specific location by its Uuid.
@@ -939,8 +975,8 @@ types:
             example: {
               "count": 795,
               "previous": null,
-              "next": "https://digitaldeltatest.aquadesk.nl/locations?page=2&pagesize=10",
-              "maxpagesize": 100000,
+              "next": "https://digitaldeltatest.aquadesk.nl/locations?page=2&pageSize=10",
+              "maxPageSize": 100000,
               "results": [
                 {
                   "uuid": "ed0655e7-ced5-42ad-ac42-b9b96639307c",
@@ -984,6 +1020,10 @@ types:
                 }
               ]
             }
+      204:
+        body:
+          application/json:
+            type: object
 
       404:
         body:
@@ -1010,7 +1050,7 @@ types:
     Within the same data-souce, again, waterlevel is measured every 5 minutes for the same location, but this timeseries is a manually or automatically validated timeseries. So in this case we have an original timeseries which is providing the raw data and another timeseries which has been validated. Both timeseries can be required for different purposes.<br/>
     Now imagine that someone requires the validated timeseries instead of the original. <br/>
     The users should be able to filter them based on this information and retreve data only for this type of timeseries. There are several more uses cases where more than two types are used. Think of timeseries that are recalculated based on validation, interval, aggregation, etc.<br/><br/>
-    Using TimeSeriesType is providing more flexibility in providing multiple timeseries for the same location and observation type provided by a single data-source.</p>
+    Using TimeseriesType is providing more flexibility in providing multiple timeseries for the same location and observation type provided by a single data-source.</p>
   get:
     queryParameters:
       start:
@@ -1023,10 +1063,10 @@ types:
         required: false
         description: Retrieve measurements that are measured before or on this date and time. Uses the Zulu notation.
         example: 2016-12-31T23:59:59Z
-      locationfilter:
+      locationCode:
         type: string
         required: false
-        description: Retrieve measurements that were measured at a location with a name like the locationfilter.
+        description: Retrieve measurements that were measured at a location with a name like the location code.
         example: VEEN
       observationType:
         type: string
@@ -1043,10 +1083,6 @@ types:
         type: string
         description: Unique identifier of the node.
         example: f4af47f5-f087-494c-9b2d-ba129bddd545
-      code:
-        required: false
-        type: string
-        description: Code of the timeseries.
       uuid:
         type: string
         required: false
@@ -1063,13 +1099,18 @@ types:
         type: integer
         minimum: 1
         example: 1
-      pagesize:
+      pageSize:
         description: Page size.
         required: false
         type: integer
         minimum: 1
         maximum: 10000
         example: 10
+      qualifier:
+        description: Filter for the optional qualifier property.
+        required: false
+        type: string
+        example: H.meting
     responses:
       200:
         body:
@@ -1079,12 +1120,11 @@ types:
               "count": 48751,
               "previous": null,
               "next": "https://digitaldeltatest.aquadesk.nl/timeseries?page=2&pagesize=2",
-              "maxpagesize": 100000,
+              "maxPageSize": 100000,
               "results": [
                 {
                   "url": "https://digitaldeltatest.aquadesk.nl/timeseries/e9ede034-f254-4855-b1ea-fe715c382935",
                   "uuid": "e9ede034-f254-4855-b1ea-fe715c382935",
-                  "code": "",
                   "location": {
                     "uuid": "6fba498f-0b59-462b-8c34-bd456d8e7d31",
                     "url": "https://digitaldeltatest.aquadesk.nl/locations/6fba498f-0b59-462b-8c34-bd456d8e7d31",
@@ -1109,7 +1149,7 @@ types:
                     "uuid": "297d7ba6-d5e0-4683-849a-5246a3aa83c4",
                     "quantity": "AANTL",
                     "unit": "n/ml",
-                    "parameter": "Achnanthidium",
+                    "parameterCode": "Achnanthidium",
                     "compartment": "OW",
                     "qualifier": "CE",
                     "extra": [
@@ -1152,7 +1192,6 @@ types:
                 {
                   "url": "https://digitaldeltatest.aquadesk.nl/timeseries/db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
                   "uuid": "db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
-                  "code": "",
                   "location": {
                     "uuid": "6fba498f-0b59-462b-8c34-bd456d8e7d31",
                     "url": \null\,
@@ -1177,7 +1216,7 @@ types:
                     "uuid": "5cd9726e-7985-4789-9674-22bec8bef325",
                     "quantity": "AANTL",
                     "unit": "n/ml",
-                    "parameter": "Actinocyclus normanii",
+                    "parameterCode": "Actinocyclus normanii",
                     "compartment": "OW",
                     "qualifier": "CE",
                     "extra": [
@@ -1219,7 +1258,11 @@ types:
                 }
               ]
             }
-      404:
+      204:
+        body:
+          application/json:
+            type: object
+      400:
         body:
           application/json:
             type: object
@@ -1239,12 +1282,11 @@ types:
               "count": 48751,
               "previous": null,
               "next": "https://digitaldeltatest.aquadesk.nl/timeseries?page=2&pagesize=2",
-              "maxpagesize": 100000,
+              "maxPageSize": 100000,
               "results": [
                 {
                   "url": "https://digitaldeltatest.aquadesk.nl/timeseries/e9ede034-f254-4855-b1ea-fe715c382935",
                   "uuid": "e9ede034-f254-4855-b1ea-fe715c382935",
-                  "code": "",
                   "location": {
                     "uuid": "6fba498f-0b59-462b-8c34-bd456d8e7d31",
                     "url": "https://digitaldeltatest.aquadesk.nl/locations/6fba498f-0b59-462b-8c34-bd456d8e7d31",
@@ -1269,7 +1311,7 @@ types:
                     "uuid": "297d7ba6-d5e0-4683-849a-5246a3aa83c4",
                     "quantity": "AANTL",
                     "unit": "n/ml",
-                    "parameter": "Achnanthidium",
+                    "parameterCode": "Achnanthidium",
                     "compartment": "OW",
                     "qualifier": "CE",
                     "extra": [
@@ -1312,7 +1354,6 @@ types:
                 {
                   "url": "https://digitaldeltatest.aquadesk.nl/timeseries/db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
                   "uuid": "db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
-                  "code": "",
                   "location": {
                     "uuid": "6fba498f-0b59-462b-8c34-bd456d8e7d31",
                     "url": \null\,
@@ -1337,7 +1378,7 @@ types:
                     "uuid": "5cd9726e-7985-4789-9674-22bec8bef325",
                     "quantity": "AANTL",
                     "unit": "n/ml",
-                    "parameter": "Actinocyclus normanii",
+                    "parameterCode": "Actinocyclus normanii",
                     "compartment": "OW",
                     "qualifier": "CE",
                     "extra": [
@@ -1379,8 +1420,12 @@ types:
                 }
               ]
             }
+      204:
+        body:
+          application/json:
+            type: object
             
-      404:
+      400:
         body:
           application/json:
             type: object
@@ -1403,7 +1448,6 @@ types:
               example: {
                 "url": "https://digitaldeltatest.aquadesk.nl/timeseries/db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
                 "uuid": "db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
-                "code": "",
                 "location": {
                   "uuid": "6fba498f-0b59-462b-8c34-bd456d8e7d31",
                   "url": "https://digitaldeltatest.aquadesk.nl/locations/6fba498f-0b59-462b-8c34-bd456d8e7d31",
@@ -1428,7 +1472,7 @@ types:
                   "uuid": "5cd9726e-7985-4789-9674-22bec8bef325",
                   "quantity": "AANTL",
                   "unit": "n/ml",
-                  "parameter": "Actinocyclus normanii",
+                  "parameterCode": "Actinocyclus normanii",
                   "compartment": "OW",
                   "qualifier": "CE",
                   "extra": [
@@ -1473,7 +1517,11 @@ types:
                   }
                 ]
               }
-        404:
+        204:
+          body:
+            application/json:
+              type: object
+        400:
           body:
             application/json:
               type: object
@@ -1507,7 +1555,7 @@ types:
                     "limitSymbol": null
                   }
                 ]
-          404:
+          400:
             body:
               application/json:
                 type: object
