@@ -704,8 +704,8 @@ types:
     <p>The ObservationType objects describe all attributes to correctly interpret what has been measured, and in what way. It is essential to have the quantity field.</p>
   get:
     queryParameters:
-      parameter:
-        description: Parameter specification of the parameter that need to satisfy the search criteria. 
+      parameterCode:
+        description: Retrieve only observation types that contain the specified parameter code. 
         required: false
         type: string
       page:
@@ -821,7 +821,7 @@ types:
     queryParameters:
       boundingBox:
         description: Bounding box representing a rectangle in which the locations must lie. This is represented by 4 doubles, separated by commas.<br/>    
-         Example&colon; in_bbox=minLon,minLat,maxLon,maxLat<br/>  
+         Example&colon; boundingBox=minLon,minLat,maxLon,maxLat<br/>  
           Where&colon; <br/>  
            <b>minLon&colon;</b> minimum longitude in decimal degrees (WGS84)<br/>   
            <b>minLat&colon;</b> minimum lattitude in decimal degrees (WGS84)<br/>    
