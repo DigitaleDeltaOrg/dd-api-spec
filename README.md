@@ -5,7 +5,7 @@
 
 Digital Delta API (DD-API) specifies a web service for finding and retrieving data (especially time series of scalar data). This web service has been implemented on various data providing systems:
 
-- Aquadesk (Ecosys)
+- AquaDesk (EcoSys)
 - FEWS (Deltares)
 - HydroNet (Hydrologic)
 - Lizard (Nelen & Schuurmans)
