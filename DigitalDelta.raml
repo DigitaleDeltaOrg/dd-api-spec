@@ -351,9 +351,9 @@ types:
       qualifier:
         type: string
         required: false
-        description: The code of the timeseries. AquaDesk uses the uuid for this.<br/>
+        description: The qualifier of the timeseries. AquaDesk uses the uuid for this.<br/>
           Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=green>Filterable</font>, <font color=green>Searchable</font>.
-        example: H. Metingen
+        example: H.Meting
       location:
         type: Location
         required: true
@@ -539,11 +539,6 @@ types:
     <p>DataSource (“bronhouder” in Dutch) objects describe the source of the data. A node can have multiple data sources.</p>
   get:
     queryParameters:
-      uuid:
-        required: false
-        type: string
-        description: Unique identifier for the datasource. Version 4. 
-        example: 978fdf5c-95c8-43a5-82ff-d27d9e6d685f
       name:
         required: false
         type: string
@@ -590,7 +585,7 @@ types:
             type: object
             
   /{uuid}:
-    description: Request a specific datasource by its Uuid.
+    description: Request a specific datasource by its uuid.
     uriParameters:
       uuid:
         type: string
@@ -625,11 +620,6 @@ types:
     <p>Node objects contain the properties of the data node. A node is an operational implementation of the Digital Delta specification.</p>
   get:
     queryParameters:
-      uuid:
-        required: false
-        type: string
-        description: Unique identifier for the node. Version 4.
-        example: f4af47f5-f087-494c-9b2d-ba129bddd545
       name:
         required: false
         type: string
@@ -673,7 +663,7 @@ types:
             type: object
             
   /{uuid}:
-    description: Request a specific node by its Uuid.
+    description: Request a specific node by its uuid.
     uriParameters:
       uuid:
         type: string
@@ -700,10 +690,14 @@ types:
 
 /observationtypes:
   description: The ObservationTypes endpoint can return the observationtypes that the provider offers. Filtering&colon; list of parameters.
-    <h3>About ObvervationType</h3>
+    <h3>About ObservationType</h3>
     <p>The ObservationType objects describe all attributes to correctly interpret what has been measured, and in what way. It is essential to have the quantity field.</p>
   get:
     queryParameters:
+      quantity:
+        description: Retrieve only observation types that contain the specified quantity. 
+        required: false
+        type: string
       parameterCode:
         description: Retrieve only observation types that contain the specified parameter code. 
         required: false
@@ -775,14 +769,14 @@ types:
           application/json:
             type: object
             
-  /{code}:
-    description: Request a specific observation type by its code.<br/> 
+  /{qualifier}:
+    description: Request a specific observation type by its qualifier.<br/> 
       <b><i>Since almost no specific ObservationTypes for biological entities exist in Aquo, AquaDesk is using uuids instead of the code. The type 'String' is used in both circumstances.</i></b>
     uriParameters:
       code:
         type: string
-        description: The code (or uuid for AquaDesk) identifying the observation type. 
-        example: "1f9f13c0-d45a-4031-9231-09235d81481e" 
+        qualifier: The qualifier (or uuid for AquaDesk) identifying the observation type. 
+        examples: [ "AD", "JU", "T20C", "KO", "BraunBS", "WATSGL", "WATKLM" ]
     get:
       responses:
         200:
@@ -840,11 +834,6 @@ types:
         type: string
         description: Uuid of the node.
         example: f4af47f5-f087-494c-9b2d-ba129bddd545
-      uuid:
-        type: string
-        required: false
-        description: Uuid of the location.
-        example: ed0655e7-ced5-42ad-ac42-b9b96639307c
       code:
         required: false
         type: string
@@ -922,7 +911,7 @@ types:
             type: object
             
   /{uuid}:
-    description: Request a specific location by its Uuid.
+    description: Request a specific location by its uuid.
     uriParameters:
       uuid:
         type: string
@@ -1083,11 +1072,6 @@ types:
         type: string
         description: Unique identifier of the node.
         example: f4af47f5-f087-494c-9b2d-ba129bddd545
-      uuid:
-        type: string
-        required: false
-        description: Unique identifier of the timeseries.
-        example: e9ede034-f254-4855-b1ea-fe715c382935
       valueType:
         type: string
         required: false
@@ -1272,7 +1256,7 @@ types:
     body:
       application/json:
         type: TimeseriesPostRequest
-        example: { code: [ "H. Metingen" ], start: "2012-01-01", end: "2013-01-01"}
+        example: { code: [ "H.Meting" ], start: "2012-01-01", end: "2013-01-01"}
     responses:
       200:
         body:
