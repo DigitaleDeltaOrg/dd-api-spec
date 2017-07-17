@@ -1,6 +1,6 @@
 #%RAML 1.0
 title: Digital Delta API
-version: 1.0
+version: 2.0
 securitySchemes:
   basic:
     type: Basic Authentication
@@ -106,14 +106,23 @@ documentation:
         <td>
       </tr>
       <tr>
-         <td>2017-07-14</td>
+        <td>2017-07-14</td>
         <td>Geri Wolters / Stef Hummel</td>
         <td>
           <ul>
-            <li>BioTaxon block added.</li>
+            <li>BioTaxon blocks added.</li>
             <li>SamplingProcess block added.</li>
             <li>ObservationProcess block added.</li>
             <li>Removal of 'Extras'. Specific features should be coded into specific domain extensions, like BioTaxon does.</li>
+          </ul
+        <td>
+      </tr>
+      <tr>
+        <td>2017-07-17</td>
+        <td>Geri Wolters</td>
+        <td>
+          <ul>
+            <li>BioTaxon blocks added to timeseries examples.</li>
           </ul
         <td>
       </tr>
@@ -168,7 +177,37 @@ types:
           Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
         type: string
         example: CRYPT
-
+      author: 
+        description: TWN-standard notation of the author of the taxon.<font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+        type: string
+        example: L.
+        required: false
+      reference: 
+        description: TWN-standard literature reference.<font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+        type: string
+        example: I012
+        required: false
+      basionym: 
+        description: Original name of the taxon.<font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+        type: string
+        example: Abies Alba
+        required: false
+      parent: 
+        description: The hierarchical 'parent' of the taxon in its taxonimic tree.<font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+        type: string
+        example: Abies
+        required: false
+      taxonCode: 
+        description: TWN-standard numeric code of the taxon. <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+        type: number
+        format: int64
+        required: false
+      gbifId:
+        description: Taxon identifier according to the Global Biodiversity Information Facility code. <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.     
+        type: number
+        format: int64
+        required: false
+        
   TimeSeriesBioTaxon:
     description: Specific fields for biological taxa at timeseries level.
     properties:
@@ -178,31 +217,55 @@ types:
         required: false
         type: string
         example: LS-AD
-      livingForm:
+      livingForm: 
         description: Aquo-standard living form of the observed taxa. (Leefvorm, LV)<br/>
           Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
         required: false
         type: string
         example: LV-CEL
-      gender:
+      gender: 
         description: Aquo-standard gender of the observed taxa. (Geslacht, GE)<br/>
           Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
         required: false
         type: string
-        example: GE-X
-      appearance:
+        example: GE-X       
+      appearance: 
         description: Aquo-standard appearance form of the observed taxa. (Verschijningsvorm, VV)<br/>
           Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
         required: false
         type: string
         example: VV-G
-      substrate:
+      substrate: 
         description: Aqu-standard substrate the observed taxa was found in. <br/>
           Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
         required: false
         type: string
         example: RIET
-
+      fytoplanktonLengthClass:
+        description: Aquo-standard length class of the fytoplankton taxon.<font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+        type: string
+        required: false
+      fishLengthClass:
+        description: Aquo-standard length class of the fish.<font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+        type: string
+        required: false
+      behaviour:
+        description: Aquo-standard behaviour code for the taxon.<font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+        type: string
+        required: false
+      energySource:
+        description: Aquo-standard energy source code of the taxon.<font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+        type: string
+        required: false
+      temperature:
+        description: Aquo-standard temperature specification of the measurement conditions of the taxon.<font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+        type: string
+        required: false
+      period:
+        description: Aquo-standard period of the measurment/analysis/sample preparation condition of the taxon.<font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+        type: string
+        required: false
+        
   SamplingProcess:
     description: Contains properties specific to the sampling process.
     properties:
@@ -343,12 +406,13 @@ types:
         examples: [ "AD", "JU", "T20C", "KO", "BraunBS", "WATSGL", "WATKLM" ]
         description: Dutch&colon; 'Hoedanigheid'. Additional qualities of the measurement. <br/>
           Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
-      observationProcess?:
+      observationProcess:
         type: ObservationProcess
         example:
           {
             "valuationMethod": "MED"
           }
+        required: false
       bioTaxon?:
         type: ObservationTypeBioTaxon
         description: Specific biotaxon information.
@@ -357,7 +421,7 @@ types:
             "type": "FYTPT",
             "group": "CRYPT"
           }
-        description: Extra information about the measurement. Can be used to provide specific details concerning the circumstances or the object measured, etc. 
+        required: false
 
   MinimalEvent:
     displayName: Event (minimal)
@@ -491,10 +555,11 @@ types:
         example: 2016-01-01T12:45:00Z
         description:  End date/time of the measurement. Uses the Zulu notation<br/>
           Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
-      events?:
+      events:
         type: MinimalEvent[]
-        description: Defines a minimal event. 
-      samplingProcess?:
+        description: Defines a minimal event.
+        required: false 
+      samplingProcess:
         type: SamplingProcess
         description: Describes properties used in the sampling process.
         example:
@@ -502,7 +567,8 @@ types:
             "samplingMethod": "HH-W10A&colon;2010",
             "samplingProcessingMethod": "I15061.01"
           }
-      bioTaxon?:
+        required: false
+      bioTaxon:
         type: TimeSeriesBioTaxon
         description: Specific biotaxon information.
         example:
@@ -513,6 +579,7 @@ types:
             "appearance": "VV-G",
             "substrate": "RIET"
           }
+        required: false
 
 # List responses
   NodeListResponse:
@@ -854,16 +921,6 @@ types:
                   "parameterCode": "Achnanthales",
                   "compartment": "OW",
                   "qualifier": "CE",
-                  "extra": [
-                    {
-                      "key": "taxongroup",
-                      "value": "DIATM"
-                    },
-                    {
-                      "key": "type",
-                      "value": "Biotaxon"
-                    }
-                  ]
                 }
               ]
             }
@@ -876,10 +933,9 @@ types:
     description: Request a specific observation type by its qualifier.<br/> 
       <b><i>Since almost no specific ObservationTypes for biological entities exist in Aquo, AquaDesk is using uuids instead of the code. The type 'String' is used in both circumstances.</i></b>
     uriParameters:
-      code:
+      qualifier:
         type: string
-        qualifier: The qualifier (or uuid for AquaDesk) identifying the observation type. 
-        examples: [ "AD", "JU", "T20C", "KO", "BraunBS", "WATSGL", "WATKLM" ]
+        description: The qualifier (or uuid for AquaDesk) identifying the observation type. 
     get:
       responses:
         200:
@@ -893,16 +949,6 @@ types:
                 "parameterCode": "Acanthoceras zachariasii",
                 "compartment": "OW",
                 "qualifier": "CE",
-                "extra": [
-                  {
-                    "key": "taxongroup",
-                    "value": "DIATM"
-                  },
-                  {
-                    "key": "type",
-                    "value": "Biotaxon"
-                  }
-                ]
               }
         404:
           body:
@@ -1239,16 +1285,6 @@ types:
                     "parameterCode": "Achnanthidium",
                     "compartment": "OW",
                     "qualifier": "CE",
-                    "extra": [
-                      {
-                        "key": "taxongroup",
-                        "value": "DIATM"
-                      },
-                      {
-                        "key": "type",
-                        "value": "Biotaxon"
-                      }
-                    ]
                   },
                   "node": {
                     "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
@@ -1332,6 +1368,14 @@ types:
                     "samplingMethod": "HH-W10A&colon;2010",
                     "samplingProcessingMethod": "I15061.01"
                   },
+                  "bioTaxon":
+                  {
+                    "lifeStage": "LS-AD",
+                    "livingForm": "LV-CEL",
+                    "gender": "GE-X",
+                    "appearance": "VV-G",
+                    "substrate": "RIET"
+                  },
                   "interval": null,
                   "valueType": "float",
                   "start": "2004-08-30T22:00:00Z",
@@ -1396,16 +1440,6 @@ types:
                     "parameterCode": "Achnanthidium",
                     "compartment": "OW",
                     "qualifier": "CE",
-                    "extra": [
-                      {
-                        "key": "taxongroup",
-                        "value": "DIATM"
-                      },
-                      {
-                        "key": "type",
-                        "value": "Biotaxon"
-                      }
-                    ]
                   },
                   "node": {
                     "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
@@ -1463,16 +1497,6 @@ types:
                     "parameterCode": "Actinocyclus normanii",
                     "compartment": "OW",
                     "qualifier": "CE",
-                    "extra": [
-                      {
-                        "key": "taxongroup",
-                        "value": "DIATM"
-                      },
-                      {
-                        "key": "type",
-                        "value": "Biotaxon"
-                      }
-                    ]
                   },
                   "node": {
                     "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
@@ -1493,6 +1517,14 @@ types:
                   "timeseriesType": {
                     "code": "MEAS",
                     "name": "Measurements"
+                  },
+                  "bioTaxon":
+                  {
+                    "lifeStage": "LS-AD",
+                    "livingForm": "LV-CEL",
+                    "gender": "GE-X",
+                    "appearance": "VV-G",
+                    "substrate": "RIET"
                   },
                   "interval": null,
                   "valueType": "float",
@@ -1557,16 +1589,6 @@ types:
                   "parameterCode": "Actinocyclus normanii",
                   "compartment": "OW",
                   "qualifier": "CE",
-                  "extra": [
-                    {
-                      "key": "taxongroup",
-                      "value": "DIATM"
-                    },
-                    {
-                      "key": "type",
-                      "value": "Biotaxon"
-                    }
-                  ]
                 },
                 "node": {
                   "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
@@ -1592,6 +1614,14 @@ types:
                 "valueType": "float",
                 "start": "2004-08-30T22:00:00Z",
                 "end": "2004-08-30T22:00:00Z",
+                "bioTaxon":
+                  {
+                    "lifeStage": "LS-AD",
+                    "livingForm": "LV-CEL",
+                    "gender": "GE-X",
+                    "appearance": "VV-G",
+                    "substrate": "RIET"
+                  },
                 "events": [
                   {
                     "value": 13.81,
