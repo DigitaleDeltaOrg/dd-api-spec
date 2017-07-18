@@ -3,7 +3,9 @@
 
 # Digital Delta web service API specification
 
-Digital Delta API (DD-API) specifies a web service for finding and retrieving data (especially time series of scalar data). This web service has been implemented on various data providing systems:
+Within the [Digital Delta project](http://www.digitaldelta.nu/en/phase-3-operational-phase/item340) a web service has been specified for finding and retrieving data (especially time series of scalar data).
+
+This Digital Delta web service API (DD-API) has been implemented on various data providing systems:
 
 - AquaDesk (EcoSys)
 - FEWS (Deltares)
@@ -12,6 +14,7 @@ Digital Delta API (DD-API) specifies a web service for finding and retrieving da
 
 Implementations are in preparation for:
 
+- MATROOS (RWS)
 - The Data Distribution Layer (RWS)
 - Vertex (ProcessFive)
 
