@@ -150,18 +150,18 @@ types:
         required: true
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
         description: The unique identifier of the node. UUID Version 4.<br/>          
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
         example: 978fdf5c-95c8-43a5-82ff-d27d9e6d685f
       name:
         type: string
         required: true
         description: The name of the node.<br/> 
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
       description:
         type: string
         required: true
         description: The description of the node.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
       baseUrl:
         type: string
         required: true
@@ -176,26 +176,26 @@ types:
         type: string
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
         description: The unique identifier for the location. UUID Version 4.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
       url:
         type: string
         description: The URL of the location.
       code:
         type: string
         description: The code of the location.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>. 
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>. 
       name:
         type: string
         description: The name of the location..<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=green>Searchable</font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
       geometry:
         type: Geometry
         description: The GeoJSON geometry definition of the location..<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
       node:
         type: Node
         description: The node of the location..<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
 
   Datasource:
     displayName: DataSource
@@ -207,12 +207,12 @@ types:
         required: true
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
         description: The unique identifier for the datasource. UUID Version 4<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
       name:
         type: string
         required: true
         description: The name of the datasource..<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=green>Searchable</font>. 
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>. 
       node:
         type: Node
         required: true
@@ -242,19 +242,19 @@ types:
         required: false
         examples: [ "Pediastrum", "Ca", "1112T4ClC2a", "HYBDVS" ]
         description: Parameter code specifying the observationtype. Non-biological observation types follow the Aquo standards.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
       compartment:
         type: string
         required: false
         examples: [ "OW", "DL", "GW", "LW" ]
         description: The compartment in which the measurement took place. Standardised Aquo compartments.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
       qualifier:
         type: string
         required: false
         examples: [ "AD", "JU", "T20C", "KO", "BraunBS", "WATSGL", "WATKLM" ]
         description: Dutch&colon; 'Hoedanigheid'. Additional qualities of the measurement. <br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
       extra:
         type: KeyValuePair[]
         example: [ 
@@ -279,7 +279,7 @@ types:
         required: true
         example: 37.0
         description: The value of the measured data.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
       timeStamp:
         type: datetime
         required: false
@@ -297,13 +297,13 @@ types:
         required: false
         example: "99"
         description: As specified in Aquo Domain Table 'Kwaliteitsoordeel'. Specifies whether the value is considered normal, abberent, interpolated, etc. and for what reason. .<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
       limitSymbol:
         type: string
         required: false
         examples: ["<", ">", "="]
         description: The limit symbol supplements the measured value.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
 
   TimeseriesType:
     description: TimeSeriesType objects describe the type of measurement the timeseries contains. 
@@ -346,61 +346,61 @@ types:
         required: true
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
         description: The unique identifier for the timeseries. UUID Version 4.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=green>Filterable</font>.
         example: f4af47f5-f087-494c-9b2d-ba129bddd545
       qualifier:
         type: string
         required: false
         description: The qualifier of the timeseries. AquaDesk uses the uuid for this.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=green>Filterable</font>, <font color=green>Searchable</font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=green>Filterable</font>.
         example: H.Meting
       location:
         type: Location
         required: true
         description: The location that the timeseries uses.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</font>, <font color=green>Filterable</font>, <font color=green>Searchable</font>. 
+          Qualifiers&colon; <font color=gray><strike>Nullable</font>, <font color=green>Filterable</font>. 
       observationType:
         type: ObservationType
         required: true
         description: The observationtype that the timeseries uses.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
       node:
         type: Node
         required: true
         description: The node responsible for hosting the data for the timeseries.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
       datasource:
         type: Datasource
         required: true
         description: The datasource providing the data for the timeseries..<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
       timeseriesType:
         type: TimeseriesType
         required: true
         description: The type of the timeseries..<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
       interval:
         type: number
         required: false
         description: Specifies the interval between measurements for the timeseries.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
       valueType:
         type: string
         required: false
         description:  The data type of the measured data.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
       start:
         type: datetime
         required: true
         example: 2016-01-01T12:45:00Z
         description:  Start date/time of the measurement. Uses the Zulu notation<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
       end:
         type: datetime
         required: true
         example: 2016-01-01T12:45:00Z
         description:  End date/time of the measurement. Uses the Zulu notation<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>, <font color=gray><strike>Searchable</strike></font>.
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
       events?:
         type: MinimalEvent[]
         description: Defines a minimal event. 
