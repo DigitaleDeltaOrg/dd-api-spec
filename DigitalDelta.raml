@@ -150,7 +150,7 @@ types:
         required: true
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
         description: The unique identifier of the node. UUID Version 4.<br/>          
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=gray><strike>Filterable</strike></font>.
         example: 978fdf5c-95c8-43a5-82ff-d27d9e6d685f
       name:
         type: string
@@ -176,7 +176,7 @@ types:
         type: string
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
         description: The unique identifier for the location. UUID Version 4.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=gray><strike>Filterable</strike></font>.
       url:
         type: string
         description: The URL of the location.
@@ -207,7 +207,7 @@ types:
         required: true
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
         description: The unique identifier for the datasource. UUID Version 4<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=gray><strike>Filterable</strike></font>.
       name:
         type: string
         required: true
@@ -231,7 +231,8 @@ types:
         type: string
         examples: [ "ZICHT", "MONSTER", "CONCTTE", "AANTL" ]
         required: true
-        description: Defines what was measured. 
+        description: Defines what was measured. <br/>
+          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
       unit:
         type: string
         examples: [ "cm2", "n", "n/m3", "%", "DIMSLS", "C" ]
@@ -346,7 +347,7 @@ types:
         required: true
         pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
         description: The unique identifier for the timeseries. UUID Version 4.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=green>Filterable</font>.
+          Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=gray><strike>Filterable</strike></font>.
         example: f4af47f5-f087-494c-9b2d-ba129bddd545
       qualifier:
         type: string
