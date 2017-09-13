@@ -139,17 +139,6 @@ types:
     type: number
     format: double
 
-  KeyValuePair:
-    description: A combination of key and value.
-    properties:
-      key:
-        type: string
-        description: The key of the key/value pair.
-        example: taxontype
-      value:
-        type: string
-        description: The value of the key/value pair.
-        
   Geometry:
     description: A geometry in GeoJSON format. Digital Delta currently only supports the Point type.
     properties:
@@ -413,7 +402,7 @@ types:
             "valuationMethod": "MED"
           }
         required: false
-      bioTaxon?:
+      bioTaxon:
         type: ObservationTypeBioTaxon
         description: Specific biotaxon information.
         example:
