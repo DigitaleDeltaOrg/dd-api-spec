@@ -105,6 +105,16 @@ documentation:
           </ul
         <td>
       </tr>
+      <tr>
+         <td>2017-12-14</td>
+        <td>Geri Wolters</td>
+        <td>
+          <ul>
+            <li>Changed Extras to required:false.</li>
+            <li>Fixed small bugs.</li>
+          </ul
+        <td>
+      </tr>     
      </table>
   
 protocols:
@@ -258,6 +268,7 @@ types:
           Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
       extra:
         type: KeyValuePair[]
+        required: false
         example: [ 
           { 
             "key": "taxongroup", 
@@ -774,10 +785,9 @@ types:
     description: Request a specific observation type by its qualifier.<br/> 
       <b><i>Since almost no specific ObservationTypes for biological entities exist in Aquo, AquaDesk is using uuids instead of the code. The type 'String' is used in both circumstances.</i></b>
     uriParameters:
-      code:
+      qualifier:
         type: string
-        qualifier: The qualifier (or uuid for AquaDesk) identifying the observation type. 
-        examples: [ "AD", "JU", "T20C", "KO", "BraunBS", "WATSGL", "WATKLM" ]
+        description: The qualifier (or uuid for AquaDesk) identifying the observation type. 
     get:
       responses:
         200:
