@@ -1,0 +1,1 @@
+The examples in the requests are based on based on the AquaDesk implementation of the Digital Delta specifications. The structure, however, for all gets, posts and responses will be the same for all providers.

@@ -1,0 +1,147 @@
+{
+	"results": [
+		{
+			"_comment": "VB8, Meting, intervalbeschrijving, aspecten",
+			"node": {
+				"name": "LMW-Next"
+			},
+			"source": {
+				"process": "measured",
+				"institution": {
+					"name": "RWS"
+				}
+			},
+			"location": {
+				"geometry": {
+					"type": "MultiPoint",
+					"coordinates": [
+						[
+							4.1333300,
+							51.9775000,
+							0
+						],
+						[
+							4.1333300,
+							51.9775000,
+							-0.5
+						],
+						[
+							4.1333300,
+							51.9775000,
+							-1.0
+						],
+						[
+							4.1333300,
+							51.9775000,
+							-1.5
+						]
+					]
+				},
+				"properties": {
+					"locationName": " HoekVanHolland Discharge Sensor",
+					"locationCode": "HVH_Q_VERT_PROF",
+					"referenceLevel": "WaterOppervlakte",
+					"crs": "ETRS89"
+				}
+			},
+			"observationType": {
+				"id": "Discharge.OW",
+				"quantity": "Discharge",
+				"unit": "m3/s",
+				"compartment": "OW"
+			},
+			"startTime": "2010-12-12T16:00:00Z",
+			"endTime": "2010-12-12T21:00:00Z",
+			"events": [
+				{
+					"timeStamp": "2010-12-12T16:00:00Z",
+					"startTime": "2010-12-12T15:30:00Z",
+					"endTime": "2010-12-12T16:29:59Z",
+					"resultTime": "2010-12-12T16:35:00Z",
+					"points": [
+						{
+							"coordinates": [
+								4.1333300,
+								51.9775000,
+								1.1
+							],
+							"quality": 1,
+							"value": 10
+						},
+						{
+							"coordinates": [
+								4.1333300,
+								51.9775000,
+								0.8
+							],
+							"quality": 1,
+							"value": 11
+						},
+						{
+							"coordinates": [
+								4.1333300,
+								51.9775000,
+								0.4
+							],
+							"quality": 1,
+							"value": 12
+						},
+						{
+							"coordinates": [
+								4.1333300,
+								51.9775000,
+								-0.1
+							],
+							"quality": 1,
+							"value": 13
+						}
+					]
+				},
+				{
+					"timeStamp": "2010-12-12T17:00:00Z",
+					"startTime": "2010-12-12T16:30:00Z",
+					"endTime": "2010-12-12T17:29:59Z",
+					"resultTime": "2010-12-12T17:35:00Z",
+					"points": [
+						{
+							"coordinates": [
+								4.1333300,
+								51.9775000,
+								1.1
+							],
+							"quality": 1,
+							"value": 10.5
+						},
+						{
+							"coordinates": [
+								4.1333300,
+								51.9775000,
+								0.8
+							],
+							"quality": 1,
+							"value": 11.5
+						},
+						{
+							"coordinates": [
+								4.1333300,
+								51.9775000,
+								0.4
+							],
+							"quality": 1,
+							"value": 12.5
+						},
+						{
+							"coordinates": [
+								4.1333300,
+								51.9775000,
+								-0.1
+							],
+							"quality": 1,
+							"value": 13.5
+						}
+					]
+				}
+			]
+		}
+	]
+}

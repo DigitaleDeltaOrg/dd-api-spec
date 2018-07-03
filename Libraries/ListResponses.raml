@@ -1,0 +1,131 @@
+#%RAML 1.0 Library
+uses:
+  Base: BaseTypes.raml
+# Base types.
+types:
+# List responses
+  NodeListResponse:
+    description: Contains zero or more responses to a Node list request.
+    type: object
+    properties:
+      results:
+        type: Base.Node[]
+        description: List of Nodes.
+      count:
+        description: Number of records satisfying the query parameters.
+        type: integer
+        example: 1123
+      previous:
+        description: Url to the API holding the previous page. null if the requested page is the first page.
+        type: string?
+      next:
+        description: Url to the API holding the next page. null if the requested page is the last page.
+        type: string?
+      maxPageSize:
+        description: Maximum page size, as allowed by the service.
+        type: integer
+
+  DatasourceListResponse:
+    description: Contains zero or more responses to a DataSource list request.
+    type: object
+    properties:
+      results:
+        type: Base.Datasource[]
+        description: List of Datasource.
+      count:
+        description: Number of records satisfying the query parameters.
+        type: integer
+        example: 1123
+      previous:
+        description: Url to the API holding the previous page. null if the requested page is the first page.
+        type: string?
+      next:
+        description: Url to the API holding the next page. null if the requested page is the last page.
+        type: string?
+      maxPageSize:
+        description: Maximum page size, as allowed by the service.
+        type: integer
+
+  LocationListResponse:
+    description: Contains zero or more responses to a Node list request.
+    type: object
+    properties:
+      results:
+        type: Base.Location[]
+        description: List of Locations.
+      count:
+        description: Number of records satisfying the query parameters.
+        type: integer
+        example: 1123
+      previous:
+        description: Url to the API holding the previous page. null if the requested page is the first page.
+        type: string?
+      next:
+        description: Url to the API holding the next page. null if the requested page is the last page.
+        type: string?
+      maxPageSize:
+        description: Maximum page size, as allowed by the service.
+        type: integer
+
+  ObservationTypeListResponse:
+    description: Response for a observation type list request.
+    type: object
+    properties:
+      results:
+        type: Base.ObservationType[]
+        description: List of observation types.
+      count:
+        description: Number of records satisfying the query parameters.
+        type: integer
+        example: 1123
+      previous:
+        description: Url to the API holding the previous page. null if the requested page is the first page.
+        type: string?
+      next:
+        description: Url to the API holding the next page. null if the requested page is the last page.
+        type: string?
+      maxPageSize:
+        description: Maximum page size, as allowed by the service.
+        type: integer
+
+  TimeseriesListResponse:
+    description: Response for a time series list request.
+    type: object
+    properties:
+      results:
+        type: Base.Timeseries[]
+        description: List of timeseries types.
+      count:
+        description: Number of records satisfying the query parameters.
+        type: integer
+        example: 1123
+      previous:
+        description: Url to the API holding the previous page. null if the requested page is the first page.
+        type: string?
+      next:
+        description: Url to the API holding the next page. null if the requested page is the last page.
+        type: string?
+      maxPageSize:
+        description: Maximum page size, as allowed by the service.
+        type: integer
+
+  LocationPostRequest:
+    description: Location filter request
+    type: object
+    properties:
+      code:
+        type: string[]
+
+  TimeseriesPostRequest:
+    description: Timeseries filter request
+    type: object
+    properties:
+      code:
+        type: string[]
+        description: Array of codes or uuids of timeseries to return. AquaDesk uses uuids.
+      start:
+        type: date-only
+        description: First date of the requested measurements. Format&colon; yyyy-MM-dd.
+      end:
+        type: date-only
+        description: Last date of the requested measurements. Format&colon; yyyy-MM-dd.
