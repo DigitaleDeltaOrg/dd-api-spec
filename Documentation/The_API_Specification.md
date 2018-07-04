@@ -7,7 +7,7 @@ The API specification consists of two parts.
  </ol>
 
  <p><i>Figure 1</i></p>
-<img src="https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/master/DD-API-ResourceObjects.jpg?raw=true"/>
+<img src="DD-API-ResourceObjects.jpg"/>
  <p>The Digital Delta uses uuids (universally unique identifier, version 4) for identification of resource objects.<br/>
  The use of uuids guarantees a unique identifier for an instance over all nodes in the Digital Delta without the need for individual nodes to have a knowledge about data in other nodes.<br/>
  There is a code attribute as well that can be used by suppliers for their internal identifiers.<br/>

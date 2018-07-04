@@ -3,550 +3,35 @@ title: Digital Delta API
 version: 1.0
 securitySchemes:
   basic:
-    type: Basic Authentication
-baseUri: http://digitaldeltatest.aquadesk.nl
+    type: OAuth 2.0
+baseUri: https://digitaldeltatest.aquadesk.nl
 mediaType: [ application/json ]
 description: Digital Delta API
 documentation:
  - title: Introduction
-   content: The Digital Delta is a distributed network in which various datasources exchange information using a standard interface. 
-     This specification outlines the mechanics of the Digital Delta as a distributed network of nodes and masternodes and describes the technical specification of the Digital Delta web API. <br/>
-     This document uses the <a href="http://raml.org">RAML standard</a> as the definition language.<br/>
+   content: !include Documentation/Introduction.md
  - title: The API specification
-   content:  
-     The API specification consists of two parts. 
-     <ol>
-       <li>The Types section describes the data types that are available for the resources. Please refer to figure 1 below for the resource object diagram.
-       <br/><i>Note&colon; Currently, the generated HTML documentation does not contain tables that describe the data types. However, their content can be seen in the response tabs of the requests. If you want to have a detailed look at the type definitions, open the RAML file and go to the “# Base types.” section.</i>
-       </li>
-       <li>The Resources section describes the available end-points.</li>
-     </ol>
-
-     <p><i>Figure 1</i></p> 
-    <img src="https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/master/DD-API-ResourceObjects.jpg?raw=true"/>
-     <p>The Digital Delta uses uuids (universally unique identifier, version 4) for identification of resource objects.<br/> 
-     The use of uuids guarantees a unique identifier for an instance over all nodes in the Digital Delta without the need for individual nodes to have a knowledge about data in other nodes.<br/> 
-     There is a code attribute as well that can be used by suppliers for their internal identifiers.<br/> 
-     The Digital Delta supports timeseries data, defined as a measurement series with a begin and end time, a fixed location and a parameter. <br/> 
-     The list of objects is setup to be extendable to other data types, such as raster or vector data.<br/>  
-     The protocols provides by the services are HTTP and HTTPS. Currently authentication is Anonymous.<br/>  
-     The Digital Delta only supports JSON as the output format and for POST request bodies.</p>
- - title: The RAML standard and Universal unique identifiers    
-   content:
-     The <a href="http://raml.org">RAML specification</a> currently doesn't know the type uuid (Universal unique identifiers). To have a structure in the definition to allow working with uuids, the Digital Delta specification uses a strong with a specific regular expression pattern.   
-     The base pattern is&colon; [0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}.</i>
- - title: About the examples in this document     
-   content:
-    The examples in the requests are based on based on the AquaDesk implementation of the Digital Delta specifications. The structure, however, for all gets, posts and responses will be the same for all providers.
+   content: !include Documentation/The_API_Specification.md
+ - title: The RAML standard and Universal unique identifiers
+   content: !include Documentation/The_RAML_standard_and_Universal_unique_identifiers.md
+ - title: About the examples in this document
+   content: !include Documentation/About_The_Samples.md
  - title: Future enhancements
-   content:
-     The following future enhancements are under consideration. 
-     <ul>
-      <li>Search endpoint (full-text search)</li>
-      <li>Authentication/Authorisation</li>
-      <li>Error and warning codes</li>
-      <li>OPTION request, explaining how the service works</li>
-    </ul>
+   content: !include Documentation/Future_Enhancements.md
  - title: Future research
-   content:
-     The following topics are considered Future research
-     <ul>
-       <li>Attributes for different standards</li>
-       <li>Support for multiple data types</li>
-       <li>Additional output formats</li>
-       <li>Basic calculations on timeseries data</li>
-     </ul>
+   content: !include Documentation/Future_Research.md
  - title: Document history
-   content:
-     <table>
-      <tr>
-        <th width=100>Date</th>
-        <th width=100>Author</th>
-        <th>Changes<th>
-      </tr>
-      <tr>
-         <td>2017-05-06</td>
-        <td>Geri Wolters</td>
-        <td>
-          <ul>
-            <li>Texts from the original document added. Texts corrected and updated.</li>
-            <li>Introduction of samples.</li>
-            <li>Changed properties previous and next to return string? instead of string.</li>
-            <li>Changed properties events from timeseries to return an array or nil, as the values can be null.</li>
-          </ul
-        <td>
-      </tr>
-      <tr>
-         <td>2017-05-30</td>
-        <td>Geri Wolters</td>
-        <td>
-          <ul>
-            <li>Added resource object diagram.</li>
-          </ul
-        <td>
-      </tr>
-      <tr>
-         <td>2017-06-13</td>
-        <td>Geri Wolters</td>
-        <td>
-          <ul>
-            <li>Unified naming of fields and parameters.</li>
-            <li>TimeSeries field 'code' is replaced by 'qualifier'. 'qualifier' is optional and filterable.</li>
-            <li>HTTP Status code 204 (NoContent) is introduced for list-requests. This value should be returned instead of an empty list.</li>
-          </ul
-        <td>
-      </tr>
-      <tr>
-         <td>2017-06-26</td>
-        <td>Geri Wolters</td>
-        <td>
-          <ul>
-            <li>Changed error responses from 404 to 400.</li>
-          </ul
-        <td>
-      </tr>
-      <tr>
-         <td>2017-12-14</td>
-        <td>Geri Wolters</td>
-        <td>
-          <ul>
-            <li>Changed Extras to required:false.</li>
-            <li>Fixed small bugs.</li>
-          </ul
-        <td>
-      </tr>     
-     </table>
-  
+   content: !include Documentation/Document_History.md
+uses: # Minimal types and definitions
+  Base: Libraries/BaseTypes.raml
+  ListResponses: Libraries/ListResponses.raml
+
 protocols:
-  - HTTP
   - HTTPS
-    
-# Base types. 
-types:
-  Double:
-    description: A value of type Double (float).
-    type: number
-    format: double
 
-  KeyValuePair:
-    description: A combination of key and value.
-    properties:
-      key:
-        type: string
-        description: The key of the key/value pair.
-        example: taxontype
-      value:
-        type: string
-        description: The value of the key/value pair.
-        
-  Geometry:
-    description: A geometry in GeoJSON format. Digital Delta currently only supports the Point type.
-    properties:
-      type: 
-        description: The geometry type. Must have the value "Point".
-        type: string
-        example: "Point"
-      coordinates:
-        type: Double[]
-        description: An array of doubles, representing a coordinate.
-        example: [ 4.234, 52.3423 ]
-
-  Node:
-    description: Node objects contain the properties of the data node. A node is an operational implementation of the Digital Delta specification.
-    type: object
-    properties:
-      uuid:
-        type: string
-        required: true
-        pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
-        description: The unique identifier of the node. UUID Version 4.<br/>          
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=gray><strike>Filterable</strike></font>.
-        example: 978fdf5c-95c8-43a5-82ff-d27d9e6d685f
-      name:
-        type: string
-        required: true
-        description: The name of the node.<br/> 
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
-      description:
-        type: string
-        required: true
-        description: The description of the node.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
-      baseUrl:
-        type: string
-        required: true
-        description: The base URL of the node.
-        
-  Location:
-    displayName: Location
-    description: A location object contains all information required to describe a location. This version contains a node.
-    type: object
-    properties:
-      uuid: 
-        type: string
-        pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
-        description: The unique identifier for the location. UUID Version 4.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=gray><strike>Filterable</strike></font>.
-      url:
-        type: string
-        description: The URL of the location.
-      code:
-        type: string
-        description: The code of the location.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>. 
-      name:
-        type: string
-        description: The name of the location..<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
-      geometry:
-        type: Geometry
-        description: The GeoJSON geometry definition of the location..<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
-      node:
-        type: Node
-        description: The node of the location..<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
-
-  Datasource:
-    displayName: DataSource
-    description: DataSource (“bronhouder” in Dutch) objects describe the source of the data. A node can have multiple data sources.
-    type: object
-    properties:
-      uuid:
-        type: string
-        required: true
-        pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
-        description: The unique identifier for the datasource. UUID Version 4<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=gray><strike>Filterable</strike></font>.
-      name:
-        type: string
-        required: true
-        description: The name of the datasource..<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>. 
-      node:
-        type: Node
-        required: true
-        description: The node of the datasource.
-        
-  ObservationType:
-    description: The ObservationType objects describe all attributes to correctly interpret what has been measured, and in what way. It is essential to have the quantity field.
-    type: object
-    properties:
-      uuid:
-        type: string
-        required: true
-        pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
-        description: The unique identifier for the observationtype. UUID Version 4.
-      quantity:
-        type: string
-        examples: [ "ZICHT", "MONSTER", "CONCTTE", "AANTL" ]
-        required: true
-        description: Defines what was measured. <br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
-      unit:
-        type: string
-        examples: [ "cm2", "n", "n/m3", "%", "DIMSLS", "C" ]
-        required: true
-        description: Unit of measurement. Follows the Aquo standards.
-      parameterCode:
-        type: string
-        required: false
-        examples: [ "Pediastrum", "Ca", "1112T4ClC2a", "HYBDVS" ]
-        description: Parameter code specifying the observationtype. Non-biological observation types follow the Aquo standards.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
-      compartment:
-        type: string
-        required: false
-        examples: [ "OW", "DL", "GW", "LW" ]
-        description: The compartment in which the measurement took place. Standardised Aquo compartments.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
-      qualifier:
-        type: string
-        required: false
-        examples: [ "AD", "JU", "T20C", "KO", "BraunBS", "WATSGL", "WATKLM" ]
-        description: Dutch&colon; 'Hoedanigheid'. Additional qualities of the measurement. <br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
-      extra:
-        type: KeyValuePair[]
-        required: false
-        example: [ 
-          { 
-            "key": "taxongroup", 
-            "value": "DIATM" 
-          }, 
-          { 
-            "key": "type", 
-            "value": "Biotaxon" 
-          } 
-        ] 
-        description: Extra information about the measurement. Can be used to provide specific details concerning the circumstances or the object measured, etc. 
-
-  MinimalEvent:
-    displayName: Event (minimal)
-    description: Event objects contain the actual value of each observation. 
-      Each observation contains a time stamp and a value. 
-    properties:
-      value:
-        type: number
-        required: true
-        example: 37.0
-        description: The value of the measured data.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
-      timeStamp:
-        type: datetime
-        required: false
-        example: 2016-12-31T12:45:00Z
-        description: The date/time when the measurement took place. Uses the Zulu notation.
-            
-  Event:
-    type: MinimalEvent
-    displayName: Event (detailed)
-    description: Event objects contain the actual value of each observation. 
-      Each observation contains a time stamp and a value. There is an optional quality parameter and limit symbol.
-    properties:
-      quality:
-        type: string
-        required: false
-        example: "99"
-        description: As specified in Aquo Domain Table 'Kwaliteitsoordeel'. Specifies whether the value is considered normal, abberent, interpolated, etc. and for what reason. .<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
-      limitSymbol:
-        type: string
-        required: false
-        examples: ["<", ">", "="]
-        description: The limit symbol supplements the measured value.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
-
-  TimeseriesType:
-    description: TimeSeriesType objects describe the type of measurement the timeseries contains. 
-      These can be for example raw measurements, but also aggregations or simulations. 
-      This information could be needed to correctly interpret the measurement values.
-    type: object
-    properties:
-      code:
-        type: string
-        required: true
-        example: MEAS
-        description: The code of the timeseries type.
-      name:
-        type: string
-        required: true
-        example: Measurement
-        description: The name of the timeseries type.
-
-  Timeseries:
-    description: Timeseries objects contain all information needed to interpret timeseries.<br/> 
-      There are references to other objects, such as Node, Location, DataSource, ObservationType and TimeseriesType.<br/> 
-      The TimeseriesType should be added as a reference because it can indicate if a timeseries containts a RAW dataset or makes use of the current measurements. 
-      The Digital Delta specification of timeseries makes no assumptions on the nature of the series, timeseries may describe any series of data points of the same observation type and datasource in time on one location.<br/>
-      This includes both equidistant series (fixed time interval between data points) and non-equidistant series (with varying time interval).
-      <h3>Use case&colon;</h3>
-      <p>Imagine a data-source is providing several timeseries for a specific location and observation. For example&colon;<br/> 
-      Waterlevel is measured every 5 minutes for the location Lobith. 
-      This is the original timeseries from the datasource and we can call it the RAW timeseries or the original timeseries.<br/> 
-      Within the same data-souce, again, waterlevel is measured every 5 minutes for the same location, but this timeseries is a manually or automatically validated timeseries. So in this case we have an original timeseries which is providing the raw data and another timeseries which has been validated. Both timeseries can be required for different purposes.<br/>
-      Now imagine that someone requires the validated timeseries instead of the original. <br/>
-      The users should be able to filter them based on this information and retrieve data only for this type of timeseries. There are several more uses cases where more than two types are used. Think of timeseries that are recalculated based on validation, interval, aggregation, etc.<br/><br/>
-      Using TimeSeriesType is providing more flexibility in providing multiple timeseries for the same location and observation type provided by a single data-source.</p>
-    type: object
-    properties:
-      url:
-        type: string
-        required: true
-      uuid:
-        type: string
-        required: true
-        pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
-        description: The unique identifier for the timeseries. UUID Version 4.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=gray><strike>Filterable</strike></font>.
-        example: f4af47f5-f087-494c-9b2d-ba129bddd545
-      qualifier:
-        type: string
-        required: false
-        description: The qualifier of the timeseries. AquaDesk uses the uuid for this.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable<strike></font>, <font color=green>Filterable</font>.
-        example: H.Meting
-      location:
-        type: Location
-        required: true
-        description: The location that the timeseries uses.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</font>, <font color=green>Filterable</font>. 
-      observationType:
-        type: ObservationType
-        required: true
-        description: The observationtype that the timeseries uses.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
-      node:
-        type: Node
-        required: true
-        description: The node responsible for hosting the data for the timeseries.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
-      datasource:
-        type: Datasource
-        required: true
-        description: The datasource providing the data for the timeseries..<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
-      timeseriesType:
-        type: TimeseriesType
-        required: true
-        description: The type of the timeseries..<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
-      interval:
-        type: number
-        required: false
-        description: Specifies the interval between measurements for the timeseries.<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=gray><strike>Filterable</strike></font>.
-      valueType:
-        type: string
-        required: false
-        description:  The data type of the measured data.<br/>
-          Qualifiers&colon; <font color=gray><strike>Nullable</strike></font>, <font color=green>Filterable</font>.
-      start:
-        type: datetime
-        required: true
-        example: 2016-01-01T12:45:00Z
-        description:  Start date/time of the measurement. Uses the Zulu notation<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
-      end:
-        type: datetime
-        required: true
-        example: 2016-01-01T12:45:00Z
-        description:  End date/time of the measurement. Uses the Zulu notation<br/>
-          Qualifiers&colon; <font color=green>Nullable</font>, <font color=green>Filterable</font>.
-      events?:
-        type: MinimalEvent[]
-        description: Defines a minimal event. 
-
-# List responses
-  NodeListResponse:
-    description: Contains zero or more responses to a Node list request.
-    type: object
-    properties:
-      results:
-        type: Node[]
-        description: List of Nodes.
-      count:
-        description: Number of records satisfying the query parameters.
-        type: integer
-        example: 1123
-      previous:
-        description: Url to the API holding the previous page. null if the requested page is the first page.
-        type: string?
-      next:
-        description: Url to the API holding the next page. null if the requested page is the last page.
-        type: string?
-      maxPageSize:
-        description: Maximum page size, as allowed by the service.
-        type: integer
-
-  DatasourceListResponse:
-    description: Contains zero or more responses to a DataSource list request.
-    type: object
-    properties:
-      results:
-        type: Datasource[]
-        description: List of Datasource.
-      count:
-        description: Number of records satisfying the query parameters.
-        type: integer
-        example: 1123
-      previous:
-        description: Url to the API holding the previous page. null if the requested page is the first page.
-        type: string?
-      next:
-        description: Url to the API holding the next page. null if the requested page is the last page.
-        type: string?
-      maxPageSize:
-        description: Maximum page size, as allowed by the service.
-        type: integer
-
-  LocationListResponse:
-    description: Contains zero or more responses to a Node list request.
-    type: object
-    properties:
-      results:
-        type: Location[]
-        description: List of Locations.
-      count:
-        description: Number of records satisfying the query parameters.
-        type: integer
-        example: 1123
-      previous:
-        description: Url to the API holding the previous page. null if the requested page is the first page.
-        type: string?
-      next:
-        description: Url to the API holding the next page. null if the requested page is the last page.
-        type: string?
-      maxPageSize:
-        description: Maximum page size, as allowed by the service.
-        type: integer
-
-  ObservationTypeListResponse:
-    description: Response for a observation type list request.
-    type: object
-    properties:
-      results:
-        type: ObservationType[]
-        description: List of observation types.
-      count:
-        description: Number of records satisfying the query parameters.
-        type: integer
-        example: 1123
-      previous:
-        description: Url to the API holding the previous page. null if the requested page is the first page.
-        type: string?
-      next:
-        description: Url to the API holding the next page. null if the requested page is the last page.
-        type: string?
-      maxPageSize:
-        description: Maximum page size, as allowed by the service.
-        type: integer
-
-  TimeseriesListResponse:
-    description: Response for a time series list request.
-    type: object
-    properties:
-      results:
-        type: Timeseries[]
-        description: List of timeseries types.
-      count:
-        description: Number of records satisfying the query parameters.
-        type: integer
-        example: 1123
-      previous:
-        description: Url to the API holding the previous page. null if the requested page is the first page.
-        type: string?
-      next:
-        description: Url to the API holding the next page. null if the requested page is the last page.
-        type: string?
-      maxPageSize:
-        description: Maximum page size, as allowed by the service.
-        type: integer
-        
-  LocationPostRequest:
-    description: Location filter request
-    type: object
-    properties:
-      code:
-        type: string[]
-
-  TimeseriesPostRequest:
-    description: Timeseries filter request
-    type: object
-    properties:
-      code:
-        type: string[]
-        description: Array of codes or uuids of timeseries to return. AquaDesk uses uuids.
-      start:
-        type: date-only
-        description: First date of the requested measurements. Format&colon; yyyy-MM-dd. 
-      end:
-        type: date-only
-        description: Last date of the requested measurements. Format&colon; yyyy-MM-dd.
-        
 # APIs
 /datasources:
-  description: The Datasources endpoint can return the datasources that the provider offers. Filtering&colon; uuid and name. 
+  description: The Datasources endpoint can return the datasources that the provider offers. Filtering&colon; uuid and name.
     <h3>About Datasource</h3>
     <p>DataSource (“bronhouder” in Dutch) objects describe the source of the data. A node can have multiple data sources.</p>
   get:
@@ -572,7 +57,7 @@ types:
       200:
         body:
           application/json:
-            type: DatasourceListResponse
+            type: ListResponses.DatasourceListResponse
             example: {
               "count": 1,
               "previous": null,
@@ -595,7 +80,7 @@ types:
         body:
           application/json:
             type: object
-            
+
   /{uuid}:
     description: Request a specific datasource by its uuid.
     uriParameters:
@@ -609,7 +94,7 @@ types:
         200:
           body:
             application/json:
-              type: Datasource
+              type: Base.Datasource
               example: {
                 "uuid": "978fdf5c-95c8-43a5-82ff-d27d9e6d685f",
                 "name": "AquaDesk DD Primary",
@@ -625,7 +110,7 @@ types:
             application/json:
               type: object
               example: {"message": "Invalid data source"}
-                
+
 /nodes:
   description: The Nodes endpoint can return the nodes that the provider offers. Filtering&colon; uuid and name.
     <h3>About Node</h3>
@@ -654,7 +139,7 @@ types:
       200:
         body:
           application/json:
-            type: NodeListResponse
+            type: ListResponses.NodeListResponse
             example: {
               "count": 1,
               "previous": null,
@@ -673,7 +158,7 @@ types:
         body:
           application/json:
             type: object
-            
+
   /{uuid}:
     description: Request a specific node by its uuid.
     uriParameters:
@@ -686,7 +171,7 @@ types:
         200:
           body:
             application/json:
-              type: Node
+              type: Base.Node
               example: {
                 "uuid": "f4af47f5-f087-494c-9b2d-ba129bddd545",
                 "name": "AquaDeskPrimaryNode",
@@ -707,11 +192,11 @@ types:
   get:
     queryParameters:
       quantity:
-        description: Retrieve only observation types that contain the specified quantity. 
+        description: Retrieve only observation types that contain the specified quantity.
         required: false
         type: string
       parameterCode:
-        description: Retrieve only observation types that contain the specified parameter code. 
+        description: Retrieve only observation types that contain the specified parameter code.
         required: false
         type: string
       page:
@@ -731,7 +216,7 @@ types:
       200:
         body:
           application/json:
-            type: ObservationTypeListResponse
+            type: ListResponses.ObservationTypeListResponse
             example: {
               "count": 674,
               "previous": null,
@@ -780,20 +265,20 @@ types:
         body:
           application/json:
             type: object
-            
+
   /{qualifier}:
-    description: Request a specific observation type by its qualifier.<br/> 
+    description: Request a specific observation type by its qualifier.<br/>
       <b><i>Since almost no specific ObservationTypes for biological entities exist in Aquo, AquaDesk is using uuids instead of the code. The type 'String' is used in both circumstances.</i></b>
     uriParameters:
       qualifier:
         type: string
-        description: The qualifier (or uuid for AquaDesk) identifying the observation type. 
+        description: The qualifier (or uuid for AquaDesk) identifying the observation type.
     get:
       responses:
         200:
           body:
             application/json:
-              type: ObservationType
+              type: Base.ObservationType
               example: {
                 "uuid": "1f9f13c0-d45a-4031-9231-09235d81481e",
                 "quantity": "AANTL",
@@ -817,7 +302,7 @@ types:
             application/json:
               type: object
               example: {"message": "Invalid observation type source"}
-                
+
 /locations:
   description: The Locations endpoint can return the locations that the provider offers. Filtering&colon; bounding box, uuid, code, name and node.
     <h3>About Locations</h3>
@@ -825,13 +310,13 @@ types:
   get:
     queryParameters:
       boundingBox:
-        description: Bounding box representing a rectangle in which the locations must lie. This is represented by 4 doubles, separated by commas.<br/>    
-         Example&colon; boundingBox=minLon,minLat,maxLon,maxLat<br/>  
-          Where&colon; <br/>  
-           <b>minLon&colon;</b> minimum longitude in decimal degrees (WGS84)<br/>   
-           <b>minLat&colon;</b> minimum lattitude in decimal degrees (WGS84)<br/>    
-           <b>maxLon&colon;</b> maximum longitude in decimal degrees (WGS84)<br/>    
-           <b>maxLat&colon;</b> maximum lattitude in decimal degrees (WGS84)<br/>    
+        description: Bounding box representing a rectangle in which the locations must lie. This is represented by 4 doubles, separated by commas.<br/>
+         Example&colon; boundingBox=minLon,minLat,maxLon,maxLat<br/>
+          Where&colon; <br/>
+           <b>minLon&colon;</b> minimum longitude in decimal degrees (WGS84)<br/>
+           <b>minLat&colon;</b> minimum lattitude in decimal degrees (WGS84)<br/>
+           <b>maxLon&colon;</b> maximum longitude in decimal degrees (WGS84)<br/>
+           <b>maxLat&colon;</b> maximum lattitude in decimal degrees (WGS84)<br/>
         required: false
         type: string
         example: 4.8,52.0,5.8,54.0
@@ -867,7 +352,7 @@ types:
       200:
         body:
           application/json:
-            type: LocationListResponse
+            type: ListResponses.LocationListResponse
             example: {
               "count": 795,
               "previous": null,
@@ -920,7 +405,7 @@ types:
         body:
           application/json:
             type: object
-            
+
   /{uuid}:
     description: Request a specific location by its uuid.
     uriParameters:
@@ -934,7 +419,7 @@ types:
         200:
           body:
             application/json:
-              type: Location
+              type: Base.Location
               example: {
                 "uuid": "ed0655e7-ced5-42ad-ac42-b9b96639307c",
                 "url": "https://digitaldeltatest.aquadesk.nl/locations/ed0655e7-ced5-42ad-ac42-b9b96639307c",
@@ -961,17 +446,17 @@ types:
               type: object
               example: |
                 {"message": "Invalid location code"}
-                
+
   post:
     body:
       application/json:
-        type: LocationPostRequest
+        type: ListResponses.LocationPostRequest
         example: { code: [ "NLWATB-RWTS_AFGDM_0001", "NLWATB-RWTS_AFGDM_0002"] }
     responses:
       200:
         body:
           application/json:
-            type: LocationListResponse
+            type: ListResponses.LocationListResponse
             example: {
               "count": 795,
               "previous": null,
@@ -1030,23 +515,23 @@ types:
           application/json:
             type: object
             example: |
-              {"message": "Invalid filters"}   
-               
+              {"message": "Invalid filters"}
+
 /timeseries:
   description:
-    The timeseries endpoint can return both the metadata and the data itself. If a start&dash; and endtime is given in the request, the data is added to the response, for both the List and the Detail requests. Furthermore, it is possible to only retrieve the data (without the metadata) by querying the data endpoint&colon; /timeseries/{uuid}/data/.<br/>    
+    The timeseries endpoint can return both the metadata and the data itself. If a start&dash; and endtime is given in the request, the data is added to the response, for both the List and the Detail requests. Furthermore, it is possible to only retrieve the data (without the metadata) by querying the data endpoint&colon; /timeseries/{uuid}/data/.<br/>
     <i><b>Optional&colon; add start and end filter, returns metadata and data (values)</b></i><br/>
     Filtering&colon; value type, uuid, code, node, timeseries type, observation type, location name, start- and enddate.<br/>
     <h3>About Timeseries</h3>
-    <p>Timeseries objects contain all information needed to interpret timeseries.<br/> 
-    There are references to other objects, such as Node, Location, DataSource, ObservationType and TimeseriesType.<br/> 
-    The TimeseriesType should be added as a reference because it can indicate if a timeseries containts a RAW dataset or makes use of the current measurements. 
+    <p>Timeseries objects contain all information needed to interpret timeseries.<br/>
+    There are references to other objects, such as Node, Location, DataSource, ObservationType and TimeseriesType.<br/>
+    The TimeseriesType should be added as a reference because it can indicate if a timeseries containts a RAW dataset or makes use of the current measurements.
     The Digital Delta specification of timeseries makes no assumptions on the nature of the series, timeseries may describe any series of data points of the same observation type and datasource in time on one location. <br/>
     This includes both equidistant series (fixed time interval between data points) and non-equidistant series (with varying time interval).</p>
     <h3>Use case&colon;</h3>
-    <p>Imagine a data-source is providing several timeseries for a specific location and observation. For example&colon;<br/> 
-    Waterlevel is measured every 5 minutes for the location Lobith. 
-    This is the original timeseries from the datasource and we can call it the RAW timeseries or the original timeseries.<br/> 
+    <p>Imagine a data-source is providing several timeseries for a specific location and observation. For example&colon;<br/>
+    Waterlevel is measured every 5 minutes for the location Lobith.
+    This is the original timeseries from the datasource and we can call it the RAW timeseries or the original timeseries.<br/>
     Within the same data-souce, again, waterlevel is measured every 5 minutes for the same location, but this timeseries is a manually or automatically validated timeseries. So in this case we have an original timeseries which is providing the raw data and another timeseries which has been validated. Both timeseries can be required for different purposes.<br/>
     Now imagine that someone requires the validated timeseries instead of the original. <br/>
     The users should be able to filter them based on this information and retreve data only for this type of timeseries. There are several more uses cases where more than two types are used. Think of timeseries that are recalculated based on validation, interval, aggregation, etc.<br/><br/>
@@ -1110,7 +595,7 @@ types:
       200:
         body:
           application/json:
-            type: TimeseriesListResponse
+            type: ListResponses.TimeseriesListResponse
             example: {
               "count": 48751,
               "previous": null,
@@ -1266,13 +751,13 @@ types:
   post: # post bodies define filters
     body:
       application/json:
-        type: TimeseriesPostRequest
+        type: ListResponses.TimeseriesPostRequest
         example: { code: [ "H.Meting" ], start: "2012-01-01", end: "2013-01-01"}
     responses:
       200:
         body:
           application/json:
-            type: TimeseriesListResponse
+            type: ListResponses.TimeseriesListResponse
             example: {
               "count": 48751,
               "previous": null,
@@ -1419,7 +904,7 @@ types:
         body:
           application/json:
             type: object
-            
+
       400:
         body:
           application/json:
@@ -1439,7 +924,7 @@ types:
         200:
           body:
             application/json:
-              type: Timeseries
+              type: Base.Timeseries
               example: {
                 "url": "https://digitaldeltatest.aquadesk.nl/timeseries/db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
                 "uuid": "db9544e4-1eb3-4f99-ac6e-b9c02a7cca88",
@@ -1522,7 +1007,7 @@ types:
               type: object
               example: |
                 {"message": "Invalid time series"}
-                
+
     /data:
       description: Get the detail data for the specified timeseries, excluding metadata.
       get:
@@ -1541,7 +1026,7 @@ types:
           200:
             body:
               application/json:
-                type: Event[]
+                type: Base.Event[]
                 example: [
                   {
                     "value": 13.81,
