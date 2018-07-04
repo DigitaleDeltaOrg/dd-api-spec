@@ -1,27 +1,20 @@
 # dd-api-spec
 
 
-# Digital Delta web service API specification
+## Digital Delta web service API specification version 2.0
+Version 2.0 of the Digital Delta API builds on the foundation as specified in [version 1.0](https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/master/README.md).
 
-Within the [Digital Delta project](http://www.digitaldelta.nu/en/phase-3-operational-phase/item340) a web service has been specified for finding and retrieving data (especially time series of scalar data).
+The main new feature of version 2.0 is the addition of Aspects sets to allow expectations and predictions to be retrieved.
 
-This Digital Delta web service API (DD-API) has been implemented on various data providing systems:
+The parties involved in drafting this specifications are:
 
-- AquaDesk (EcoSys)
-- FEWS (Deltares)
-- HydroNet (Hydrologic)
-- Lizard (Nelen & Schuurmans)
+| Organisation | Contact |
+| --- | --- |
+|  | | 
 
-Implementations are in preparation for:
+The current implementations of this specifications and their status are:
 
-- MATROOS (RWS)
-- The Data Distribution Layer (RWS)
-- Vertex (ProcessFive)
+| Organisation | Product | Status |
+| --- | --- | --- |
+| | | |
 
-The DD web service is a RESTful API, specified in RAML (RESTful API Modeling Language). The dd-api-spec repository contains:
-
-- DigitalDelta.raml, the RAML specification
-- DigitalDelta.html, the documentation generated from the RAML specification
-- DD-API-ResourceObjects.jpg, a figure depicting the object types that are used in the DD-API
-
-For information on the Digital Delta project, the DD-API and its implementations, please mail to [info@digitaldelta.nu](mailto:info@digitaldelta.nu)
