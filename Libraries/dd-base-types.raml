@@ -139,7 +139,7 @@ types:
       name:
         type: string
         description: The name of the institution that produced and/or owns the data
-      description:
+      description?:
         type: string
         description: Additional discription of the institution
 
@@ -207,7 +207,7 @@ types:
       description?:
         type: string
         description: The description of the node.
-      baseUrl:
+      baseUrl?:
         type: string
         description: The base URL of the node.
 
@@ -361,7 +361,7 @@ types:
       realizationCount?:
         type: integer
         description: if present, and larger then 1, the results are part of an ensemble run
-      institution?: Institution
+      institution: Institution
 
   SourceName:
     type: string
