@@ -1,0 +1,57 @@
+{
+	"provider": {
+		"name": "Matroos",
+		"supportUrl": "http://www.rws.nl/support/matroos"
+	},
+	"links": {
+		"totalObjectCount": 5,
+		"prev": null,
+		"next": "https://some-url.nl/dd/2.0/aspectSets?process=forecast&pageSize=2&page=2",
+		"minPageSize": 1,
+		"maxPageSize": 100
+	},
+	"results": [
+		{
+			"name": "WaterLevelMinMaxAver",
+			"aspects": [
+				{
+					"name": "minimun",
+					"unit": "mm"
+				},
+				{
+					"name": "maximum",
+					"unit": "mm"
+				},
+				{
+					"name": "average",
+					"unit": "mm"
+				}
+			]
+		},
+		{
+			"name": "WaterTemperatureRange",
+			"aspects": [
+				{
+					"name": "Minimum95%Accuracy",
+					"unit": "C"
+				},
+				{
+					"name": "Minimum80%Accuracy",
+					"unit": "C"
+				},
+				{
+					"name": "average",
+					"unit": "C"
+				},
+				{
+					"name": "Maximum95%Accuracy",
+					"unit": "C"
+				},
+				{
+					"name": "Maximum80%Accuracy",
+					"unit": "C"
+				}
+			]
+		}
+	]
+}

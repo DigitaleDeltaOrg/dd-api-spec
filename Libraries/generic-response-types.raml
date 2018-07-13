@@ -1,0 +1,40 @@
+#%RAML 1.0 Library
+
+# Name: generic-response-types.raml
+#
+# Date: 2018-07-10
+#
+#  This file defines the response layouts used by /dd and /dd-oper API.
+
+uses:
+  DD-T: dd-base-types.raml
+
+types:
+# response types
+#
+#  The repsonse layouts are of Location object are similar to DD API 1.9 definition except that not all atttributes that are returned,
+#  and DD-strict has additional location properties that are not par of the DD API 1.9 specification.
+
+  BaseResponseHeader:
+    description: The standard header used in /dd and /dd-oper API for a single object.
+    type: object
+    properties:
+      provider?:
+        type: DD-T.Provider
+
+  BaseResponseListHeader:
+    description: The standard header used in /dd and /dd-oper API for a multiple objects (lists) with support for paging links.
+    type: BaseResponseHeader
+    properties:
+      links?:
+        type: DD-T.PageLinks
+
+  ProblemResponse:
+    description:
+    type: object
+    properties:
+      provider:
+        type: DD-T.Provider
+      problem:
+        type: DD-T.Problem
+        description:

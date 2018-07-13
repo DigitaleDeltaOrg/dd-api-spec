@@ -1,0 +1,73 @@
+#%RAML 1.0 Library
+
+# Name: ddoper-response-types.raml
+#
+# Date: 2018-07-10
+#
+#  This file defines the response layouts used by /DD-OPER API 2.0.
+
+uses:
+  DD-T: dd-base-types.raml
+  DDOPER-T: ddoper-base-types.raml
+  GENERIC-RESP: generic-response-types.raml
+
+types:
+
+
+#
+# response types
+#
+  AspectSetListResponse:
+    description: The list of available AspectSets.
+    type: GENERIC-RESP.BaseResponseHeader
+    properties:
+      results:
+        type: DD-T.AspectSet[]
+
+  LocationListResponse:
+    description: Contains a list of zero or more Locations.
+    type: GENERIC-RESP.BaseResponseHeader
+    properties:
+      results:
+        type: DD-T.Location[]
+
+  LocationResponse:
+    description: Contains the response for one Location.
+    type: GENERIC-RESP.BaseResponseHeader
+    properties:
+      results:
+        type: DD-T.Location
+
+  QuantityListResponse:
+    description: Contains a list of zero or more Quantities.
+    type: GENERIC-RESP.BaseResponseHeader
+    properties:
+      results:
+        type: DD-T.QuantityName[]
+
+  QuantityResponse:
+    description: Contains the response for one Quantity with optionally an array of AspectSets available for the Quantity.
+    type: GENERIC-RESP.BaseResponseHeader
+    properties:
+      results:
+        type: object
+        properties:
+          quantityName: DD-T.QuantityName
+          aspectSets?: DD-T.AspectSet[]
+
+  TimeseriesListResponse:
+    description:
+    type: GENERIC-RESP.BaseResponseHeader
+    properties:
+      results:
+        type: DD-T.Timeseries[]
+        description: Timeseries objects with multiple event values. Defined as List for compatibility with DD API.
+
+
+  ProblemResponse:
+    description:
+    type: GENERIC-RESP.BaseResponseHeader
+    properties:
+      problem:
+        type: DD-T.Problem
+        description:

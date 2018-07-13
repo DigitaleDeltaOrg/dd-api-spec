@@ -1,0 +1,382 @@
+#%RAML 1.0
+title: Digitale Delta - API
+version: 2.0
+securitySchemes:
+  basic:
+    type: Basic Authentication
+baseUri: http://api.rws.nl/dl/
+mediaType: [ application/json ]
+description: Digital Delta API version 1.9
+documentation:
+ - title: Introduction
+   content: The Digital Delta is a distributed network in which various datasources exchange information using a standard interface.
+     This specification outlines the mechanics of the Digital Delta as a distributed network of nodes and masternodes and describes the technical specification of the Digital Delta web service API.<br/>
+     This document uses the <a href="http://raml.org">RAML standard</a> as the definition language.<br/>
+ - title: The API specification
+   content:
+     The API specification consists of two parts.
+     <ol>
+       <li>The Types section describes the data types that are available for the resources. Please refer to figure 1 below for the resource object diagram.
+       <br/><i>Note&colon; Currently, the generated HTML documentation does not contain tables that describe the data types. However, their content can be seen in the response tabs of the requests. If you want to have a detailed look at the type definitions, open the RAML file and go to the “# Base types.” section.</i>
+       </li>
+       <li>The Resources section describes the available end-points.</li>
+     </ol>
+
+     <p/>
+     <p><i>Todo update figure from 1.0 to 1.9</i></p>
+     <p><i>Figure 1</i></p>
+     <p/>
+
+     <p>The Digital Delta use ID's for identification of resource objects. Although every data node is free to provide an ID that is only unique to its own data, it is strongly recommended that it uses uuids (universally unique identifier, version 4). The use of uuids guarantees a unique identifier for an instance over all nodes in the Digital Delta without the need for individual nodes to have a knowledge about data in other nodes.<br/>
+     The Digital Delta supports timeseries data, defined as a measurement series with a begin and end time, a fixed location and a so called observation type (usually a quantity, often in combination with a parameter). <br/>
+     The list of resource objects is setup to be extendable to other data types, such as raster or vector data.<br/>
+     The protocols provides by the services are HTTP and HTTPS. Currently authentication is Anonymous, but a specification based on OAuth2 and OpenID Connect is being elaborated.<br/>
+     The Digital Delta only supports JSON as the output format and for POST request bodies.</p>
+ - title: About the examples in this document
+   content:
+    The examples in the requests are mostly based on the AquaDesk implementation of the DD-API specifications. The structure, however, for all gets, posts and responses will be the same for all providers.
+ - title: Future enhancements
+   content:
+     The following future enhancements are under consideration.
+     <ul>
+      <li>Authentication/Authorisation</li>
+      <li>Error and warning codes. (See object type Problem below for drafted solution) </li>
+      <li>Extension for ecological data (DD-ECO-API)</li>
+    </ul>
+ - title: Future research
+   content:
+     The following topics will be part of future research
+     <ul>
+       <li>Add attributes to different standards</li>
+       <li>Support for other data types (especially grids)</li>
+     </ul>
+ - title: Document history
+   content:
+     <table>
+      <tr>
+        <th width=150>Date</th>
+        <th width=300>Author</th>
+        <th>Changes<th>
+      </tr>
+      <tr>
+        <td>until 2017-12-14</td>
+        <td>Geri Wolters / Stef Hummel</td>
+        <td>
+          Specification of DD-API version 1.0
+        </td>
+      </tr>
+      <tr>
+        <td>2018-06-08</td>
+        <td>Jurgen G Boerboom / Stef Hummel</td>
+        <td>
+          Specification of DD-API version 1.9
+        </td>
+      </tr>
+      <tr>
+        <td>2018-06-11</td>
+        <td>Jurgen G Boerboom</td>
+        <td>
+          Textual updates and removal of syntax errors, still DD API version 1.9
+        </td>
+      </tr>
+      <tr>
+        <td>2018-06-21</td>
+        <td>Jurgen G Boerboom</td>
+        <td>
+          Optional request parameters should not have a default value. Removed default from 'process'
+        </td>
+      </tr>
+     </table>
+
+# HTTP is included as protocol but is optional as for security reasons a Provider might decide to support HTTPS only.
+protocols:
+  - HTTP
+  - HTTPS
+
+uses:
+  DD-T: /Libraries/dd-base-types.raml
+  GENERIC-RESP: /Libraries/generic-response-types.raml
+  DD-RESP: /Libraries/dd-response-types.raml
+  TRAITS: /Libraries/dd-traits.raml
+
+#
+# All data types are defined in external files (see above) so they can be shared between DD and DD-OPER API.
+#
+types:
+
+
+#
+# The resources
+/dd/2.0:
+
+# ##################################################
+
+  /nodes:
+    description: The Nodes endpoint returns the nodes that the provider offers.
+    get:
+      is: [ TRAITS.pageable ]
+      queryParameters:
+        process?:
+          type: DD-T.ProcessName
+        name?:
+          type: string
+          description: (Partial) name of the node. (Partional meaning startsWith(...)
+          example: AquaDeskPrimaryNode
+      responses:
+        200:
+          description: |
+            Succesfully retrieved resource
+          body:
+            application/json:
+              type: DD-RESP.NodeListResponse
+              example: !include examples/dd-nodelist-response.json
+    /{nodeId}:
+      description: Request a specific Location by its unique dentifier.
+      uriParameters:
+        nodeId:
+          type: DD-T.Identifier
+      is: [TRAITS.has404-NotFoundError]
+      get:
+        queryParameters:
+          process?:
+            type: DD-T.ProcessName
+        responses:
+          200:
+            description: |
+              Succesfully retrieved resource
+            body:
+              application/json:
+                type: DD-RESP.NodeResponse
+                example: !include examples/dd-node-response.json
+
+# ##################################################
+
+  /sources:
+    description: Retrieve (data)source resources.
+    is: [TRAITS.has404-NotFoundError]
+    get:
+      queryParameters:
+        process?:
+          type: DD-T.ProcessName
+      responses:
+        200:
+          description: Succesfully retrieved resource
+          body:
+            application/json:
+              type: DD-RESP.SourceListResponse
+              example: !include examples/dd-sourcelist-response.json
+
+# #####################################################
+
+  /locations:
+    get:
+      description: |
+        Retrieve resource
+      is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError ]
+      queryParameters:
+        process?:
+          type: DD-T.ProcessName
+        boundingBox?:
+          type: DD-T.BoundingBox
+          example: [4.8, 52.0, 5.8, 54.0]
+        locationName?:
+          type: string
+          description: (Partial) location name. (Partional meaning startsWith(...)
+          example: NEDHMT
+        nodeId?:
+          type: DD-T.Identifier
+          description: This query parameter is deprecated
+        locationCode?:
+          type: string
+          description: Location code.
+          example: NLWATB-RWTS_AFGDM_0001
+        locationId?: DD-T.Identifier
+      responses:
+        200:
+          description: Succesfully retrieved resource
+          body:
+            application/json:
+              type: DD-RESP.LocationListResponse
+              example: !include examples/dd-locationslist-response.json
+
+    /{locationId}:
+      description: Request a specific location by its id.
+      uriParameters:
+        locationId:
+          type: DD-T.Identifier
+      get:
+        description: |
+          Request a specific Location by its unique dentifier.
+        queryParameters:
+          process?:
+            type: DD-T.ProcessName
+            default: measurement
+        responses:
+          200:
+            description: |
+              Succesfully retrieved resource
+            body:
+              application/json:
+                type: DD-RESP.LocationResponse
+                example: !include examples/dd-location-response.json
+          404:
+            description: Not Found
+            body:
+              application/json:
+                type: GENERIC-RESP.ProblemResponse
+                example: !include examples/dd-error-response.json
+
+######################################################
+
+  /aspectSets:
+    description:
+      Retrieves available aspect sets.
+      Note - The request requires some parameters to provide a context for the response as aspects relate to observation types for instance.
+      When aspects and aspect sets are not supported and empty List shall be returned.
+    get:
+      is: [ TRAITS.pageable ]
+      queryParameters:
+        process?:
+          type: DD-T.ProcessName
+      responses:
+        200:
+          description: |
+            Succesfully retrieved resource
+          body:
+            application/json:
+              type: DD-RESP.AspectSetListResponse
+              example: !include examples/dd-aspectsetlist-response.json
+
+######################################################
+
+  /observationTypes:
+    description: The ObservationTypes endpoint can return the observationtypes that the provider offers. Filtering&colon; list of parameters.
+      <h3>About ObservationType</h3>
+      <p>The ObservationType objects describe all attributes to correctly interpret what has been measured, and in what way. It is essential to have the quantity field.</p>
+    get:
+      description: |
+        Retrieve observationTypes resource:
+      is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError, TRAITS.has500-ServerError ]
+      queryParameters:
+        process?:
+          type: DD-T.ProcessName
+        observationTypeId?:
+          type: DD-T.Identifier
+        quantity?:
+          description: Retrieve only observation types that contain the specified quantity.
+          type: string
+        parameterCode?:
+          description: Retrieve only observation types that contain the specified parameter code.
+          type: string
+      responses:
+        200:
+          description: |
+            Succesfully retrieved timeseries
+          body:
+            application/json:
+              type: DD-RESP.ObservationTypeListResponse
+              example: !include examples/dd-observationtypelist-response.json
+
+    /{observationTypeId}:
+      description: Request a specific ObservationType by its unique dentifier.
+      uriParameters:
+        observationTypeId:
+          type: DD-T.Identifier
+      get:
+        queryParameters:
+          process?:
+            type: DD-T.ProcessName
+        responses:
+          200:
+            description: |
+              Succesfully retrieved resource
+            body:
+              application/json:
+                type: DD-RESP.ObservationTypeResponse
+                example: !include examples/dd-observationtype-response.json
+
+######################################################
+
+  /timeseries:
+    get:
+      description: |
+        Retrieve timeseries resource.
+        A request where both startTime and endTime are omitted returns a response with just the metadata (implicit includeMetaData = true)
+      is: [ TRAITS.pageable ]
+      queryParameters:
+        process?:
+          type: DD-T.ProcessName
+        startTime?:
+          type: DD-T.StartTime
+        endTime?:
+          type: DD-T.EndTime
+        locationCode?:
+          type: string
+          example: "HVH"
+        locationName?:
+          type: DD-T.LocationName
+          example: "Hoek.vanHolland.nieuwewat"
+        sourceName:
+          type: DD-T.SourceName
+          example: rws_prediction
+
+        observationTypeId?:
+          type: DD-T.Identifier
+        realizationCount?:
+          description: ??? Added Count as this is the name in ObservationType response.
+          type: integer
+        parameterCode?:
+          type: string
+        quantity:
+          description:
+          type: string
+
+#        timeseriesFilter?:
+#          type: DD-T.Filter
+#          description: New, optional functionality.
+#        locationFilter?:
+#          type: DD-T.Filter
+#          description: New, optional functionality.
+#        observationTypeFilter?:
+#          type: DD-T.Filter
+#          description: New, optional functionality.
+
+        aspectSet?:
+          type: DD-T.AspectSetName
+        quantityName?:
+          type: DD-T.QuantityName
+        includeMetaData?:
+          description: This url query parameter replaces the '/data' control extension of the /timeseries endpoint.
+            Metadata is included in the response by default, but can be excluded to reduce response size.
+          type: boolean
+          default: true
+        intervalLength?:
+           type: DD-T.IntervalLength
+      responses:
+        200:
+          description: |
+            Succesfully retrieved timeseries
+          body:
+            application/json:
+              type: DD-RESP.TimeseriesListResponse
+              example: !include examples/dd-timeserieslist-response-verwachtingen-en-metingen-fulldd.json
+
+    /{timeseriesId}:
+      description: Request a specific (single) Timeseries by its unique dentifier.
+      uriParameters:
+        timeseriesId:
+          type: DD-T.Identifier
+      is: [TRAITS.has404-NotFoundError]
+      get:
+        queryParameters:
+          process?:
+            type: DD-T.ProcessName
+            default: measurement
+        responses:
+          200:
+            description: |
+              Succesfully retrieved resource
+            body:
+              application/json:
+                type: DD-RESP.TimeseriesResponse
+                example: !include examples/dd-timeseries-response-single.json
