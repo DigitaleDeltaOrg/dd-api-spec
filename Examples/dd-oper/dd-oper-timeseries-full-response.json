@@ -7,7 +7,10 @@
   },
   "results": [ {
     "source": {
-      "process": "measurement"
+      "process": "measurement",
+      "institution": {
+      	"name": "RWS"
+      }
     },
     "location": {
       "type": "Feature",
