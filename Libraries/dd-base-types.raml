@@ -2,7 +2,7 @@
 
 # Name: dd-base-types.raml
 #
-# Date: 2018-07-14
+# Date: 2018-07-17
 #
 #  This file defines the basic datatypes used in the DD API and DD-OPER API.
 
@@ -231,7 +231,7 @@ types:
       compartment?:
         description: The compartment in which the measurement/computationt is available. Standardised Aquo compartments.
         type: string
-        example:  OW, DL, GW, LW 
+        example:  OW, DL, GW, LW
       aspectSet?:
         description: Optional, currently only provided and used by RWS.
         type: AspectSet
@@ -407,37 +407,3 @@ types:
     pattern: "[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"
     description: Unique identifier for the datasource. Version 4.
     example: 978fdf5c-95c8-43a5-82ff-d27d9e6d685f
-
-
-
-
-# response types
-#
-#  The repsonse layouts are of Location object are similar to DD API 1.9 definition except that not all atttributes that are returned,
-#  and DD-strict has additional location properties that are not par of the DD API 1.9 specification.
-
-#  LocationListResponse:
-#    description: Contains zero or more responses to a Node list request.
-#    type: object
-#    properties:
-#      provider:
-#        type: Node
-#        description: Reference to the responsible provider for the response.
-#     node: Node
-#      results:
-#        type: Location[]
-#        description: List of Location objects
-#      count?:
-#        description: Number of records satisfying the query parameters.
-#        type: integer
-#        example: 1123
-
-
-#  ProblemResponse:
-#    description:
-#    type: object
-#    properties:
-#      provider:
-#        type: Provider
-#      problem:
-#        type: Problem
