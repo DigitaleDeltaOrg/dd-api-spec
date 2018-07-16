@@ -22,7 +22,7 @@ The main changes compared to version 1.0 are:
 
 The [Operations version 2.0](dd-oper.v20.raml) extends the is a specific version developed for Rijkswaterstaat, designed to retrieve data using fixed, strict paths, with the purpose to be able to cache request/responses.
 
-For a more complete list of changes between version 1.0 and 2.0, please see [here](changes_between_1.0_and_2.0.md).
+For a more complete list of changes between version 1.0 and 2.0, please see [here](https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/2.0/Documentation/Changes_between_1.0_and_2.0.md).
 
 The parties involved in drafting this specifications (alphabetically) are:
 
