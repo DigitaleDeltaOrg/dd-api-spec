@@ -3,7 +3,7 @@
 		"name": "Matroos",
 		"supportUrl": "tbd http://www.rws.nl/support/matroos"
 	},
-	"links": {
+	"paging": {
 		"totalObjectCount": 2,
 		"prev": null,
 		"next": "https://some-url.nl/dd/2.0/sources?process=forecast&pageSize=2&page=2",

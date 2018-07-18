@@ -6,7 +6,7 @@
 		"responseType": "TimeseriesListResponse",
 		"responseTimestamp": "2018-07-05T15:11:36.123456Z"
 	},
-	"links": {
+	"paging": {
 		"totalObjectCount": 2,
 		"prev": null,
 		"next": "https://some-url.nl/dd/2.0/sources?process=forecast&pageSize=2&page=2",
