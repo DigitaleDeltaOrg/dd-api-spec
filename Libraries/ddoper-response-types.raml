@@ -24,6 +24,12 @@ types:
       results:
         type: DD-T.AspectSet[]
 
+  ErrorResponse:
+    description: |
+          The response returned in case of an error/problem (when HTTP return code is not 200). The header is in
+          line with RFC7807.
+    type: GENERIC-RESP.ErrorResponse
+
   LocationListResponse:
     description: Contains a list of zero or more Locations.
     type: GENERIC-RESP.BaseResponseHeader
@@ -62,12 +68,3 @@ types:
       results:
         type: DD-T.Timeseries[]
         description: Timeseries objects with multiple event values. Defined as List for compatibility with DD API.
-
-
-  ProblemResponse:
-    description:
-    type: GENERIC-RESP.BaseResponseHeader
-    properties:
-      problem:
-        type: DD-T.Problem
-        description:

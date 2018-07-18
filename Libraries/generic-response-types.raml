@@ -26,15 +26,14 @@ types:
     description: The standard header used in /dd and /dd-oper API for a multiple objects (lists) with support for paging links.
     type: BaseResponseHeader
     properties:
-      links?:
+      paging?:
         type: DD-T.PageLinks
 
-  ProblemResponse:
-    description:
-    type: object
+  ErrorResponse:
+    description: |
+      The standard error header returned in case of an error/problem (when HTTP return code is not 200). The header is in
+      line with RFC7807 and can be extended with additional attributes in Error object.
+    type: DD-T.Error
     properties:
       provider:
         type: DD-T.Provider
-      problem:
-        type: DD-T.Problem
-        description:

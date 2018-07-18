@@ -27,16 +27,15 @@ documentation:
       2018-04-01    RWS         New version created based on DD API 1.0 and MKK-DL API 1.0
       2018-04-20    RWS         End-points and request parameters finalised. Naming conventions alligned with DD API 1.9 proposal.
       2018-07-07    RWS         Changed to dd-oper version 2.0 and now as Extension of DD-API 2.0 raml.
+      2018-07-18    RWS         Change to error/problem response due to DD API 2.0 change.
+
   - title: Todo
     content: |
-      - Add response error codes. This will need to be aligned with the DD API interface.
-        The idea is that there will be specific HTTP error codes defined for invalid request format, timeouts, etc
-        The response will provide an error message.
-
+      - Update documentation/description texts. It will also be placed in external files such that updates will not impact raml itself.
+      - Add error response codes to all responses.  most are done, just need sanity check.
 
 # HTTP protocol is included as (optional) protocol for internal use. HTTPS support is mandatory for external communication.
 protocols: [HTTP, HTTPS]
-
 
 uses:
     DD-T: Libraries/dd-base-types.raml
@@ -56,23 +55,22 @@ traits:
       400:
         body:
           application/json:
-            type: GENERIC-RESP.ProblemResponse
+            type: GENERIC-RESP.ErrorResponse
             example: !include examples/dd-oper/dd-oper-error-response.json
   has404-NotFoundError:
     responses:
       404:
         body:
           application/json:
-            type: GENERIC-RESP.ProblemResponse
+            type: GENERIC-RESP.ErrorResponse
             example: !include examples/dd-oper/dd-oper-error-response.json
   has500-ServerError:
     responses:
       500:
         body:
           application/json:
-            type: GENERIC-RESP.ProblemResponse
+            type: GENERIC-RESP.ErrorResponse
             example: !include examples/dd-oper/dd-oper-error-response.json
-
 
 
 # The resources:

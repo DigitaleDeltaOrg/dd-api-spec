@@ -81,6 +81,25 @@ types:
       2018-01-01T00:00:00Z - 2018-01-01T00:00:10Z  specifies a 10 minute period starting at midnight and
       ending at 2018-01-01T00:09:59.99999Z
 
+  Error:
+    description:  Error response in line with RFC7807. Although both optional the minimum information that should be given are the title and status.
+    type: object
+    properties:
+      type?: Url
+      title?: string
+      status?:
+        type: integer
+        description: The HTTP errrocode number.
+      detail?: string
+      instance?: string | nil
+        # Additional fields, RFC7807 extension
+      errors?:
+        description: Error details.
+        type: FilterError[]
+      typeinfo?:
+        description: Link to information on the type of error.  ??? Why not use 'type'. is link according RFC7807
+        type: string | nil
+
   Event:
     description: In case of scalar time series the event contains time stamp and value, optionally extended with
       an interval specification (startTime/endTime/resultTime), and a quality indication (quality, additionalQuality).
@@ -297,25 +316,6 @@ types:
     minItems: 0
     examples:
       -multipoint: [[4.2, 52.0], [3.2, 52.3,0]]
-
-  Problem:
-    description:  Error response in line with RFC7807. Although both optional the minimum information that should be given are the title and status.
-    type: object
-    properties:
-      type?: Url
-      title?: string
-      status?:
-        type: integer
-        description: The HTTP errrocode number.
-      detail?: string
-      instance?: string | nil
-    # Additional fields, RFC7807 extension
-      errors?:
-        description: Error details.
-        type: FilterError[]
-      typeinfo?:
-        description: Link to information on the type of error.  ??? Why not use 'type'. is link according RFC7807
-        type: string | nil
 
   ProcessName:
     type: string

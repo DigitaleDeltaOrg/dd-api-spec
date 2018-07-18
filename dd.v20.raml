@@ -204,6 +204,7 @@ types:
       uriParameters:
         locationId:
           type: DD-T.Identifier
+      is: [TRAITS.has404-NotFoundError]
       get:
         description: |
           Request a specific Location by its unique dentifier.
@@ -219,12 +220,6 @@ types:
               application/json:
                 type: DD-RESP.LocationResponse
                 example: !include examples/dd-location-response.json
-          404:
-            description: Not Found
-            body:
-              application/json:
-                type: GENERIC-RESP.ProblemResponse
-                example: !include examples/dd-error-response.json
 
 ######################################################
 
@@ -234,7 +229,7 @@ types:
       Note - The request requires some parameters to provide a context for the response as aspects relate to observation types for instance.
       When aspects and aspect sets are not supported and empty List shall be returned.
     get:
-      is: [ TRAITS.pageable ]
+      is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError ]
       queryParameters:
         process?:
           type: DD-T.ProcessName
@@ -302,7 +297,7 @@ types:
       description: |
         Retrieve timeseries resource.
         A request where both startTime and endTime are omitted returns a response with just the metadata (implicit includeMetaData = true)
-      is: [ TRAITS.pageable ]
+      is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError, TRAITS.has500-ServerError ]
       queryParameters:
         process?:
           type: DD-T.ProcessName
@@ -366,7 +361,7 @@ types:
       uriParameters:
         timeseriesId:
           type: DD-T.Identifier
-      is: [TRAITS.has404-NotFoundError]
+      is: [TRAITS.has400-InvalidRequestError, TRAITS.has404-NotFoundError]
       get:
         queryParameters:
           process?:
