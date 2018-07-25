@@ -35,10 +35,40 @@ traits:
       pageSize?:
         type: integer
         description: Requested response Page size. Minimum, maximum and default is defined by Provider. Minimum can never be lower than 1.
+
+  timeseriesFilterable:
+    description: Defines query parameters for timeseries filter requests.
+    queryParameters:
+      timeseriesFilter?:
+        type: DD-T.Filter
+        description: New, optional functionality.
+
+  locationFilterable:
+    description: Defines query parameters for location filter requests.
+    queryParameters:
+      locationFilter?:
+        type: DD-T.Filter
+        description: New, optional functionality.
+
+  observationTypeFilterable:
+    description: Defines query parameters for observation type filter requests.
+    queryParameters:
+      observationTypeFilter?:
+        type: DD-T.Filter
+        description: New, optional functionality.
+
 #
 # Responses Error Codes
 #
   has400-InvalidRequestError:
+    responses:
+      400:
+        body:
+          application/json:
+            type: GENERIC-RESP.ErrorResponse
+            example: !include ../examples/dd-error-response.json
+
+  has403-AccessDeniedError:
     responses:
       400:
         body:

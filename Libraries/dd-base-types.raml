@@ -2,7 +2,7 @@
 
 # Name: dd-base-types.raml
 #
-# Date: 2018-07-17
+# Date: 2018-07-25
 #
 #  This file defines the basic datatypes used in the DD API and DD-OPER API.
 
@@ -11,17 +11,19 @@ types:
     type: integer
     description: Provides detailed information on specific Quality numbers.
 
-  Altitude: number
+  Altitude:
+    description: Altitude of a (3d) coordinate
+    type: number
 
   Aspect:
-    description: A matematical derived variant of a specific measurement, forecast, etc.
+    description: A mathematical derived variant of a specific measurement, forecast, etc.
     type: object
     properties:
       name: string
       unit: string
 
   AspectSet:
-    description: The AspectSet defines a group of related mathematical values for a single measurement, forecast, etc
+    description: Defines a group of related mathematical values for a single measurement, forecast, etc
     type: object
     properties:
       name: AspectSetName
@@ -30,7 +32,7 @@ types:
         minItems: 0
 
   AspectSetName:
-    description:
+    description: Name of an AspectSet
     type: string
     default: "standard"
     example: "minimum, maximum, standard, ...."
@@ -65,11 +67,12 @@ types:
       -bbox: [ 4.123456, 52.123456, 10.123456, 55.123456 ]
 
   Coordinate:
+    description: Geographic coordinate,
     type: number
     format: double
 
   Double:
-    description: A value of type Double (todo specify #digits/format?).
+    description: A value of type Double.
     type: number
     format: double
 
@@ -85,16 +88,24 @@ types:
     description:  Error response in line with RFC7807. Although both optional the minimum information that should be given are the title and status.
     type: object
     properties:
-      type?: Url
-      title?: string
+      type?:
+        description: Type of error.
+        type: Url
+      title?:
+        description: Title of the error.
+        type: string
       status?:
         type: integer
         description: The HTTP errrocode number.
-      detail?: string
-      instance?: string | nil
+      detail?:
+        description: Details of the error
+        type: string
+      instance?:
+        description: Reference to the error for the provider.
+        type: string | nil
         # Additional fields, RFC7807 extension
       errors?:
-        description: Error details.
+        description: Error details. More than one error can occur within the problem.
         type: FilterError[]
       typeinfo?:
         description: Link to information on the type of error.  ??? Why not use 'type'. is link according RFC7807
@@ -106,10 +117,18 @@ types:
       In case of a timeseries with Aspects or with values on multiple points, the events contains object for the aspects or points.
     type: object
     properties:
-      timeStamp?: datetime
-      startTime?: StartTime
-      endTime?: EndTime
-      resultTime?: datetime
+      timeStamp?:
+        description: Timestamp of the occurrence of the event.
+        type: datetime
+      startTime?:
+        description: Start time.
+        type: StartTime
+      endTime?:
+        description: End time.
+        type: EndTime
+      resultTime?:
+        description: Result time.
+        type: datetime
       value?:
         description: The 'value', 'quantity' and 'additionalQuality' can be returned at this level (Event object) in case the AspectSet and/or Point nestings would be redundant and introduce unnecesssary levels in the response
         type: number
@@ -125,6 +144,10 @@ types:
       points?:
         type: PointsValue[]
         description: When multiple positions are involved the value/quantity/unit are given in context of each position.
+
+  Filter:
+    type: string
+    description: defined a query filter.
 
   FilterError:
     type: object
@@ -149,8 +172,8 @@ types:
           -multipoint:  [[4.2, 52.0], [3.2, 52.3,0]]
 
   Identifier:
-    type: string | Uuid
-    description: An uuid or a preferably human readable identifier.
+    type: string
+    description: An identifier can be anything expressed as a string.
 
   Institution:
     type: object
@@ -162,15 +185,16 @@ types:
         type: string
         description: Additional discription of the institution
 
-# IntervalLength is not required as object since it is only used as query parameter (toch maar laten staan? SH)
+# IntervalLength is not required as object since it is only used as query parameter
   IntervalLength:
+    description: Interval length of the sequence.
     default: 10min
 
   Location:
     description: Generic DD API 2.0 Location object structure that is used by /dd and /dd-oper. Most attributes are optional as the content returned in the response depends on the request.  Location attributes are placed within the properties group of the GeoJSON  object.
     properties:
       type:
-        description: Type of GeoJSON object. In the DD-API the only allowed type is "Feature"
+        description: Type of GeoJSON object. In the DD-API the only allowed type is "Feature".
         type: string
         enum: ["Feature"]
       geometry:
@@ -180,18 +204,29 @@ types:
         description: The attributes of Location object are placed within the properties group of the GeoJSON object.
         type: object
         properties:
-          node?: Node
-          url?: string
-          locationId?: string
-          locationCode?: string
+          node?:
+            description: Node reference.
+            type: Node
+          url?:
+            description: Url to details.
+            type: string
+          locationId?:
+            description: Id of the location.
+            type: string
+          locationCode?:
+            description: Vode of the location.
+            type: string
           referenceLevel?:
-            description: GeoJSON element. Specifies the reference plane for the altitude coordinates (third). For example "NAP"
+            description: GeoJSON element. Specifies the reference plane for the altitude coordinates (third). For example "NAP".
             type: string
           crs?:
             description: GeoJSON element. According to GeoJSON the coordinate reference system element is only included when it is not "WGS84" (default).
             type: string
-          locationName?: LocationName
+          locationName?:
+            description: Name of the location.
+            type: LocationName
           locationNameSpace?:
+            description: Location name space.
             type: LocationNameSpace
           displayNameDetail?:
             type: LocationName
@@ -219,6 +254,7 @@ types:
     type: object
     properties:
       id?:
+        description: Id of the node.
         type: Identifier
       name:
         type: string
@@ -234,9 +270,15 @@ types:
     description: Generic DD API 2.0 parameter object. DD-OPER API response returns a subset of the attributes.
     type: object
     properties:
-      node?: Node
-      url?: Url
-      id?: Identifier
+      node?:
+        description: Reference to the node.
+        type: Node
+      url?:
+        description: Url with details.
+        type: Url
+      id?:
+        description: Id of the observation type.
+        type: Identifier
       quantityName?:
         description: Composed name of the quantity(.parameterCode) that was measured or computed.
           Remark Only used in dd-oper response.
@@ -244,9 +286,15 @@ types:
       parameterCode?:
         description: Parameter code specifying the observationtype. Non-biological observation types follow the Aquo standards.
         type: string
-      description?: string
-      quantity?: string
-      unit?: string
+      description?:
+        description: Description of the observation type.
+        type: string
+      quantity?:
+        description: Quantity (grootheid) of the observation type.
+        type: string
+      unit?:
+        description: (Measurement) unit of the observation type.
+        type: string
       compartment?:
         description: The compartment in which the measurement/computationt is available. Standardised Aquo compartments.
         type: string
@@ -269,11 +317,21 @@ types:
           description: Minimum number of objects in the response. Defined by the Provider of the response.
           type: PageSize
           minimum: 1
-      self?: Url | nil
-      first?: Url | nil
-      prev: Url | nil
-      next: Url | nil
-      last?: Url | nil
+      self?:
+        description: Url of the current request.
+        type: Url | nil
+      first?:
+        description: Url to the first page of the result set.
+        type: Url | nil
+      prev:
+        description: Url to the previous page of the result set.
+        type: Url | nil
+      next:
+        description: Url to the next page of the result set.
+        type: Url | nil
+      last?:
+        description: Url to the last page of the result set.
+        type: Url | nil
 
   PageNumber:
     description: Page number in case the response is seprated in different pages.
@@ -330,15 +388,24 @@ types:
     description: Information regarding the system that is responible for the response.
       Provides support contact information in case there are issues with response format or content.
     properties:
-      name?: string
-      supportUrl?: string
-      apiVersion?: string
-      responseType?: string
+      name?:
+        description: Name of the provider (of the service).
+        type: string
+      supportUrl?:
+        description: Url to information for the provider (of the service).
+        type: string
+      apiVersion?:
+        description: API Version with which the result set was generated. Can be used to parse the response.
+        type: string
+      responseType?:
+        description: Name of the type of the result set. Can be used to parse the response.
+        type: string
       responseTimestamp?:
         type: Timestamp
         description: Timestamp when this response was created.
 
   Quality:
+    description: Defines the quality of the result (confidence).
     type: integer
 
   QuantityName:
@@ -351,7 +418,9 @@ types:
     description: Describes the type of data in the time series, and the owner of the data.
     type: object
     properties:
-      process: ProcessName
+      process:
+        description: Name of the process.
+        type: ProcessName
       name?:
         type: SourceName
         description: A name describing the source, e.g. a model name.
@@ -377,16 +446,36 @@ types:
     description: Generic DD API 2.0 timeseries object.DD API 'OPER' response returns a subset of the attributes.
     type: object
     properties:
-      node?: Node
-      url?: string
-      id?: Identifier
-      source: Source
-      location: Location
-      observationType: ObservationType
-      startTime: datetime
-      endTime: datetime
-      analysisTime?: datetime
-      realization?: number
+      node?:
+        description: Reference to the Node.
+        type: Node
+      url?:
+        description: URL of the time series.
+        type: string
+      id?:
+        description: IdL of the time series.
+        type: Identifier
+      source:
+        description: Source of the time series.
+        type: Source
+      location:
+        description: Location of the time series.
+        type: Location
+      observationType:
+        description: Observation ty[e] of the time series.
+        type: ObservationType
+      startTime:
+        description: Start date-time of the time series.
+        type: datetime
+      endTime:
+        description: End date-time  of the time series.
+        type: datetime
+      analysisTime?:
+        description: Analysis date-time of the time series.
+        type: datetime
+      realization?:
+        description: Realization count.
+        type: number
       events?:
         type: Event[]
         description: If no startTime and no endTime are provided in the /timeseries-query, only meta-data is provided,
