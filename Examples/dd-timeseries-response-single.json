@@ -6,7 +6,7 @@
 		"responseType": "TimeseriesResponse",
 		"responseTimestamp": "2018-07-05T15:11:36.123456Z"
 	},
-	"results":
+	"result":
 		{
 			"node": {
 				"name": "LMW-Next",

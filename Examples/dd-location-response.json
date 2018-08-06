@@ -3,7 +3,7 @@
 		"name": "Matroos",
 		"supportUrl": "tbd http://www.rws.nl/support/matroos"
 	},
-	"results": {
+	"result": {
 		"type": "Feature",
 		"geometry": {
 			"type": "Point",
