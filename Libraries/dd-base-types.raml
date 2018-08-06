@@ -53,14 +53,13 @@ types:
       name:
         type: string
         description: Name of aspect.
-      value: number
+      value: ValueType
       limitSymbol?:
         description: Specifies that the value of the quantity is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
         type: number
       quality?: number
       additionalQuality?: number
 
-# BB is not required as object since bbox is only used as query parameter (toch maar laten staan? SH)
   BoundingBox:
     description: The specification of a bounding box using the longitude and latitiude of the most SouthWest point followed by the most NorthEast points (GeoJSON).
     type: Double[]
@@ -134,7 +133,7 @@ types:
         type: datetime
       value?:
         description: The 'value', 'quantity' and 'additionalQuality' can be returned at this level (Event object) in case the AspectSet and/or Point nestings would be redundant and introduce unnecesssary levels in the response
-        type: number
+        type: ValueType
       limitSymbol?:
         description: Specifies that the value of the quantity is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
         type: number
@@ -189,7 +188,7 @@ types:
         description: The name of the institution that produced and/or owns the data
       description?:
         type: string
-        description: Additional discription of the institution
+        description: Additional description of the institution
 
 # IntervalLength is not required as object since it is only used as query parameter
   IntervalLength:
@@ -358,7 +357,7 @@ types:
       coordinates: Position
       value:
         description: The 'value', 'quantity' and 'additionalQuality' can be returned at this level (Event object) in case the AspectSet and/or Point nestings would be redundant and introduce unnecesssary levels in the response
-        type: number
+        type: ValueType
       limitSymbol?:
         description: Specifies that the value of the quantity is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
         type: number
@@ -471,7 +470,7 @@ types:
         description: Location of the time series.
         type: Location
       observationType:
-        description: Observation ty[e] of the time series.
+        description: Observation type of the time series (concentration, parameter, etc.).
         type: ObservationType
       startTime:
         description: Start date-time of the time series.
@@ -489,8 +488,8 @@ types:
         description: Specifies the interval between events in the timeseries. If present and set to 'null', the time series is non-equidistant.
         type: number
       valueType?:
-        description: The data type of the measured or computed data (double, integer, catagorized).
-        type: number
+        description: The data type of the measured or computed data (double, integer, categorized).
+        type: string
       events?:
         type: Event[]
         description: If no startTime and no endTime are provided in the /timeseries-query, only meta-data is provided,
@@ -501,6 +500,10 @@ types:
     description: Date and time in format "yyyy-mmm-ddThh:mm:ss.ffffffZ"  (UTC Zulu with minimal 3 digits of fractional seconds)
     example: "2018-07-05T15:11:36.123Z, 2018-07-05T15:11:36.123456Z, 2018-07-05T15:11:36.000Z"
     minLength: 24
+
+  ValueType:
+    type: number | string
+    description: The type of values in the time series ('string' in case of categorized values, like 'natuurlijk' vs 'aangelegd').
 
   Url:
     type: string
