@@ -54,6 +54,9 @@ types:
         type: string
         description: Name of aspect.
       value: number
+      limitSymbol?:
+        description: Specifies that the value of the quantity is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
+        type: number
       quality?: number
       additionalQuality?: number
 
@@ -132,6 +135,9 @@ types:
       value?:
         description: The 'value', 'quantity' and 'additionalQuality' can be returned at this level (Event object) in case the AspectSet and/or Point nestings would be redundant and introduce unnecesssary levels in the response
         type: number
+      limitSymbol?:
+        description: Specifies that the value of the quantity is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
+        type: number
       quality?:
         description: See value attribute.
         type: number
@@ -204,27 +210,27 @@ types:
         description: The attributes of Location object are placed within the properties group of the GeoJSON object.
         type: object
         properties:
-          node?:
-            description: Node reference.
-            type: Node
           url?:
             description: Url to details.
             type: string
+          node?:
+            description: Node reference.
+            type: Node
           locationId?:
             description: Id of the location.
             type: string
           locationCode?:
-            description: Vode of the location.
+            description: Code of the location.
             type: string
+          locationName?:
+            description: Name of the location.
+            type: LocationName
           referenceLevel?:
             description: GeoJSON element. Specifies the reference plane for the altitude coordinates (third). For example "NAP".
             type: string
           crs?:
             description: GeoJSON element. According to GeoJSON the coordinate reference system element is only included when it is not "WGS84" (default).
             type: string
-          locationName?:
-            description: Name of the location.
-            type: LocationName
           locationNameSpace?:
             description: Location name space.
             type: LocationNameSpace
@@ -270,27 +276,23 @@ types:
     description: Generic DD API 2.0 parameter object. DD-OPER API response returns a subset of the attributes.
     type: object
     properties:
-      node?:
-        description: Reference to the node.
-        type: Node
-      url?:
-        description: Url with details.
-        type: Url
       id?:
         description: Id of the observation type.
         type: Identifier
-      quantityName?:
-        description: Composed name of the quantity(.parameterCode) that was measured or computed.
-          Remark Only used in dd-oper response.
-        type: QuantityName
+      url?:
+        description: Url with details.
+        type: Url
+      node?:
+        description: Reference to the node.
+        type: Node
+      quantity?:
+        description: Quantity (grootheid) of the observation type.
+        type: string
       parameterCode?:
         description: Parameter code specifying the observationtype. Non-biological observation types follow the Aquo standards.
         type: string
       description?:
         description: Description of the observation type.
-        type: string
-      quantity?:
-        description: Quantity (grootheid) of the observation type.
         type: string
       unit?:
         description: (Measurement) unit of the observation type.
@@ -299,6 +301,10 @@ types:
         description: The compartment in which the measurement/computationt is available. Standardised Aquo compartments.
         type: string
         example:  OW, DL, GW, LW
+      quantityName?:
+        description: Composed name of the quantity(.parameterCode) that was measured or computed.
+          Remark Only used in dd-oper response.
+        type: QuantityName
       aspectSet?:
         description: Optional, currently only provided and used by RWS.
         type: AspectSet
@@ -350,8 +356,11 @@ types:
     type: object
     properties:
       coordinates: Position
-      value?:
+      value:
         description: The 'value', 'quantity' and 'additionalQuality' can be returned at this level (Event object) in case the AspectSet and/or Point nestings would be redundant and introduce unnecesssary levels in the response
+        type: number
+      limitSymbol?:
+        description: Specifies that the value of the quantity is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
         type: number
       quality?:
         description: See also value attribute.
@@ -475,6 +484,12 @@ types:
         type: datetime
       realization?:
         description: Realization count.
+        type: number
+      interval?:
+        description: Specifies the interval between events in the timeseries. If present and set to 'null', the time series is non-equidistant.
+        type: number
+      valueType?:
+        description: The data type of the measured or computed data (double, integer, catagorized).
         type: number
       events?:
         type: Event[]
