@@ -11,10 +11,6 @@ types:
     type: integer
     description: Provides detailed information on specific Quality numbers.
 
-  Altitude:
-    description: Altitude of a (3d) coordinate
-    type: number
-
   Aspect:
     description: A mathematical derived variant of a specific measurement, forecast, etc.
     type: object
@@ -32,27 +28,26 @@ types:
         minItems: 0
 
   AspectSetName:
-    description: Name of an AspectSet
+    description: Name of an AspectSet. If implementing systems require an aspect-filter in the request-url and it is omitted, "default" is taken.
     type: string
-    default: "standard"
-    example: "minimum, maximum, standard, ...."
+    example: "MinimumMaximumAverage"
 
   AspectPointsValue:
-    description: Object used for Event.Aspect.Points. Specifies the values in points array in context of Aspect name.
+    description: Object used for Event.Aspect.Points. Specifies the values in the list of points for one of the aspects in an AspectSet.
     type: object
     properties:
       name:
         type: string
-        description: Name of aspect.
+        description: Name of the aspect.
       points: PointsValue[]
 
   AspectValue:
-    description: Object used for Event.Aspect[] results. Specifies the value in context of Aspect name.
+    description: Object used for Event.Aspect[] results. Specifies the value for one of the aspects in an AspectSet.
     type: object
     properties:
       name:
         type: string
-        description: Name of aspect.
+        description: Name of the aspect.
       value: ValueType
       limitSymbol?:
         description: Specifies that the value of the quantity is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
@@ -116,7 +111,7 @@ types:
   Event:
     description: In case of scalar time series the event contains time stamp and value, optionally extended with
       an interval specification (startTime/endTime/resultTime), and a quality indication (quality, additionalQuality).
-      In case of a timeseries with Aspects or with values on multiple points, the events contains object for the aspects or points.
+      In case of a timeseries with aspects and/or with values on multiple points, the events contains object for the aspects and/or points.
     type: object
     properties:
       timeStamp?:
@@ -132,27 +127,27 @@ types:
         description: Result time.
         type: datetime
       value?:
-        description: The 'value', 'quantity' and 'additionalQuality' can be returned at this level (Event object) in case the AspectSet and/or Point nestings would be redundant and introduce unnecesssary levels in the response
+        description: The value (and optionally a 'quantity' and 'additionalQuality' indicators) for a scalar event, i.e. in case there are no aspects and/or multiple points per event.
         type: ValueType
       limitSymbol?:
         description: Specifies that the value of the quantity is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
         type: number
       quality?:
-        description: See value attribute.
+        description: See description at 'value' attribute.
         type: number
       additionalQuality?:
-        description: See also value attribute.
+        description: See description at 'value' attribute.
         type: number
       aspects?:
         type: AspectValue[] | AspectPointsValue []
-        description: When Aspects are used the value/quality/unit are given in and object for each aspect or aspect+point.
+        description: When the time series contains aspects the value/quality/unit are given in an object for each aspect or aspect+point.
       points?:
         type: PointsValue[]
-        description: When multiple positions are involved the value/quantity/unit are given in context of each position.
+        description: When the time series contains multiple points the value/quantity/unit are given in an object for each point.
 
   Filter:
     type: string
-    description: defined a query filter.
+    description: defines a query filter.
 
   FilterError:
     type: object
@@ -170,7 +165,7 @@ types:
         type: string
         example: "Point"
       coordinates?:
-        description: An array of doubles, representing a Longitude, Latitude and optional Altitude.
+        description: An array of doubles, representing a longitude, a latitude and optionally an altitude.
         type: Position | Positions
         examples:
           -point:  [4.234 , 5.23423]
@@ -178,7 +173,7 @@ types:
 
   Identifier:
     type: string
-    description: An identifier can be anything expressed as a string.
+    description: An identifier can be anything expressed by a string.
 
   Institution:
     type: object
@@ -196,7 +191,7 @@ types:
     default: 10min
 
   Location:
-    description: Generic DD API 2.0 Location object structure that is used by /dd and /dd-oper. Most attributes are optional as the content returned in the response depends on the request.  Location attributes are placed within the properties group of the GeoJSON  object.
+    description: Generic DD API 2.0 Location object, structured according to GeoJSON. Most attributes are optional, since the content returned in the response depends on whether it is a /dd or a /dd-oper request. Location attributes are placed within the properties group of the GeoJSON  object.
     properties:
       type:
         description: Type of GeoJSON object. In the DD-API the only allowed type is "Feature".
@@ -206,14 +201,14 @@ types:
         description: The coordinate(s) of the Location are placed within the "geometry" section of the GeoJSON object. DD-API uses Point and Multi-Point locations, but is not restricted to these two.
         type: Geometry | nil
       properties?:
-        description: The attributes of Location object are placed within the properties group of the GeoJSON object.
+        description: The attributes of the Location object are placed within the properties group of the GeoJSON object.
         type: object
         properties:
           url?:
-            description: Url to details.
+            description: Url describing the location object. (Not provided in case of /dd-oper requests.)
             type: string
           node?:
-            description: Node reference.
+            description: Specification of the node where the location is stored.
             type: Node
           locationId?:
             description: Id of the location.
