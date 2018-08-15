@@ -122,6 +122,10 @@ types:
           description: Location code.
           example: NLWATB-RWTS_AFGDM_0001
         locationId?: DD-T.Identifier
+        format?:
+          type: string
+          description: Specification of the requested response format. Default is "json".
+            By specifying "format=geojson", a pure GeoJSON response is returned (i.e. a FeatureCollection, without provider information and paging links).
       responses:
         200:
           description: Succesfully retrieved resource.
@@ -143,6 +147,10 @@ types:
           process?:
             type: DD-T.ProcessName
             default: measurement
+          format?:
+            type: string
+            description: Specification of the requested response format. Default is "json".
+              By specifying "format=geojson", a pure GeoJSON response is returned (i.e. a FeatureCollection, without provider information and paging links).
         responses:
           200:
             description: |
