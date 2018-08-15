@@ -1,7 +1,8 @@
 # Changes between version 1.0 and 2.0
 
 ## Introduction
-This document describes the changes between versions 1.0 of the specification and version 2.0.
+This document describes the changes between versions 1.0 of the specification and version 2.0.  
+`Todo: update according to latest changes (all minor)`
 
 ## Type changes
 (Almost) all types have changed in version 2.0, but may not require many changes.
