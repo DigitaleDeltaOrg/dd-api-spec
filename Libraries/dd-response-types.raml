@@ -34,11 +34,11 @@ types:
 
   LocationResponse:
     description: Contains the response for one Location.
-    type: GENERIC-RESP.BaseResponseHeader
+    type: DD-T.Location
     properties:
-      result:
-        type: DD-T.Location
-        description: Specific location
+      provider:
+        type: DD-T.Provider
+        description: A single location.
 
   NodeListResponse:
     description: Contains zero or more responses to a Node list request.
@@ -50,10 +50,10 @@ types:
 
   NodeResponse:
     description: Contains the response for one Location.
-    type: GENERIC-RESP.BaseResponseHeader
+    type: DD-T.Node
     properties:
-      result:
-        type: DD-T.Node
+      provider:
+        type: DD-T.Provider
         description: A single Node object.
 
   ObservationTypeListResponse:
@@ -66,10 +66,10 @@ types:
 
   ObservationTypeResponse:
     description:
-    type: GENERIC-RESP.BaseResponseHeader
+    type: DD-T.ObservationType
     properties:
-      result:
-        type: DD-T.ObservationType
+      provider:
+        type: DD-T.Provider
         description: Specific ObservationType object
 
   SourceListResponse:
@@ -90,8 +90,8 @@ types:
 
   TimeseriesResponse:
     description:
-    type: GENERIC-RESP.BaseResponseHeader
+    type: DD-T.Timeseries
     properties:
-      result:
-        type: DD-T.Timeseries
+      provider:
+        type: DD-T.Provider
         description: Specific Timeseries object

@@ -39,10 +39,10 @@ types:
 
   LocationResponse:
     description: Contains the response for one Location.
-    type: GENERIC-RESP.BaseResponseHeader
+    type: DD-T.Location
     properties:
-      result:
-        type: DD-T.Location
+      provider:
+        type: DD-T.Provider
 
   QuantityListResponse:
     description: Contains a list of zero or more Quantities.

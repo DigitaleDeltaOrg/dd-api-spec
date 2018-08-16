@@ -5,7 +5,7 @@
     "responseType": "timeseriesListResponse",
     "responseTimestamp": "2018-07-05T15:11:36.123456Z"
   },
-  "result": [ {
+  "results": [ {
     "source": {
       "process": "measurement",
       "institution": {

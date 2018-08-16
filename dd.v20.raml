@@ -134,8 +134,44 @@ types:
               type: DD-RESP.LocationListResponse
               example: !include examples/dd-locationslist-response.json
 
+  /locations/geojson:
+    get:
+      description: |
+        Retrieve location resources. Response is in GeoJSON format.
+      is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError, TRAITS.locationFilterable ]
+      queryParameters:
+        process?:
+          type: DD-T.ProcessName
+        boundingBox?:
+          type: DD-T.BoundingBox
+          example: [4.8, 52.0, 5.8, 54.0]
+        locationName?:
+          type: string
+          description: (Partial) location name. Partional meaning startsWith(...).
+          example: NEDHMT
+        nodeId?:
+          type: DD-T.Identifier
+          description: This query parameter is deprecated.
+        locationCode?:
+          type: string
+          description: Location code.
+          example: NLWATB-RWTS_AFGDM_0001
+        locationId?: DD-T.Identifier
+        format?:
+          type: string
+          description: Specification of the requested response format. Default is "json".
+            By specifying "format=geojson", a pure GeoJSON response is returned (i.e. a FeatureCollection, without provider information and paging links).
+      responses:
+        200:
+          description: Succesfully retrieved resource.
+          body:
+            application/json:
+              type: object
+              example: !include examples/dd-locationslist-response.json
+
+
     /{locationId}:
-      description: Request a specific location by its id.
+      description: Request a specific location by its id. Response is always in GeoJSON format.
       uriParameters:
         locationId:
           type: DD-T.Identifier
@@ -147,18 +183,14 @@ types:
           process?:
             type: DD-T.ProcessName
             default: measurement
-          format?:
-            type: string
-            description: Specification of the requested response format. Default is "json".
-              By specifying "format=geojson", a pure GeoJSON response is returned (i.e. a FeatureCollection, without provider information and paging links).
         responses:
           200:
             description: |
               Succesfully retrieved resource
             body:
               application/json:
-                type: DD-RESP.LocationResponse
-                example: !include examples/dd-location-response.json
+                type: object
+                example: !include examples/dd-location-response-geojson.json
 
 ######################################################
 

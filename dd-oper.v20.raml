@@ -118,7 +118,7 @@ traits:
           200:
             body:
               application/json:
-                type: DDOPER-RESP.LocationResponse
+                type: object
                 example: !include examples/dd-oper/dd-oper-location-response.json
       is: [has400-InvalidRequestError, has404-NotFoundError]
 
