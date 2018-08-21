@@ -2,24 +2,26 @@
 
 # Name: dd-base-types.raml
 #
-# Date: 2018-07-25
+# Date: 2018-08-21
 #
 #  This file defines the basic datatypes used in the DD API and DD-OPER API.
 
 types:
   AdditionalQuality:
-    type: integer
+    type: number
     description: Provides detailed information on specific Quality numbers.
 
   Aspect:
     description: A mathematical derived variant of a specific measurement, forecast, etc.
     type: object
     properties:
-      name: string
-      unit: string
+      name:
+        type: string
+      unit:
+        type: string
 
   AspectSet:
-    description: Defines a group of related mathematical values for a single measurement, forecast, etc
+    description: Defines a group of related mathematical values for a single measurement, forecast, etc.
     type: object
     properties:
       name: AspectSetName
@@ -50,13 +52,15 @@ types:
         description: Name of the aspect.
       value: ValueType
       limitSymbol?:
-        description: Specifies that the value of the quantity is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
-        type: number
-      quality?: number
-      additionalQuality?: number
+        description: Specifies that the value is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
+        type: string
+      quality?:
+        type: Quality
+      additionalQuality?:
+        type: AdditionalQuality
 
   BoundingBox:
-    description: The specification of a bounding box using the longitude and latitiude of the most SouthWest point followed by the most NorthEast points (GeoJSON).
+    description: The specification of a bounding box using the longitude and latitude of the most SouthWest point followed by the most NorthEast points (GeoJSON).
     type: Double[]
     minItems: 4
     maxItems: 4
@@ -78,7 +82,7 @@ types:
     example: 2018-01-01T00:00:00Z
     description:  The End date/time of the timeseries, or the End date/time of the interval for an individual value in the series. Uses the UCT (Zulu) notation.
       The endtime is exlusive, hence the requested period ends just before the given time.
-      2018-01-01T00:00:00Z - 2018-01-01T00:00:10Z  specifies a 10 minute period starting at midnight and
+      2018-01-01T00:00:00Z - 2018-01-01T00:00:10Z specifies a 10 minute period starting at midnight and
       ending at 2018-01-01T00:09:59.99999Z
 
   Error:
@@ -110,7 +114,7 @@ types:
 
   Event:
     description: In case of scalar time series the event contains time stamp and value, optionally extended with
-      an interval specification (startTime/endTime/resultTime), and a quality indication (quality, additionalQuality).
+      an interval specification (startTime/endTime/resultTime), and a quality indicator (quality, additionalQuality).
       In case of a timeseries with aspects and/or with values on multiple points, the events contains object for the aspects and/or points.
     type: object
     properties:
@@ -127,17 +131,17 @@ types:
         description: Result time.
         type: datetime
       value?:
-        description: The value (and optionally a 'quantity' and 'additionalQuality' indicators) for a scalar event, i.e. in case there are no aspects and/or multiple points per event.
+        description: The value (and optionally a 'quality' and 'additionalQuality' indicators) for a scalar event, i.e. in case there are no aspects and/or multiple points per event.
         type: ValueType
       limitSymbol?:
-        description: Specifies that the value of the quantity is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
-        type: number
+        description: Specifies that the value is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
+        type: string
       quality?:
         description: See description at 'value' attribute.
-        type: number
+        type: Quality
       additionalQuality?:
         description: See description at 'value' attribute.
-        type: number
+        type: AdditionalQuality
       aspects?:
         type: AspectValue[] | AspectPointsValue []
         description: When the time series contains aspects the value/quality/unit are given in an object for each aspect or aspect+point.
@@ -153,8 +157,10 @@ types:
     type: object
     description: Defines the field of an error in the filtering syntax.
     properties:
-      errorType: string
-      context: string
+      errorType:
+        type: string
+      context:
+        type: string
 
   Geometry:
     description: A geometry in GeoJSON format. Digital Delta currently only supports the Point and MultiPoint types.
@@ -187,6 +193,7 @@ types:
 
 # IntervalLength is not required as object since it is only used as query parameter
   IntervalLength:
+    type: string
     description: Interval length of the sequence.
     default: 10min
 
@@ -351,17 +358,17 @@ types:
     properties:
       coordinates: Position
       value:
-        description: The 'value', 'quantity' and 'additionalQuality' can be returned at this level (Event object) in case the AspectSet and/or Point nestings would be redundant and introduce unnecesssary levels in the response
+        description: The 'value', 'quality' and 'additionalQuality' can be returned at this level (Event object) in case the AspectSet and/or Point nestings would be redundant and introduce unnecesssary levels in the response
         type: ValueType
       limitSymbol?:
-        description: Specifies that the value of the quantity is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
-        type: number
+        description: Specifies that the value is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
+        type: string
       quality?:
         description: See also value attribute.
-        type: number
+        type: Quality
       additionalQuality?:
         description: See also value attribute.
-        type: number
+        type: AdditionalQuality
 
   Position:
     description: |
@@ -409,7 +416,7 @@ types:
 
   Quality:
     description: Defines the quality of the result (confidence).
-    type: integer
+    type: number
 
   QuantityName:
     type: string
@@ -433,7 +440,8 @@ types:
       realizationCount?:
         type: integer
         description: if present, and larger then 1, the results are part of an ensemble run
-      institution: Institution
+      institution:
+        type: Institution
 
   SourceName:
     type: string
@@ -469,10 +477,10 @@ types:
         type: ObservationType
       startTime:
         description: Start date-time of the time series.
-        type: datetime
+        type: StartTime
       endTime:
         description: End date-time  of the time series.
-        type: datetime
+        type: EndTime
       analysisTime?:
         description: Analysis date-time of the time series.
         type: datetime

@@ -51,7 +51,7 @@ types:
           type: DD-T.ProcessName
         name?:
           type: string
-          description: (Partial) name of the node. Partional meaning startsWith(...).
+          description: (Partial) name of the node. Partial meaning startsWith(...).
           example: AquaDeskPrimaryNode
       responses:
         200:
@@ -112,7 +112,7 @@ types:
           example: [4.8, 52.0, 5.8, 54.0]
         locationName?:
           type: string
-          description: (Partial) location name. Partional meaning startsWith(...).
+          description: (Partial) location name. Partial meaning startsWith(...).
           example: NEDHMT
         nodeId?:
           type: DD-T.Identifier
@@ -143,7 +143,7 @@ types:
           example: [4.8, 52.0, 5.8, 54.0]
         locationName?:
           type: string
-          description: (Partial) location name. Partional meaning startsWith(...).
+          description: (Partial) location name. Partial meaning startsWith(...).
           example: NEDHMT
         nodeId?:
           type: DD-T.Identifier
@@ -281,11 +281,11 @@ types:
         observationTypeId?:
           type: DD-T.Identifier
         realizationCount?:
-          description: ??? Added Count as this is the name in ObservationType response.
+          description: Added Count as this is the name in ObservationType response.
           type: integer
         parameterCode?:
           type: string
-        quantity:
+        quantity?:
           description:
           type: string
         aspectSet?:
@@ -298,7 +298,7 @@ types:
           type: boolean
           default: true
         intervalLength?:
-           type: DD-T.IntervalLength
+          type: DD-T.IntervalLength
         nodeId?:
           type: DD-T.Identifier
       responses:
