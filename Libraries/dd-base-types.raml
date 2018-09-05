@@ -12,7 +12,7 @@ types:
     description: Provides detailed information on specific Quality numbers.
 
   Aspect:
-    description: A mathematical derived variant of a specific measurement, forecast, etc.
+    description: A (usually mathematically derived) related variable of a specific measurement, forecast, etc.
     type: object
     properties:
       name:
@@ -21,7 +21,7 @@ types:
         type: string
 
   AspectSet:
-    description: Defines a group of related mathematical values for a single measurement, forecast, etc.
+    description: Defines a group of related variables for a single measurement, forecast, etc.
     type: object
     properties:
       name: AspectSetName
@@ -66,11 +66,6 @@ types:
     maxItems: 4
     examples:
       -bbox: [ 4.123456, 52.123456, 10.123456, 55.123456 ]
-
-  Coordinate:
-    description: Geographic coordinate,
-    type: number
-    format: double
 
   Double:
     description: A value of type Double.
@@ -151,7 +146,7 @@ types:
 
   Filter:
     type: string
-    description: defines a query filter.
+    description: Defines a query filter. TODO&colon; describe syntax.
 
   FilterError:
     type: object
@@ -163,7 +158,9 @@ types:
         type: string
 
   Geometry:
-    description: A geometry in GeoJSON format. Digital Delta currently only supports the Point and MultiPoint types.
+    description: A geometry in GeoJSON format. Digital Delta currently formally only
+      supports the Point and MultiPoint types. However, implementations may choose
+      to also provide time series on a Polygon
     type: object
     properties:
       type:

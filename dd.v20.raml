@@ -102,7 +102,7 @@ types:
   /locations:
     get:
       description: |
-        Retrieve location resources.
+        The locations endpoint returns the locations where measurements and/or model results are available.
       is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError, TRAITS.locationFilterable ]
       queryParameters:
         process?:
