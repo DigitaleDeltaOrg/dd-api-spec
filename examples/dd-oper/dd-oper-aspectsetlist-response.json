@@ -1,0 +1,52 @@
+{
+	"provider": {
+		"name": "MKK-DL",
+		"supportUrl": "http://www.rws.nl/support/mkk-dl",
+		"responseType": "AspectSetsListResponse",
+		"responseTimestamp": "2018-07-05T15:11:36.123456Z"
+	},
+	"results": [
+		{
+			"name": "WaterLevelMinMaxAver",
+			"aspects": [
+				{
+					"name": "minimun",
+					"unit": "mm"
+				},
+				{
+					"name": "maximum",
+					"unit": "mm"
+				},
+				{
+					"name": "average",
+					"unit": "mm"
+				}
+			]
+		},
+		{
+			"name": "WaterTemperatureRange",
+			"aspects": [
+				{
+					"name": "Minimum95%Accuracy",
+					"unit": "C"
+				},
+				{
+					"name": "Minimum80%Accuracy",
+					"unit": "C"
+				},
+				{
+					"name": "average",
+					"unit": "C"
+				},
+				{
+					"name": "Maximum95%Accuracy",
+					"unit": "C"
+				},
+				{
+					"name": "Maximum80%Accuracy",
+					"unit": "C"
+				}
+			]
+		}
+	]
+}
