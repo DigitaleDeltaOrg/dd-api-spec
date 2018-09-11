@@ -11,13 +11,13 @@ mediaType: [ application/json ]
 description: Digital Delta API version 2.0
 documentation:
  - title: Introduction
-   content: !include Documentation/Introduction.md
+   content: !include documentation/dd/Introduction.md
  - title: Document history
-   content: !include Documentation/Document_History.md
+   content: !include documentation/dd/Document_History.md
  - title: The API specification
-   content: !include Documentation/The_API_Specification.md
+   content: !include documentation/dd/The_API_Specification.md
  - title: Future enhancements and research
-   content: !include Documentation/Future_Enhancements_and_Research.md
+   content: !include documentation/dd/Future_Enhancements_and_Research.md
 
 # HTTP is included as protocol but is optional as for security reasons a Provider might decide to support HTTPS only.
 protocols:
@@ -25,10 +25,10 @@ protocols:
   - HTTPS
 
 uses:
-  DD-T: /Libraries/dd-base-types.raml
-  GENERIC-RESP: /Libraries/generic-response-types.raml
-  DD-RESP: /Libraries/dd-response-types.raml
-  TRAITS: /Libraries/dd-traits.raml
+  DD-T: libraries/dd-base-types.raml
+  GENERIC-RESP: libraries/generic-response-types.raml
+  DD-RESP: libraries/dd-response-types.raml
+  TRAITS: libraries/dd-traits.raml
 
 #
 # All data types are defined in external files (see above) so they can be shared between DD and DD-OPER API.

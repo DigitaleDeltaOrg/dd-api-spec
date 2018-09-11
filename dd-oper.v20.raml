@@ -12,22 +12,13 @@ mediaType: [ application/json ]
 description: Digital Delta - Operational API
 documentation:
   - title: Introduction
-    content: The Digital Delta is a distributed network in which various data sources exchange information using a standard web service interface.
-      The architecture and additional description of the Digital Delta can be found on ... (TODO refer to digitaldelta.org once it is updated - end of August).
-      The present document contains the specification of the Digital Delta web service API. It uses the <a href="http://raml.org">RAML standard</a> as the definition language.
+    content: !include documentation/dd-oper/Introduction.md
 
   - title: The API specification
-    content: This API describes 'DD-OPER', which is a series of additional endpoints to the 'DD API'. The structure of the /timeseries response
-      of DD-OPER API is in line with the /timeseries response defined by DD-API, but will provide a different (sub)set of the information.
+    content: !include documentation/dd-oper/The_API_Specification.md
 
   - title: Modification History
-    content: |
-      Date          Author      Description
-      2018-04-01    RWS         New version created based on DD API 1.0 and MKK-DL API 1.0
-      2018-04-20    RWS         End-points and request parameters finalised. Naming conventions alligned with DD API 1.9 proposal.
-      2018-07-07    RWS         Changed to dd-oper version 2.0 and now as Extension of DD-API 2.0 raml.
-      2018-07-18    RWS         Change to error/problem response due to DD API 2.0 change.
-      2018-09-11    RWS         References to '/Libraries' changed to 'libraries'
+    content: !include documentation/dd-oper/Document_History.md
 
   - title: Todo
     content: |
