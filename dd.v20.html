@@ -322,7 +322,7 @@
 	"detail": "Verplichte query parameter ontbreekt.",
 	"instance": "urn:2018-01-01:23:59:59.99999Z"
 }
-</code></pre></div></div></div></div></div></div></div></div><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_dd_2_0_locations"><span class="parent">/dd/2.0</span>/locations</a> <span class="methods"><a href="#dd_2_0_locations_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_dd_2_0_locations" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#dd_2_0_locations_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Retrieve location resources.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="dd_2_0_locations_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/dd/2.0</span>/locations</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve location resources.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#dd_2_0_locations_get_request" data-toggle="tab">Request</a></li><li><a href="#dd_2_0_locations_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="dd_2_0_locations_get_request"><h3>Query Parameters</h3><ul><li><strong>process</strong>: <em>(string)</em><p>The name of the mechanism to collect/derive the timeseries value. When accessing RWS&#39; DD-API, providing a processName as query parameter is required. The process names are pre-defined (see examples). Extending the processname with a suffix, referencing a more detailed mechanism like a specific calculation model, is not allowed. Other implementions dot need to implement this query-parameter.</p><p><strong>Example</strong>:</p><div class="examples"><pre><code>measurement, forecast, astronomical, advise</code></pre></div></li><li><strong>boundingBox</strong>: <em>(array of DD-T.Double - minItems: 4 - maxItems: 4)</em><p>The specification of a bounding box using the longitude and latitude of the most SouthWest point followed by the most NorthEast points (GeoJSON).</p><p><strong>Examples</strong>:</p><div class="examples"><p><strong>-bbox</strong>:<br></p><pre><code>[
+</code></pre></div></div></div></div></div></div></div></div><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_dd_2_0_locations"><span class="parent">/dd/2.0</span>/locations</a> <span class="methods"><a href="#dd_2_0_locations_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_dd_2_0_locations" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#dd_2_0_locations_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>The locations endpoint returns the locations where measurements and/or model results are available.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="dd_2_0_locations_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/dd/2.0</span>/locations</h4></div><div class="modal-body"><div class="alert alert-info"><p>The locations endpoint returns the locations where measurements and/or model results are available.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#dd_2_0_locations_get_request" data-toggle="tab">Request</a></li><li><a href="#dd_2_0_locations_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="dd_2_0_locations_get_request"><h3>Query Parameters</h3><ul><li><strong>process</strong>: <em>(string)</em><p>The name of the mechanism to collect/derive the timeseries value. When accessing RWS&#39; DD-API, providing a processName as query parameter is required. The process names are pre-defined (see examples). Extending the processname with a suffix, referencing a more detailed mechanism like a specific calculation model, is not allowed. Other implementions dot need to implement this query-parameter.</p><p><strong>Example</strong>:</p><div class="examples"><pre><code>measurement, forecast, astronomical, advise</code></pre></div></li><li><strong>boundingBox</strong>: <em>(array of DD-T.Double - minItems: 4 - maxItems: 4)</em><p>The specification of a bounding box using the longitude and latitude of the most SouthWest point followed by the most NorthEast points (GeoJSON).</p><p><strong>Examples</strong>:</p><div class="examples"><p><strong>-bbox</strong>:<br></p><pre><code>[
   4.123456,
   52.123456,
   10.123456,
@@ -438,7 +438,6 @@
 					52.123456
 				]
 			},
-			"id": "J",
 			"properties": {
 				"locationName": "Maarssen.Oostkanaaldijk",
 				"locationNameSpace": "NL.RWS.WM"
@@ -450,22 +449,21 @@
 				"type": "MultiPoint",
 				"coordinates": [
 					[
-						4.623456,
+						4.123456,
 						52.123456
 					],
 					[
-						4.523456,
+						4.123456,
 						52.123456,
 						-1.0
 					],
 					[
-						4.423456,
-						52.223456,
+						4.123456,
+						52.123456,
 						-2.0
 					]
 				]
 			},
-			"id": "P",
 			"properties": {
 				"locationName": "Maarssen.Westkanaaldijk",
 				"locationNameSpace": "NL.RWS.WM"
