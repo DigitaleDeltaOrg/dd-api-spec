@@ -50,7 +50,9 @@ types:
       name:
         type: string
         description: Name of the aspect.
-      value: ValueType
+      value:
+        description: The value of the measured or computed data.
+        type: ValueType
       limitSymbol?:
         description: Specifies that the value is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
         type: string
@@ -75,7 +77,7 @@ types:
   EndTime:
     type: datetime
     example: 2018-01-01T00:00:00Z
-    description:  The End date/time of the timeseries, or the End date/time of the interval for an individual value in the series. Uses the UCT (Zulu) notation.
+    description:  The End date/time of the time series, or the End date/time of the interval for an individual value in the series. Uses the UCT (Zulu) notation.
       The endtime is exlusive, hence the requested period ends just before the given time.
       2018-01-01T00:00:00Z - 2018-01-01T00:00:10Z specifies a 10 minute period starting at midnight and
       ending at 2018-01-01T00:09:59.99999Z
@@ -110,7 +112,7 @@ types:
   Event:
     description: In case of scalar time series the event contains time stamp and value, optionally extended with
       an interval specification (startTime/endTime/resultTime), and a quality indicator (quality, additionalQuality).
-      In case of a timeseries with aspects and/or with values on multiple points, the events contains object for the aspects and/or points.
+      In case of a time series with aspects and/or with values on multiple points, the events contains object for the aspects and/or points.
     type: object
     properties:
       timeStamp?:
@@ -126,16 +128,16 @@ types:
         description: Result time.
         type: datetime
       value?:
-        description: The value (and optionally a 'quality' and 'additionalQuality' indicators) for a scalar event, i.e. in case there are no aspects and/or multiple points per event.
+        description: The measured or computed value for a scalar value, i.e. in case there are no aspects and/or multiple points per event.
         type: ValueType
       limitSymbol?:
         description: Specifies that the value is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
         type: string
       quality?:
-        description: See description at 'value' attribute.
+        description: Indicator for the quality of the measured or computed value in the 'value' attribute.
         type: Quality
       additionalQuality?:
-        description: See description at 'value' attribute.
+        description: Additional information on the value in the 'quality' attribute.
         type: AdditionalQuality
       aspects?:
         type: AspectValue[] | AspectPointsValue []
@@ -234,16 +236,16 @@ types:
             type: LocationNameSpace
           displayNameDetail?:
             type: LocationName
-            description: Remark, Only used in dd-oper response.
+            description: Remark&colon; Only used in DD-OPER response.
           displayNameGlobal?:
             type: LocationName
-            description: Remark, Only used in dd-oper response.
+            description: Remark&colon; Only used in DD-OPER response.
           displayNameSpace?:
             type: LocationNameSpace
-            description: Remark, Only used in dd-oper response.
+            description: Remark&colon; Only used in DD-OPER response.
           parentName?:
             type: LocationName
-            description: Remark, Only used in dd-oper response.
+            description: Remark&colon; Only used in DD-OPER response.
 
   LocationName:
     type: string
@@ -254,7 +256,7 @@ types:
     example: "NL.RWS.WM"
 
   Node:
-    description: Node objects contain the properties of the data node. A node is an operational implementation of the Digital Delta specification.
+    description: Node objects contain the properties of the DD-node that contains the data. A node is an operational implementation of the Digital Delta specification.
     type: object
     properties:
       id?:
@@ -262,7 +264,7 @@ types:
         type: Identifier
       name:
         type: string
-        description: The name of the node.<br/>
+        description: The name of the node.
       description?:
         type: string
         description: The description of the node.
@@ -271,17 +273,17 @@ types:
         description: The base URL of the node.
 
   ObservationType:
-    description: Generic DD API 2.0 parameter object. DD-OPER API response returns a subset of the attributes.
+    description: Generic DD API 2.0 quantity/parameter object. The DD-OPER API response returns a subset of the attributes.
     type: object
     properties:
       id?:
         description: Id of the observation type.
         type: Identifier
       url?:
-        description: Url with details.
+        description: The provider's URL for the time series.
         type: Url
       node?:
-        description: Reference to the node.
+        description: Reference to the DD-node that contains the data of the time series.
         type: Node
       quantity?:
         description: Quantity (grootheid) of the observation type.
@@ -296,12 +298,12 @@ types:
         description: (Measurement) unit of the observation type.
         type: string
       compartment?:
-        description: The compartment in which the measurement/computationt is available. Standardised Aquo compartments.
+        description: The compartment in which the measurement/computation is available. Standardised Aquo compartments.
         type: string
         example:  OW, DL, GW, LW
       quantityName?:
         description: Composed name of the quantity(.parameterCode) that was measured or computed.
-          Remark Only used in dd-oper response.
+          Remark&colon; Only used in DD-OPER response.
         type: QuantityName
       aspectSet?:
         description: Optional, currently only provided and used by RWS.
@@ -355,16 +357,16 @@ types:
     properties:
       coordinates: Position
       value:
-        description: The 'value', 'quality' and 'additionalQuality' can be returned at this level (Event object) in case the AspectSet and/or Point nestings would be redundant and introduce unnecesssary levels in the response
+        description: The value of the measured or computed data.
         type: ValueType
       limitSymbol?:
         description: Specifies that the value is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
         type: string
       quality?:
-        description: See also value attribute.
+        description: Indicator for the quality of the measured or computed value in the 'value' attribute.
         type: Quality
       additionalQuality?:
-        description: See also value attribute.
+        description: Additional information on the value in the 'quality' attribute.
         type: AdditionalQuality
 
   Position:
@@ -384,7 +386,7 @@ types:
 
   ProcessName:
     type: string
-    description: The name of the mechanism to collect/derive the timeseries value.
+    description: The name of the mechanism to collect/derive the time series value.
       When accessing RWS' DD-API, providing a processName as query parameter is required. The process names are pre-defined (see examples).
       Extending the processname with a suffix, referencing a more detailed mechanism like a specific calculation model, is not allowed.
       Other implementions dot need to implement this query-parameter.
@@ -417,8 +419,9 @@ types:
 
   QuantityName:
     type: string
-    description: A name referencing a category of timeseries. The quantity names are predefined.
+    description: A name referencing a category of time series. The quantity names are predefined.
       For example 'WaterLevel', 'WaterTemperature', 'WaveHeight'.
+      Remark&colon; Only used in DD-OPER
     example: WaterLevel
 
   Source:
@@ -448,20 +451,20 @@ types:
   StartTime:
     type: datetime
     example: 2016-01-01T12:45:00Z
-    description:  Start date/time of the timeseries, or the Start date/time of the interval for an individual value in the series. Uses the UCT (Zulu) notation.
+    description:  Start date/time of the time series, or the Start date/time of the interval for an individual value in the series. Uses the UCT (Zulu) notation.
 
   Timeseries:
-    description: Generic DD API 2.0 timeseries object.DD API 'OPER' response returns a subset of the attributes.
+    description: Generic DD API 2.0 time series object. The DD-OPER API response returns a subset of the attributes.
     type: object
     properties:
       node?:
-        description: Reference to the Node.
+        description: Reference to the DD-node that contains the data of the time series.
         type: Node
       url?:
-        description: URL of the time series.
+        description: The provider's URL for the time series.
         type: string
       id?:
-        description: IdL of the time series.
+        description: The IdL of the time series.
         type: Identifier
       source:
         description: Source of the time series.
@@ -473,10 +476,10 @@ types:
         description: Observation type of the time series (concentration, parameter, etc.).
         type: ObservationType
       startTime:
-        description: Start date-time of the time series.
+        description: Start date-time of the time series (the first timestamp/value pair available in the series).
         type: datetime
       endTime:
-        description: End date-time of the time series.
+        description: End date-time of the time series (the last timestamp/value pair available in the series).
         type: datetime
       analysisTime?:
         description: Analysis date-time of the time series.
@@ -485,14 +488,14 @@ types:
         description: Realization count.
         type: number
       intervalLength?:
-        description: Specifies the interval between events in the timeseries. If present and set to 'null', the time series is non-equidistant. TODO&colon; decide on options for units.
+        description: Specifies the interval between events in the time series. If present and set to 'null', the time series is non-equidistant. TODO&colon; decide on options for units.
         type: number
       valueType?:
         description: The data type of the measured or computed data (double, integer, categorized).
         type: string
       events?:
         type: Event[]
-        description: If no startTime and no endTime are provided in the /timeseries-query, only meta-data is provided,
+        description: If no startTime and no endTime are provided in the /time series-query, only meta-data is provided,
           so the events are not present.
 
   Timestamp:
