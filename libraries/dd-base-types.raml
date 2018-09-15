@@ -301,6 +301,9 @@ types:
         description: The compartment in which the measurement/computation is available. Standardised Aquo compartments.
         type: string
         example:  OW, DL, GW, LW
+      qualifier?:
+        type: string
+        description: Additional qualification of the measurement or computation. Can be used for the Aqou 'hoedanigheid'.
       quantityName?:
         description: Composed name of the quantity(.parameterCode) that was measured or computed.
           Remark&colon; Only used in DD-OPER response.
@@ -493,6 +496,9 @@ types:
       valueType?:
         description: The data type of the measured or computed data (double, integer, categorized).
         type: string
+      qualifier?:
+        type: string
+        description: Additional qualification of the measurement or computation.
       events?:
         type: Event[]
         description: If no startTime and no endTime are provided in the /time series-query, only meta-data is provided,
