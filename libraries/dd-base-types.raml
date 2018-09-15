@@ -204,7 +204,8 @@ types:
         type: string
         enum: ["Feature"]
       geometry:
-        description: The coordinate(s) of the Location are placed within the "geometry" section of the GeoJSON object. DD-API uses Point and Multi-Point locations, but is not restricted to these two.
+        description: The coordinate(s) of the Location are placed within the "geometry" section of the GeoJSON object.
+          DD-API uses Point and Multi-Point locations, but is not restricted to these two.
         type: Geometry | nil
       properties?:
         description: The attributes of the Location object are placed within the properties group of the GeoJSON object.
@@ -229,8 +230,10 @@ types:
             description: GeoJSON element. Specifies the reference plane for the altitude coordinates (third). For example "NAP".
             type: string
           crs?:
-            description: GeoJSON element. According to GeoJSON the coordinate reference system element is only included when it is not "WGS84" (default).
-            type: string
+            description: GeoJSON Coordinate Reference System element. According to GeoJSON the CRS always as to be "WGS84",
+              hence the crs element has been removed from the GeoJSON Feature object. However, the DD-API still has the field,
+              to be able to specify that the data is provided in another CRS (although this is discouraged).
+            type: object
           locationNameSpace?:
             description: Location name space.
             type: LocationNameSpace
