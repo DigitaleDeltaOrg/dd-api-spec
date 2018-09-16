@@ -235,8 +235,8 @@ types:
               to be able to specify that the data is provided in another CRS (although this is discouraged).
             type: object
           locationNameSpace?:
-            description: Location name space.
             type: LocationNameSpace
+            description: Remark&colon; Only used in DD-OPER response.
           displayNameDetail?:
             type: LocationName
             description: Remark&colon; Only used in DD-OPER response.
@@ -497,7 +497,7 @@ types:
         description: Specifies the interval between events in the time series. If present and set to 'null', the time series is non-equidistant. TODO&colon; decide on options for units.
         type: number
       valueType?:
-        description: The data type of the measured or computed data (double, integer, categorized).
+        description: The data type of the measured or computed data (float, integer, categorized). Default&colon; float.
         type: string
       qualifier?:
         type: string
