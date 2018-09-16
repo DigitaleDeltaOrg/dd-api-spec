@@ -5,36 +5,39 @@ This document describes the changes between versions 1.0 of the specification an
 `Todo: update according to latest changes (all minor)`
 
 ## Type changes
-(Almost) all types have changed in version 2.0, but may not require many changes.
+(Almost) all types have changed in version 2.0, but may not require many changes to the implementing code.
 
 ### Generic to all types
-#### UUIDs replaced by IDs
+##### UUIDs replaced by IDs
 The requirement that every object requires a fixed UUID, will be changed. Every object will now require an identifying id, which is a string. If providers want to keep using a UUID, they just need to change the name of the property to ID.
 
 ### New types
-#### AspectSet
+##### AspectSet
 Defines an aspect set.
 
-#### AspectSetsListResponse
+##### AspectSetsListResponse
 Defines a list response of aspect sets.
 
-#### Provider
+##### Provider
 Defines the provider resource type for specifying provider-specific responses.
 
-#### ProblemResponse
+##### ProblemResponse
 Defines error information.
 
 ### Generic to all list responses
-All list-responses **must** provide a links resource object.
-The links resource object **must** contain the following properties:
+The prev/next paging attributes of version 1.0 has been replaced by a paging resource object.
+All list-responses, except for /location/geojson, **must** provide a paging resource object.
+The paging resource object **must** contain the following properties:
 - totalObjectCount: contains the number of records that satisfy the query requirements.
-- prev: has an href property that contains the url for the previous page, if available, else null.
-- next: has an href property that contains the url for the next page, if available, else null.     
+- prev: contains the url for the previous page, if available, else null.
+- next: contains the url for the next page, if available, else null. 
 - maxPageSize: maximum page size as defined by the provider.
 - minPageSize: minimum page size as defined by the provider.
 
-The links resource object **may** contain the following properties:
-- self: has an href property to the current request.
+The pages resource object **may** contain the following properties:
+- first: contains the url for the first page.
+- last: contains the url for the first page.
+- self: contains the url for the current request.
 
 ### Generic to all responses
 All responses **may** provide a provider resource object. For the dd-oper specification, the provider resource object is required.
