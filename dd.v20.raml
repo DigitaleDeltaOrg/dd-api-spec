@@ -274,7 +274,7 @@ types:
         locationName?:
           type: DD-T.LocationName
           example: "Hoek.vanHolland.nieuwewat"
-        sourceName:
+        sourceName?:
           type: DD-T.SourceName
           example: rws_prediction
         observationTypeId?:
@@ -283,18 +283,28 @@ types:
           description: Added Count as this is the name in ObservationType response.
           type: integer
         parameterCode?:
+          description: Implementation is optional. Preferably to be implemented by means of the generic filtering mechanism.
           type: string
         quantity?:
-          description:
+          description: Implementation is optional. Preferably to be implemented by means of the generic filtering mechanism.
+          type: string
+        valueType?:
+          description: Value type (float, integer, categorized).
+          type: string
+        nodeId?:
+          type: DD-T.Identifier
+        qualifier?:
+          description: Filter for the optional qualifier property.
           type: string
         aspectSet?:
           type: DD-T.AspectSetName
+          description: Remark&colon; Only required for systems that implement aspect sets
         quantityName?:
           type: DD-T.QuantityName
+          description: Remark&colon; Only required for systems that are accessed by RWS's MKK-DL
         intervalLength?:
           type: DD-T.IntervalLength
-        nodeId?:
-          type: DD-T.Identifier
+          description: Remark&colon; Only required for systems that are accessed by RWS's MKK-DL
       responses:
         200:
           description: |
