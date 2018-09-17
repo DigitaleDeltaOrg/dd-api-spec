@@ -28,7 +28,12 @@
       	"displayNameDetail": "Oostkanaaldijk KP112",
       	"parentName": "noordzeekanaal-amsterdamrijnkanaal",
         "referenceLevel": "WaterOppervlakte",
-        "crs": "ETRS89"
+        "crs": {
+					"type": "name",
+					"properties": {
+						"name": "EPSG:28992"
+					}
+				}
       }
     },
     "observationType": {
