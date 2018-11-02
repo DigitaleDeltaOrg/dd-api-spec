@@ -45,4 +45,4 @@ The [Operational extension "dd-oper"](dd-oper.v20.raml) is an extension develope
 The changes between version 1.0 and 2.0 are described [here](https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/2.0/Documentation/Changes_between_1.0_and_2.0.md).
 
 ## Implementations
-The [Current Implementations](https://github.com/DigitaleDeltaOrg/dd-api-spec/wiki/Implementations) contains the most recent list of implementations of the Digital Delta Specifications. 
+The [Current Implementations](https://github.com/DigitaleDeltaOrg/dd-api-spec/wiki/Current-implementations) contains the most recent list of implementations of the Digital Delta Specifications. 
