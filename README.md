@@ -18,7 +18,7 @@ The changes in version 2.0 compared to 1.0 can be summarized as:
 
 _Due to the nature of the changes, version 2.0 is not backwards compatible with version 1.0._  
 
-The status of this specification is **draft**.
+The status of this specification is **pre-production**.
 
 ## Getting started
 
