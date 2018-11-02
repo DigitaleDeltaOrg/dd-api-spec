@@ -25,7 +25,7 @@ The status of this specification is **pre-production**.
 The specification is written in [RAML 1.0](https://raml.org), a 'language' to define [REST](https://nl.wikipedia.org/wiki/Representational_state_transfer) (REpresentational State Transfer) service.
 
 It is a _specification_. This means that there is no full implementation of this specification available in this repository.
-There are, however, [result samples](https://github.com/DigitaleDeltaOrg/dd-api-spec/tree/2.0/examples) available. Some helper classes in the C# programming language are available in the [Wiki](https://github.com/DigitaleDeltaOrg/dd-api-spec/wiki/C%23-Generic-Base-Classes-for-DD-API-2.0).
+There are, however, [result samples](https://github.com/DigitaleDeltaOrg/dd-api-spec/tree/2.0/examples) available. Some helper classes in the [C# programming language](https://github.com/DigitaleDeltaOrg/dd-api-spec/wiki/C%23-Generic-Base-Classes-for-DD-API-2.0) are available in the [Wiki](https://github.com/DigitaleDeltaOrg/dd-api-spec/wiki).
 
 To read the RAML specification, some [tools](https://github.com/DigitaleDeltaOrg/dd-api-specs/wiki/Tools) are recommended. Some tools are also capable of generating documentation, or code skeletons for both consumers and implementers.
 
