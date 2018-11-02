@@ -1,8 +1,12 @@
 # Digital Delta API Specification Version 2.0
 
+This specification describes the Digital Delta API Version 2.0 (DD-API 2.0). It is meant for both implementers and consumers of the Digital Delta API specifications.
+
+## About the Digital Delta 2.0 specification
+
 Version 2.0 of the Digital Delta API builds on the foundation as specified in [version 1.0](https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/master/README.md).
 
-See the [Digital Delta project](http://www.digitaldelta.nu/en/phase-3-operational-phase/item340) for some back ground information.
+See the [Digital Delta project](http://www.digitaldelta.nu/en/phase-3-operational-phase/item340) for some background information.
 
 The changes in version 2.0 compared to 1.0 can be summarized as:
 
@@ -16,11 +20,21 @@ Due to the nature of the changes, version 2.0 is not backwards compatible with v
 
 The status of this specification is **draft**.
 
-## Naming
-Some terms used in this document have a specific meaning:
-- **must**: implementation is **required**.
-- **may**: implementation is **optional**.
-- **should**: implementation is **recommended** due to future changes.  
+## Getting started
+
+The specification is written in [RAML 1.0](https://raml.org), a 'language' to define [REST](https://nl.wikipedia.org/wiki/Representational_state_transfer) (REpresentational State Transfer) service.
+
+It is a _specification_. This means that there is no full implementation of this specification available in this repository.
+There are, however, [result samples](https://github.com/DigitaleDeltaOrg/dd-api-spec/tree/2.0/examples) available. Some helper classes in the C# programming language are available in the [Wiki](https://github.com/DigitaleDeltaOrg/dd-api-spec/wiki/C%23-Generic-Base-Classes-for-DD-API-2.0).
+
+To read the RAML specification, some [tools](https://github.com/DigitaleDeltaOrg/dd-api-specs/wiki/Tools) are recommended. Some tools are also capable of generating documentation, or code skeletons for both consumers and implementers.
+
+The [HTML specifications](https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/2.0/dd.v20.html) can also be used and may be easier to read.
+
+### Prerequisites
+
+The easiest way to get the specification is to download the generated HTML files.
+To be able to use the RAML files, please consult the [tools](https://github.com/DigitaleDeltaOrg/dd-api-spec/wiki/Tools) section. Knowledge of the [RAML language](https://raml.org) is then recommended.
 
 ## The specification
 Version 2.0 includes two specifications.
@@ -30,41 +44,5 @@ The [Operational extension "dd-oper"](dd-oper.v20.raml) is an extension develope
 
 The changes between version 1.0 and 2.0 are described [here](https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/2.0/Documentation/Changes_between_1.0_and_2.0.md).
 
-## Parties
-The parties involved in drafting this specifications are, in alphabetical order:
-<table>
-    <tr>
-        <td><b>Organisation</b></td>
-        <td><b>Contact</b></td>
-    </tr>
-    <tr>
-        <td>Deltares</td>
-        <td>Stef Hummel</td>
-    </tr>
-    <tr>
-        <td>EcoSys</td>
-        <td>Geri Wolters</td>
-    </tr>
-    <tr>
-        <td>Hydrologic</td>
-        <td>Sander Loos</td>
-    </tr>
-    <tr>
-        <td>IBM</td>
-        <td>Jurgen Boerboom</td>
-    </tr>
-    <tr>
-        <td>Nelen &amp; Schuurmans</td>
-        <td>Jan-Maarten Verbree</td>
-    </tr>
-    <tr>
-        <td>Rijkswaterstaat</td>
-        <td>Flip Dirksen</td>
-    </tr>
-    <tr>
-        <td>VORtech</td>
-        <td>Jeroen Gerrits</td>
-    </tr>
-</table>
-
-See [version 1.0](https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/master/README.md) for the currently available implementations of the Digital Delta API.
+## Implementations
+The [Current Implementations](https://github.com/DigitaleDeltaOrg/dd-api-spec/wiki/Implementations) contains the most recent list of implementations of the Digital Delta Specifications. 
