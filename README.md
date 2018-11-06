@@ -16,7 +16,6 @@ Implementations are in preparation for:
 
 - MATROOS (RWS)
 - The Data Distribution Layer (RWS)
-- Vertex (ProcessFive)
 
 The DD web service is a RESTful API, specified in RAML (RESTful API Modeling Language). The dd-api-spec repository contains:
 
