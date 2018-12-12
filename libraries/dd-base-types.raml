@@ -233,6 +233,7 @@ types:
             description: GeoJSON Coordinate Reference System element. According to GeoJSON the CRS always as to be "WGS84",
               hence the crs element has been removed from the GeoJSON Feature object. However, the DD-API still has the field,
               to be able to specify that the data is provided in another CRS (although this is discouraged).
+              If present, the crs property should be according to the now obsolete GeoJSON specification (see http://geojson.org/geojson-spec#coordinate-reference-system-objects).
             type: object
           locationNameSpace?:
             type: LocationNameSpace
@@ -400,7 +401,7 @@ types:
 
   Provider:
     type: object
-    description: Information regarding the system that is responible for the response.
+    description: Information regarding the system that is responsible for the response.
       Provides support contact information in case there are issues with response format or content.
     properties:
       name?:

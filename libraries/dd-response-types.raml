@@ -25,7 +25,7 @@ types:
         description: List of AspectSets.
 
   LocationListResponseGeoJSON:
-    description: Returns the locations as a GeoJson FeatureCollection.
+    description: Returns the locations as a GeoJson (FeatureCollection)[https://tools.ietf.org/html/rfc7946#page-12].
     type: object
 
   LocationListResponse:
@@ -42,7 +42,7 @@ types:
     properties:
       provider:
         type: DD-T.Provider
-        description: A single location.
+        description: The system that generated the response.
 
   NodeListResponse:
     description: Contains zero or more responses to a Node list request.
@@ -53,12 +53,12 @@ types:
         description: List of Node objects
 
   NodeResponse:
-    description: Contains the response for one Location.
+    description: Contains the response for one Node.
     type: DD-T.Node
     properties:
       provider:
         type: DD-T.Provider
-        description: A single Node object.
+        description: The system that generated the response.
 
   ObservationTypeListResponse:
     description:
@@ -69,12 +69,12 @@ types:
         description: List of ObservationType objects
 
   ObservationTypeResponse:
-    description:
+    description: Contains the response for one ObservationType.
     type: DD-T.ObservationType
     properties:
       provider:
         type: DD-T.Provider
-        description: Specific ObservationType object
+        description: The system that generated the response.
 
   SourceListResponse:
     description: Contains zero or more responses to a Source list request.
@@ -93,9 +93,9 @@ types:
         description: List of Timeseries objects
 
   TimeseriesResponse:
-    description:
+    description: Contains the response for one Timeseries.
     type: DD-T.Timeseries
     properties:
       provider:
         type: DD-T.Provider
-        description: Specific Timeseries object
+        description: The system that generated the response.

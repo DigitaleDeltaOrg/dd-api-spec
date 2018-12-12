@@ -133,7 +133,7 @@ types:
     /geojson:
       get:
         description: |
-          Retrieve location resources. Response is in GeoJSON format.
+          Retrieve location resources. Response is in GeoJSON FeatureCollection format (see https://tools.ietf.org/html/rfc7946#page-12).
         is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError, TRAITS.locationFilterable ]
         queryParameters:
           process?:
@@ -162,7 +162,7 @@ types:
                 example: !include examples/dd-locationslist-response-geojson.json
 
     /{locationId}:
-      description: Request a specific location by its id. Response is always in GeoJSON format.
+      description: Request a specific location by its id. Response is always in GeoJSON Feature format (see https://tools.ietf.org/html/rfc7946#page-11).
       uriParameters:
         locationId:
           type: DD-T.Identifier
