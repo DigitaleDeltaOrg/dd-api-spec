@@ -7,7 +7,7 @@ This specification describes the Digital Delta API Version 2.0.1 (DD-API 2.0.1).
 
 Version 2.0.1 of the DD-API builds on the foundation as specified in [version 1.0](https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/master/README.md).
 
-See the [Digital Delta project](http://www.digitaldelta.nu/en/phase-3-operational-phase/item340) for some background information.
+See the [Digital Delta project](https://digitaledeltaorg.github.io/landing-page/) for background information.
 
 The changes in version 2.0.1 compared to 1.0 can be summarized as:
 
@@ -33,7 +33,6 @@ To read the RAML specification, some [tools](https://github.com/DigitaleDeltaOrg
 The [HTML specifications](https://github.com/DigitaleDeltaOrg/dd-api-spec/blob/2.0/dd.v20.html) can also be used and may be easier to read.
 
 ### Prerequisites
-
 The easiest way to get the specification is to download the generated HTML files.
 To be able to use the RAML files, please consult the [tools](https://github.com/DigitaleDeltaOrg/dd-api-spec/wiki/Tools) section. Knowledge of the [RAML language](https://raml.org) is then recommended.
 
