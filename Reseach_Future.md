@@ -9,7 +9,7 @@ __The DD_ECO-API specification already made a start for implementation of refere
 ## Multiple data types.
 Support for multiple data types: future API versions will include more data types, such as forecasts, gridded and vector data.
 
-__ Forecasts are part of the DD-OPER-API __
+__ Forecasts are part of the DD-OPER-API.__
 
 Additional output formats: currently, the data is returned as an Aquo-compliant output. In a future version, multiple output types should be supported, for example WaterML 2.0.
 __Aquo-compliancy is a responsibility of the source systems. The DD-API cannot convert non-compliant types to Aquo-compliant types. Because the Aquo-standard is also continuously changing, it would mean that the source systems will need to continuously change their data.__
@@ -17,7 +17,7 @@ __Aquo-compliancy is a responsibility of the source systems. The DD-API cannot c
 ## Calculations
 Support basic calculations on time series data: create an endpoint that returns the mean or maximum of a measurement series.
 
-__This is part of the aspects in the DD-OPER-API__
+__This is part of the aspects in the DD-OPER-API.__
 
 ## Smart references
 Allow references to objects within the specifications. This has the potential to reduce the size of the resulting output. It makes parsing of the format harder though.
