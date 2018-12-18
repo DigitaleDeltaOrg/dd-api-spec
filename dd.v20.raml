@@ -1,6 +1,6 @@
 #%RAML 1.0
 title: Digitale Delta - API
-version: 2.0
+version: 2.0.1
 securitySchemes:
   basic:
     type: Basic Authentication
@@ -8,7 +8,7 @@ securitySchemes:
     type: OAuth 2.0
 baseUri: http://api.rws.nl/dl/
 mediaType: [ application/json ]
-description: Digital Delta API version 2.0
+description: Digital Delta API version 2.0.1
 documentation:
  - title: Introduction
    content: !include documentation/dd/Introduction.md
@@ -43,8 +43,9 @@ types:
 # ##################################################
 
   /nodes:
-    description: The Nodes endpoint returns the nodes that the provider offers.
     get:
+      description: |
+        A (data)node is an area from which resource objects can be retrieved.
       is: [ TRAITS.pageable, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError ]
       queryParameters:
         process?:
@@ -52,7 +53,7 @@ types:
         name?:
           type: string
           description: (Partial) name of the node. Partial meaning startsWith(...).
-          example: AquaDeskPrimaryNode
+          example: RwsPrimaryNode
       responses:
         200:
           description: |
@@ -62,12 +63,12 @@ types:
               type: DD-RESP.NodeListResponse
               example: !include examples/dd-nodelist-response.json
     /{nodeId}:
-      description: Request a specific Node by its unique dentifier.
       uriParameters:
         nodeId:
           type: DD-T.Identifier
       is: [ TRAITS.has403-AccessDeniedError, TRAITS.has404-NotFoundError, TRAITS.has500-ServerError ]
       get:
+        description: Request a specific Node by its unique dentifier.
         queryParameters:
           process?:
             type: DD-T.ProcessName
@@ -83,9 +84,10 @@ types:
 # ##################################################
 
   /sources:
-    description: Retrieve (data)source resources.
     is: [ TRAITS.pageable, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError ]
     get:
+      description: |
+        A (data)source describes the source of the data. A node can have multiple data sources.
       queryParameters:
         process?:
           type: DD-T.ProcessName
@@ -102,26 +104,22 @@ types:
   /locations:
     get:
       description: |
-        The locations endpoint returns the locations where measurements and/or model results are available.
+        Location objects contains all information required to describe a location.
       is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError, TRAITS.locationFilterable ]
       queryParameters:
         process?:
           type: DD-T.ProcessName
         boundingBox?:
           type: DD-T.BoundingBox
-          example: [4.8, 52.0, 5.8, 54.0]
         locationName?:
-          type: string
-          description: (Partial) location name. Partial meaning startsWith(...).
-          example: NEDHMT
+          type: DD-T.LocationName
         nodeId?:
           type: DD-T.Identifier
           description: This query parameter is deprecated.
         locationCode?:
-          type: string
-          description: Location code.
-          example: NLWATB-RWTS_AFGDM_0001
-        locationId?: DD-T.Identifier
+          type: DD-T.LocationCode
+        locationId?:
+          type: DD-T.Identifier
       responses:
         200:
           description: Succesfully retrieved resource.
@@ -140,19 +138,15 @@ types:
             type: DD-T.ProcessName
           boundingBox?:
             type: DD-T.BoundingBox
-            example: [4.8, 52.0, 5.8, 54.0]
           locationName?:
-            type: string
-            description: (Partial) location name. Partial meaning startsWith(...).
-            example: NEDHMT
+            type: DD-T.LocationName
           nodeId?:
             type: DD-T.Identifier
             description: This query parameter is deprecated.
           locationCode?:
-            type: string
-            description: Location code.
-            example: NLWATB-RWTS_AFGDM_0001
-          locationId?: DD-T.Identifier
+            type: DD-T.LocationCode
+          locationId?:
+            type: DD-T.Identifier
         responses:
           200:
             description: Succesfully retrieved resource.
@@ -185,34 +179,10 @@ types:
 
 ######################################################
 
-  /aspectSets:
-    description:
-      Retrieves available aspect sets.
-      Note - The request requires some parameters to provide a context for the response as aspects relate to observation types for instance.
-      When aspects and aspect sets are not supported and empty List shall be returned.
-    get:
-      is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError  ]
-      queryParameters:
-        process?:
-          type: DD-T.ProcessName
-      responses:
-        200:
-          description: |
-            Succesfully retrieved resource.
-          body:
-            application/json:
-              type: DD-RESP.AspectSetListResponse
-              example: !include examples/dd-aspectsetlist-response.json
-
-######################################################
-
   /observationTypes:
-    description: The ObservationTypes endpoint can return the observationtypes that the provider offers. Filtering&colon; list of parameters.
-      <h3>About ObservationType</h3>
-      <p>The ObservationType objects describe all attributes to correctly interpret what has been measured, and in what way. It is essential to have the quantity field.</p>
     get:
       description: |
-        Retrieve observationTypes resources.
+        ObservationType objects describe all attributes to correctly interpret what has been measured, and in what way. It is essential to have the quantity field.
       is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError, TRAITS.observationTypeFilterable ]
       queryParameters:
         process?:
@@ -235,12 +205,12 @@ types:
               example: !include examples/dd-observationtypelist-response.json
 
     /{observationTypeId}:
-      description: Request a specific ObservationType by its unique identifier.
       is: [ TRAITS.has403-AccessDeniedError, TRAITS.has404-NotFoundError, TRAITS.has500-ServerError ]
       uriParameters:
         observationTypeId:
           type: DD-T.Identifier
       get:
+        description: Request a specific ObservationType by its unique identifier.
         queryParameters:
           process?:
             type: DD-T.ProcessName
@@ -258,7 +228,7 @@ types:
   /timeseries:
     get:
       description: |
-        Retrieve timeseries resources.
+        TimeSeriesType objects describe the type of measurement the timeseries contains. These can be for example raw measurements, but also aggregations or simulations. This information could be needed to correctly interpret the measurement values.
         A request where both startTime and endTime are omitted returns a response with just the metadata (implicit includeMetaData = true).
       is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError, TRAITS.timeseriesFilterable, TRAITS.locationFilterable, TRAITS.observationTypeFilterable ]
       queryParameters:
@@ -269,14 +239,11 @@ types:
         endTime?:
           type: DD-T.EndTime
         locationCode?:
-          type: string
-          example: "HVH"
+          type: DD-T.LocationCode
         locationName?:
           type: DD-T.LocationName
-          example: "Hoek.vanHolland.nieuwewat"
         sourceName?:
           type: DD-T.SourceName
-          example: rws_prediction
         observationTypeId?:
           type: DD-T.Identifier
         realizationCount?:
@@ -315,12 +282,12 @@ types:
               example: !include examples/dd-timeserieslist-response-verwachtingen-en-metingen-fulldd.json
 
     /{timeseriesId}:
-      description: Request a specific (single) Timeseries by its unique identifier.
       uriParameters:
         timeseriesId:
           type: DD-T.Identifier
       is: [ TRAITS.has403-AccessDeniedError, TRAITS.has404-NotFoundError, TRAITS.has500-ServerError ]
       get:
+        description: Request a specific (single) Timeseries by its unique identifier.
         queryParameters:
           process?:
             type: DD-T.ProcessName

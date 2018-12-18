@@ -5,6 +5,9 @@
 # Date: 2018-08-21
 #
 #  This file defines the basic datatypes used in the DD API and DD-OPER API.
+#  Provide a discription when the type is NOT a custom type.
+#  All attributes of a custum type must be described, unless the attribute is of a custom type.
+
 
 types:
   AdditionalQuality:
@@ -17,16 +20,22 @@ types:
     properties:
       name:
         type: string
+        description: The name of the aspect.
+        example: measurement
       unit:
         type: string
+        description: Unit of measurement of the aspect.
+        example: m/s
 
   AspectSet:
     description: Defines a group of related variables for a single measurement, forecast, etc.
     type: object
     properties:
-      name: AspectSetName
+      name:
+        type: AspectSetName
       aspects:
         type: Aspect[]
+        description: An array of aspects.
         minItems: 0
 
   AspectSetName:
@@ -41,7 +50,8 @@ types:
       name:
         type: string
         description: Name of the aspect.
-      points: PointsValue[]
+      points:
+        type: PointsValue[]
 
   AspectValue:
     description: Object used for Event.Aspect[] results. Specifies the value for one of the aspects in an AspectSet.
@@ -50,12 +60,13 @@ types:
       name:
         type: string
         description: Name of the aspect.
+        example: Average
       value:
-        description: The value of the measured or computed data.
         type: ValueType
       limitSymbol?:
         description: Specifies that the value is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
         type: string
+        example: <
       quality?:
         type: Quality
       additionalQuality?:
@@ -73,14 +84,15 @@ types:
     description: A value of type Double.
     type: number
     format: double
+    example: 4.123456
 
   EndTime:
     type: datetime
     example: 2018-01-01T00:00:00Z
     description:  The End date/time of the time series, or the End date/time of the interval for an individual value in the series. Uses the UCT (Zulu) notation.
       The endtime is exlusive, hence the requested period ends just before the given time.
-      2018-01-01T00:00:00Z - 2018-01-01T00:00:10Z specifies a 10 minute period starting at midnight and
-      ending at 2018-01-01T00:09:59.99999Z
+      2018-01-01T00&colon;00&colon;00Z - 2018-01-01T00&colon;00&colon;10Z specifies a 10 minute period starting at midnight and
+      ending at 2018-01-01T00&colon;09&colon;59.99999Z
 
   Error:
     description:  Error response in line with RFC7807. Although both optional the minimum information that should be given are the title and status.
@@ -92,15 +104,19 @@ types:
       title?:
         description: Title of the error.
         type: string
+        example: Error processing the request.
       status?:
         type: integer
-        description: The HTTP errrocode number.
+        description: The HTTP error code number (HTTP Status Code).
+        example: 404
       detail?:
         description: Details of the error
         type: string
+        example: Request resulted in a response that was too large.
       instance?:
         description: Reference to the error for the provider.
         type: string | nil
+        example: https://myservice/meaningOrError400
         # Additional fields, RFC7807 extension
       errors?:
         description: Error details. More than one error can occur within the problem.
@@ -119,32 +135,26 @@ types:
         description: Timestamp of the occurrence of the event.
         type: datetime
       startTime?:
-        description: Start time.
         type: StartTime
       endTime?:
-        description: End time.
         type: EndTime
       resultTime?:
         description: Result time.
         type: datetime
       value?:
-        description: The measured or computed value for a scalar value, i.e. in case there are no aspects and/or multiple points per event.
         type: ValueType
       limitSymbol?:
         description: Specifies that the value is e.g. higher (or lower) then the value in "value". Known limitSymbols are "<", ">", "<=", ">="
         type: string
       quality?:
-        description: Indicator for the quality of the measured or computed value in the 'value' attribute.
         type: Quality
       additionalQuality?:
-        description: Additional information on the value in the 'quality' attribute.
         type: AdditionalQuality
       aspects?:
         type: AspectValue[] | AspectPointsValue []
         description: When the time series contains aspects the value/quality/unit are given in an object for each aspect or aspect+point.
       points?:
         type: PointsValue[]
-        description: When the time series contains multiple points the value/quantity/unit are given in an object for each point.
 
   Filter:
     type: string
@@ -156,8 +166,10 @@ types:
     properties:
       errorType:
         type: string
+        example: Unknown comparer.
       context:
         type: string
+        example: Field 'locationCode'.
 
   Geometry:
     description: A geometry in GeoJSON format. Digital Delta currently formally only
@@ -170,7 +182,6 @@ types:
         type: string
         example: "Point"
       coordinates?:
-        description: An array of doubles, representing a longitude, a latitude and optionally an altitude.
         type: Position | Positions
         examples:
           -point:  [4.234 , 5.23423]
@@ -181,6 +192,7 @@ types:
     description: An identifier can be anything expressed by a string.
 
   Institution:
+    description: An institution is an organisation that produces data for the DD-API.
     type: object
     properties:
       name:
@@ -221,8 +233,7 @@ types:
             description: Id of the location.
             type: string
           locationCode?:
-            description: Code of the location.
-            type: string
+            type: LocationCode
           locationName?:
             description: Name of the location.
             type: LocationName
@@ -250,6 +261,10 @@ types:
           parentName?:
             type: LocationName
             description: Remark&colon; Only used in DD-OPER response.
+
+  LocationCode:
+    type: string
+    example: "HVH"
 
   LocationName:
     type: string
@@ -465,22 +480,17 @@ types:
     type: object
     properties:
       node?:
-        description: Reference to the DD-node that contains the data of the time series.
         type: Node
       url?:
         description: The provider's URL for the time series.
         type: string
       id?:
-        description: The IdL of the time series.
         type: Identifier
       source:
-        description: Source of the time series.
         type: Source
       location:
-        description: Location of the time series.
         type: Location
       observationType:
-        description: Observation type of the time series (concentration, parameter, etc.).
         type: ObservationType
       startTime:
         description: Start date-time of the time series (the first timestamp/value pair available in the series).
@@ -498,8 +508,7 @@ types:
         description: Specifies the interval between events in the time series. If present and set to 'null', the time series is non-equidistant. TODO&colon; decide on options for units.
         type: number
       valueType?:
-        description: The data type of the measured or computed data (float, integer, categorized). Default&colon; float.
-        type: string
+        type: ValueType
       qualifier?:
         type: string
         description: Additional qualification of the measurement or computation.
@@ -510,13 +519,13 @@ types:
 
   Timestamp:
     type: string
-    description: Date and time in format "yyyy-mmm-ddThh:mm:ss.ffffffZ"  (UTC Zulu with minimal 3 digits of fractional seconds)
-    example: "2018-07-05T15:11:36.123Z, 2018-07-05T15:11:36.123456Z, 2018-07-05T15:11:36.000Z"
+    description: Date and time in format "yyyy-mmm-ddThh&colon;mm&colon;ss.ffffffZ"  (UTC Zulu with minimal 3 digits of fractional seconds)
+    example: "2018-07-05T15&colon;11&colon;36.123Z, 2018-07-05T15&colon;11&colon;36.123456Z, 2018-07-05T15&colon;11&colon;36.000Z"
     minLength: 24
 
   ValueType:
     type: number | string
-    description: The type of values in the time series ('string' in case of categorized values, like 'natuurlijk' vs 'aangelegd').
+    description: The type of values in the time series ('string' in case of categorized values, like 'natuurlijk' vs 'aangelegd'). Also known as QuantityValue.
 
   Url:
     type: string
