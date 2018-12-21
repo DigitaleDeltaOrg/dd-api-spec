@@ -229,7 +229,7 @@ types:
     get:
       description: |
         TimeSeriesType objects describe the type of measurement the timeseries contains. These can be for example raw measurements, but also aggregations or simulations. This information could be needed to correctly interpret the measurement values.
-        A request where both startTime and endTime are omitted returns a response with just the metadata (implicit includeMetaData = true).
+        A request where both startTime and endTime are omitted returns a response with just the metadata.
       is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError, TRAITS.timeseriesFilterable, TRAITS.locationFilterable, TRAITS.observationTypeFilterable ]
       queryParameters:
         process?:
