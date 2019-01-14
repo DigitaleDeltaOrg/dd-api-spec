@@ -9,10 +9,10 @@
 	},
 	"properties": {
 		"locationName": "Maarssen.Oostkanaaldijk",
-		"locationNameSpace": "NL.RWS.WM",
-		"provider": {
-			"name": "Matroos",
-			"supportUrl": "tbd http://www.rws.nl/support/matroos"
-		}
+		"locationNameSpace": "NL.RWS.WM"
+	},
+	"provider": {
+		"name": "Matroos",
+		"supportUrl": "tbd http://www.rws.nl/support/matroos"
 	}
 }
