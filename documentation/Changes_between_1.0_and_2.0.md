@@ -89,4 +89,4 @@ Discussion: the following, or filter syntax?
 -  sourceName: optional, allows filtering on source.
 
 #### /aspects
-Aspects is a new, required end-point for DD-OPER only.
+Aspects is a new, required end-point for DD-OPER only. Replaced in version 2.0.1 by new end-point /quantities/...
