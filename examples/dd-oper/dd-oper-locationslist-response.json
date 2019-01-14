@@ -16,7 +16,7 @@
 				]
 			},
 			"properties": {
-				"locationName": "Maarssen.Oostkanaaldijk",
+				"locationName": "maarssen.oostkanaaldijk",
 				"locationNameSpace": "NL.RWS.WM",
 				"displayNameGlobal": "Maarssen",
 				"displayNameDetail": "Oostkanaaldijk",
@@ -47,7 +47,7 @@
 				]
 			},
 			"properties": {
-				"locationName": "Maarssen.Westkanaaldijk",
+				"locationName": "maarssen.westkanaaldijk",
 				"locationNameSpace": "NL.RWS.WM",
 				"displayNameGlobal": "Maarssen",
 				"displayNameDetail": "Westkanaaldijk",

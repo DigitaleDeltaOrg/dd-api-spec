@@ -6,15 +6,15 @@
 			"aspects": [
 				{
 					"name": "minimun",
-					"unit": "mm"
+					"unit": "m"
 				},
 				{
 					"name": "maximum",
-					"unit": "mm"
+					"unit": "m"
 				},
 				{
 					"name": "average",
-					"unit": "mm"
+					"unit": "m"
 				}
 			]
  		}
