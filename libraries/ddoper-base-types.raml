@@ -2,7 +2,7 @@
 
 # Name: ddoper-base-types.raml
 #
-# Date: 2018-07-10
+# Date: 2019-01-14
 #
 #  This file defines specific datatypes only used in the DD-OPER API, and/or extends base datatypes of the DD-API.
 
@@ -13,35 +13,3 @@ types:
 
   LocationName:
     type: DD-T.LocationName
-
-
-#  Location:
-#    description: Extension of DD-API Location object. The Location object in DD-OPER API provides additional name attributes.
-#    type: DD-T.Location#
-#    properties:
-#      properties?:
-#        type: object\
-#        properties:
-#          displayNameGlobal?:
-#            type: LocationName
-#          displayNameDetail?:
-#            type: LocationName
-#          displayNameSpace?:
-#            type: LocationName
-#          parentName?:
-#            type: LocationName
-
-#  Timeseries:
-#    description: This a specifc Timeseries definition for the DD-OPER API, where the 'Location' object type is defined
-#                 locally (DDOPER-T) instead of by the DD-API base types.
-#    type: DD-T.Timeseries
-#    properties:
-#      location: Location
-
-
-
-#  QuantityName:
-#    type: string
-#    description: A name referencing a category of timeseries. The quantity names are predefined.
-#      For example 'WaterLevel', 'WaterTemperature', 'WaveHeight'.
-#    example: WaterLevel
