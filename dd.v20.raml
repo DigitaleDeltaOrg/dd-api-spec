@@ -35,7 +35,6 @@ uses:
 #
 types:
 
-
 #
 # The resources
 /dd/2.0:
@@ -132,7 +131,7 @@ types:
       get:
         description: |
           Retrieve location resources. Response is in GeoJSON FeatureCollection format (see https://tools.ietf.org/html/rfc7946#page-12).
-        is: [ TRAITS.pageable, TRAITS.has400-InvalidRequestError, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError, TRAITS.locationFilterable ]
+        is: [ TRAITS.has400-InvalidRequestError, TRAITS.has403-AccessDeniedError, TRAITS.has500-ServerError, TRAITS.locationFilterable ]
         queryParameters:
           process?:
             type: DD-T.ProcessName
@@ -175,7 +174,7 @@ types:
             body:
               application/json:
                 type: object
-                example: !include examples/dd-location-response-geojson.json
+                example: !include examples/dd-location-response.json
 
 ######################################################
 
