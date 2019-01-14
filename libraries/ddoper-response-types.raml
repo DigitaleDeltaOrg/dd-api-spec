@@ -2,10 +2,10 @@
 
 # Name: ddoper-response-types.raml
 #
-# Date: 2018-07-10
+# Date: 2018-12-23
 #
 #  This file defines the response layouts used by /DD-OPER API 2.0.
-
+#
 uses:
   DD-T: dd-base-types.raml
   DDOPER-T: ddoper-base-types.raml
@@ -13,17 +13,9 @@ uses:
 
 types:
 
-
 #
 # response types
 #
-  AspectSetListResponse:
-    description: The list of available AspectSets.
-    type: GENERIC-RESP.BaseResponseHeader
-    properties:
-      results:
-        type: DD-T.AspectSet[]
-
   ErrorResponse:
     description: |
           The response returned in case of an error/problem (when HTTP return code is not 200). The header is in
@@ -38,6 +30,9 @@ types:
         type: DD-T.Location[]
 
   LocationResponse:
+#      Note: The structure of a single Location Response differs from the generic structure used for all other response (GENERIC-RESP)
+#      This is due to decission by DD-API workgroup to use a different response for endpoint /dd/locations/{locationId} for better Geo-Tooling support.
+#      The response structure for /dd-oper and /dd must be the same. Hence the change for /dd-oper.
     description: Contains the response for one Location.
     type: DD-T.Location
     properties:
