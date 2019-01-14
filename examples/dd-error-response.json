@@ -2,7 +2,7 @@
 	"provider": {
 		"name": "Matroos",
 		"supportUrl": "http://www.rws.nl/support/matroos",
-		"apiVersion": "2.0"
+		"apiVersion": "2.0.1"
 	},
 	"type": "https://content.matroos.rws.nl/ValidatieFout",
 	"title": "Hier staat wat er mis is gegaan",
