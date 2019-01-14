@@ -2,12 +2,13 @@
 
 # Name: dd-base-types.raml
 #
-# Date: 2018-08-21
+# Version: 2.0.1
+#
+# Date: 2019-01-14
 #
 #  This file defines the basic datatypes used in the DD API and DD-OPER API.
 #  Provide a discription when the type is NOT a custom type.
 #  All attributes of a custum type must be described, unless the attribute is of a custom type.
-
 
 types:
   AdditionalQuality:
@@ -177,7 +178,9 @@ types:
       type:
         description: The geometry type. Must have the value "Point" or "MultiPoint".
         type: string
-        example: "Point"
+        examples:
+          -point: "Point"
+          -multipoint: "MultiPoint"
       coordinates?:
         type: Position | Positions
         examples:
@@ -237,12 +240,15 @@ types:
           referenceLevel?:
             description: GeoJSON element. Specifies the reference plane for the altitude coordinates (third). For example "NAP".
             type: string
-          crs?:
-            description: GeoJSON Coordinate Reference System element. According to GeoJSON the CRS always as to be "WGS84",
-              hence the crs element has been removed from the GeoJSON Feature object. However, the DD-API still has the field,
-              to be able to specify that the data is provided in another CRS (although this is discouraged).
-              If present, the crs property should be according to the now obsolete GeoJSON specification (see http://geojson.org/geojson-spec#coordinate-reference-system-objects).
-            type: object
+          crsName?:
+            description: The coordinate reference system of the given coordinates according to the INSPIRE definition
+              (see url https&colon;//inspire.ec.europa.eu/documents/Data_Specifications/INSPIRE_Specification_CRS_v3.0.pdf section 4.4.1)
+              GeoJSON does nolonger support reference to a Coordinate Reference System. It assumes coordinates are defined according WGS84.
+              However, within DD-API there is a need to provide coordinates in different coordinate-systems, for instance ETRS89.
+              The element is optional and when omitted WGS84 should be assumed.
+              Remark&colon; INSPIRE does not define 'ETRS89' as such, but specifies different 'flavors' of it with a suffix. To prevent
+              unnecessary translation the commonly used value 'ETRS89' is allowed as equivelant for the INSPIRE value 'ETRS89-XYZ'.
+            type: string
           locationNameSpace?:
             type: LocationNameSpace
             description: Remark&colon; Only used in DD-OPER response.
@@ -439,9 +445,9 @@ types:
   QuantityName:
     type: string
     description: A name referencing a category of time series. The quantity names are predefined.
-      For example 'WaterLevel', 'WaterTemperature', 'WaveHeight'.
+      For example 'waterlevel', 'watertemperature', 'waveheight'.
       Remark&colon; Only used in DD-OPER
-    example: WaterLevel
+    example: waterLevel
 
   Source:
     description: Describes the type of data in the time series, and the owner of the data.
