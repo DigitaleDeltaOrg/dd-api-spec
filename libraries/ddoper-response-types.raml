@@ -4,7 +4,7 @@
 #
 # Version: 2.0.1
 #
-# Date: 2018-12-23
+# Date: 2019-01-14
 #
 #  This file defines the response layouts used by /DD-OPER API 2.0.
 #
@@ -51,11 +51,10 @@ types:
     description: Contains the response for one Quantity with optionally an array of AspectSets available for the Quantity.
     type: GENERIC-RESP.BaseResponseHeader
     properties:
-      result:
-        type: object
-        properties:
-          quantityName: DD-T.QuantityName
-          aspectSets?: DD-T.AspectSet[]
+      quantityName:
+        type: DD-T.QuantityName
+      aspectSets?:
+        type: DD-T.AspectSet[]
 
   TimeseriesListResponse:
     description:
