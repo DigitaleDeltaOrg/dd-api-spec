@@ -9,7 +9,8 @@
 	},
 	"properties": {
 		"locationName": "Maarssen.Oostkanaaldijk",
-		"locationNameSpace": "NL.RWS.WM"
+		"locationNameSpace": "NL.RWS.WM",
+		"crsName": "ETRS89"
 	},
 	"provider": {
 		"name": "Matroos",

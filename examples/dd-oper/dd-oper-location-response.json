@@ -13,13 +13,13 @@
 		"displayNameGlobal": "Maarssen",
 		"displayNameDetail": "Oostkanaaldijk",
 		"parentName": "noordzeekanaal-amsterdamrijnkanaal",
-		"crs": "only if not WGS84, i.e. ETR89",
 		"referenceLevel": "NAP",
-		"provider": {
-			"name": "MKK-DL",
-			"supportUrl": "tbd http://www.rws.nl/support/mkk-dl",
-			"responseType": "LocationResponse",
-			"responseTimestamp": "2018-07-05T15:11:36.123456Z"
-		}
+		"crsName": "ETRS89"
+	},
+	"provider": {
+		"name": "MKK-DL",
+		"supportUrl": "tbd http://www.rws.nl/support/mkk-dl",
+		"responseType": "LocationResponse",
+		"responseTimestamp": "2019-01-10T15:11:36.123456Z"
 	}
 }

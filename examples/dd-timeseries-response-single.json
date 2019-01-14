@@ -24,7 +24,8 @@
 			"locationId": "NL.RWS.WM.Maarssen.Oostkanaaldijk",
 			"locationCode": "OSTKDK",
 			"locationName": "Maarssen.Oostkanaaldijk",
-			"locationNameSpace": "NL.RWS.WM"
+			"locationNameSpace": "NL.RWS.WM",
+			"crsName": "ETRS89"
 		}
 	},
 	"observationType": {
@@ -82,7 +83,7 @@
 	"provider": {
 		"name": "Matroos",
 		"supportUrl": "http://www.rws.nl/support/matroos",
-		"apiVersion": "2.0",
+		"apiVersion": "2.0.1",
 		"responseType": "TimeseriesResponse",
 		"responseTimestamp": "2018-07-05T15:11:36.123456Z"
 	}

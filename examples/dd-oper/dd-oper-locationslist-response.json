@@ -21,13 +21,8 @@
 				"displayNameGlobal": "Maarssen",
 				"displayNameDetail": "Oostkanaaldijk",
 				"parentName": "noordzeekanaal-amsterdamrijnkanaal",
-				"crs": {
-					"type": "name",
-					"properties": {
-						"name": "EPSG:28992"
-					}
-				},
-				"referenceLevel": "NAP"
+				"referenceLevel": "NAP",
+				"crsName": "ETRS89"
 			}
 		},
 		{
@@ -57,13 +52,8 @@
 				"displayNameGlobal": "Maarssen",
 				"displayNameDetail": "Westkanaaldijk",
 				"parentName": "noordzeekanaal-amsterdamrijnkanaal",
-				"crs": {
-					"type": "name",
-					"properties": {
-						"name": "EPSG:28992"
-					}
-				},
-				"referenceLevel": "NAP"
+				"referenceLevel": "NAP",
+				"crsName": "ETRS89"
 			}
 		}
 	]
