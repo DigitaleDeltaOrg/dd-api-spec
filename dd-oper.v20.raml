@@ -1,6 +1,6 @@
 #%RAML 1.0
 title: Digitale Delta - Operational (DD-OPER) API
-version: 2.0
+version: 2.0.1
 securitySchemes:
   basic:
     type: Basic Authentication
@@ -9,7 +9,7 @@ baseUri: http://api.rws.nl/dl/
 
 mediaType: [ application/json ]
 
-description: Digital Delta - Operational API
+description: Digital Delta - Operational API - version 2.0.1
 documentation:
   - title: Introduction
     content: !include documentation/dd-oper/Introduction.md
@@ -22,7 +22,6 @@ documentation:
 
   - title: Todo
     content: |
-      - Update documentation/description texts.
 
 # HTTP protocol is included as (optional) protocol for internal use. HTTPS support is mandatory for external communication.
 protocols: [HTTP, HTTPS]
