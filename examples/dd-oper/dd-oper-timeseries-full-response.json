@@ -22,7 +22,7 @@
         ]
       },
       "properties": {
-				"locationName": "AmsterdamRijnKanaal.Oostkanaaldijk",
+				"locationName": "amsterdamrijnkanaal.oostkanaaldijk",
       	"locationNameSpace": "NL.RWS.WM",
       	"displayNameGlobal": "AmsterdamRijnKanaal",
       	"displayNameDetail": "Oostkanaaldijk KP112",
@@ -32,9 +32,9 @@
       }
     },
     "observationType": {
-      "quantityName": "WaterLevel",
+      "quantityName": "waterLevel",
       "aspectSet": {
-        "name": "WaterLevelMinMax",
+        "name": "default",
         "aspects": [{
             "name": "average",
             "unit": "m"
