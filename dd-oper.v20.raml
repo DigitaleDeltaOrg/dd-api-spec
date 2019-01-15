@@ -22,8 +22,7 @@ documentation:
 
   - title: Todo
     content: |
-      - Update documentation/description texts. It will also be placed in external files such that updates will not impact raml itself.
-      - Add error response codes to all responses.  most are done, just need sanity check.
+      - Update documentation/description texts.
 
 # HTTP protocol is included as (optional) protocol for internal use. HTTPS support is mandatory for external communication.
 protocols: [HTTP, HTTPS]
@@ -63,18 +62,16 @@ traits:
             type: GENERIC-RESP.ErrorResponse
             example: !include examples/dd-oper/dd-oper-error-response.json
 
-
 # The resources:
 /dd-oper/2.0:
   description:
     The 'dd-oper' section in the url is mandatory as it is used to distinguish similar endpoints in the DD API   (/dd/2.0).
 
 # ########################################################
-
-  /aspectSets:
-    description:
-      Retrieves full list of available aspect sets.
+  /quantities:
     get:
+      description: |
+        Retrieves full list of available quantities, including corresponding aspect sets.
       queryParameters:
       responses:
         200:
@@ -82,14 +79,41 @@ traits:
             Succesfully retrieved resource
           body:
             application/json:
-              type: DDOPER-RESP.AspectSetListResponse
-              example: !include examples/dd-oper/dd-oper-aspectsetlist-response.json
+              type: DDOPER-RESP.QuantityListResponse
+              example: !include examples/dd-oper/dd-oper-quantitylist-response.json
+
+    /{quantityName}:
+      uriParameters:
+        quantityName:
+          type: DD-T.QuantityName
+      get:
+        description: Request a specific quantity by its name.
+        responses:
+          200:
+            body:
+              application/json:
+                type: DDOPER-RESP.QuantityResponse
+                example: !include examples/dd-oper/dd-oper-quantity-response.json
+      is: [has400-InvalidRequestError, has404-NotFoundError]
+
+      /locations:
+        get:
+          description: |
+            Request the list of locations (within the NL.RWS.WM namespace) at which a specific quantity is available.
+          queryParameters:
+          responses:
+            200:
+              body:
+                application/json:
+                  type: DDOPER-RESP.LocationListResponse
+                  example: !include examples/dd-oper/dd-oper-locationslist-response.json
 
 # ########################################################
   /locations:
-    description: The Locations endpoint returns the complete list of locations within the NL.RWS.WM namespace that the Provider offers.
-           There are no filterings options.
     get:
+      description: |
+        The Locations endpoint returns the complete list of locations within the NL.RWS.WM namespace that the Provider offers.
+        There are no filterings options.
       queryParameters:
       responses:
         200:
@@ -99,26 +123,25 @@ traits:
               example: !include examples/dd-oper/dd-oper-locationslist-response.json
 
     /{locationName}:
-      description:  Request a specific location by its matching name (caseless match).
       uriParameters:
         locationName:
           type: DD-T.LocationName
       get:
         description: |
-          The resource request for details of a single location is not yet supported
+          Request a specific location by its matching name (case-sensitive match)
         responses:
           200:
             body:
               application/json:
-                type: object
+                type: DDOPER-RESP.LocationResponse
                 example: !include examples/dd-oper/dd-oper-location-response.json
       is: [has400-InvalidRequestError, has404-NotFoundError]
 
 ######################################################
       /quantities:
-        description: |
-          The quantities endpoint returns the list of parameters available at the selected location.
         get:
+          description: |
+            The quantities endpoint returns the list of quantities available at the selected location.
           queryParameters:
           responses:
             200:
@@ -132,7 +155,7 @@ traits:
             quantityName:
               type: DD-T.QuantityName
           get:
-            description: Request a specific quantity by its name. This request is not yet supported.
+            description: Request a specific quantity by its name (case-sensitive match).
             responses:
               200:
                 body:
@@ -145,7 +168,7 @@ traits:
           /timeseries:
             get:
               description: |
-                Retrieve resource
+                Retrieve resource for the selected location and quantity.
               queryParameters:
                 startTime:
                   type: DD-T.StartTime
