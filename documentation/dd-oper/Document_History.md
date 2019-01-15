@@ -8,3 +8,6 @@
 |2018-09-11 | RWS   | References to '/Libraries' changed to 'libraries'.
 |2018-12-11 | RWS   | Added additional discovery endpoint /quantities/...
 |2018-12-21 | RWS   | Removed obsolete endpoint /aspectsetlist.
+|2019-01-14 | RWS   | Changed response structure of a single quantity resource request (../quantities/{quantityName}).
+|2019-01-14 | RWS   | QuantityName and LocationName values are used as url parameters and will always be in lower-case.
+|2018-12-21 | RWS   | Attribute crsName added to Location (GeoJSON) properties.  
