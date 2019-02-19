@@ -42,7 +42,7 @@ types:
     description: Contains the response for one Location.
     type: DD-T.Location
     properties:
-      provider:
+      provider?:
         type: DD-T.Provider
         description: The system that generated the response.
 
@@ -58,7 +58,7 @@ types:
     description: Contains the response for one Node.
     type: DD-T.Node
     properties:
-      provider:
+      provider?:
         type: DD-T.Provider
         description: The system that generated the response.
 
@@ -74,7 +74,7 @@ types:
     description: Contains the response for one ObservationType.
     type: DD-T.ObservationType
     properties:
-      provider:
+      provider?:
         type: DD-T.Provider
         description: The system that generated the response.
 
@@ -98,6 +98,6 @@ types:
     description: Contains the response for one Timeseries.
     type: DD-T.Timeseries
     properties:
-      provider:
+      provider?:
         type: DD-T.Provider
         description: The system that generated the response.
